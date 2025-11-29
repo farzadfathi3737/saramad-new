@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@plugin "flowbite-react/plugin/tailwindcss";
+@import "./../icons/all.css";
+@import "./custom.css";
+@import "./style.css";
+@import "./fonts.css";
+@source "../../../flowbite-react/class-list.json";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary-50: #2bb1aa;
+}
+
+* {
+  font-family: "iranyekan";
+}
+
+.bg-Custom {
+  background: #2bb1aa;
+  background: -moz-linear-gradient(
+    bottom left,
+    rgba(42, 176, 170, 1) 0%,
+    rgba(21, 69, 108, 1) 100%
+  );
+  background: -webkit-gradient(
+    linear,
+    left bottom,
+    right top,
+    color-stop(0%, rgba(42, 176, 170, 1)),
+    color-stop(100%, rgba(21, 69, 108, 1))
+  );
+  background: -webkit-linear-gradient(
+    bottom left,
+    rgba(42, 176, 170, 1) 0%,
+    rgb(21, 69, 108) 100%
+  );
+  background: -o-linear-gradient(
+    bottom left,
+    rgba(42, 176, 170, 1) 0%,
+    rgba(21, 69, 108, 1) 100%
+  );
+  background: -ms-linear-gradient(
+    bottom left,
+    rgba(42, 176, 170, 1) 0%,
+    rgba(21, 69, 108, 1) 100%
+  );
+  background: linear-gradient(
+    to top right,
+    rgba(42, 176, 170, 1) 0%,
+    rgba(21, 69, 108, 1) 100%
+  );
+}
+
+@layer base {
+  button {
+    border-radius: 0.75rem;
+    padding: 8px 20px;
+  }
+}
+
+.btn-success {
+  @apply border-green-500 bg-green-500 text-white shadow-green-700;
+}
+
+/* Form */
+.form-input,
+.form-textarea,
+.form-select,
+.form-multiselect {
+  @apply h-12 w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm text-black;
+}

@@ -1,0 +1,49 @@
+.rmdp-container{
+    display: inline !important;
+}
+
+.toolbars {
+    
+    /* --mrt-base-color: red; */
+    /* --mrt-base-background-color: rgb(44, 34, 44);
+    --mrt-base-background-color: rgb(200, 200, 244); */
+    /* color: red !important; */
+  }
+
+  /* .head-cells {
+    font-weight: bold;
+    color: indigo;
+  } */
+
+  .mrt-toolbar-internal-buttons .mantine-ActionIcon-root{
+    color: #089bab !important;
+  }
+
+  .mrt-table-paper{
+    border-radius: 15px;
+  }
+
+  .mantine-Badge-root{
+    margin-left:0ch !important;
+    margin-right: 1ch;
+    padding-left: 0px;
+  }
+
+  .m_66836ed3{
+    background-color: #ceebee;
+  }
+
+  .mantine-focus-auto{
+    color: #089bab;
+    /* background-color: #fff; */
+  }
+
+  .m_326d024a:where([data-active])
+ {
+color: #fff;
+ }
+
+ .m_326d024a:where([data-active]):hover
+ {
+color: #089bab;
+ }

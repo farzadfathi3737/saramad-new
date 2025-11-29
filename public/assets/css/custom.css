@@ -1,0 +1,180 @@
+.z-40.fixed-header {
+  margin: 0;
+  right: 0;
+  transition: all 0.45s ease 0s;
+  width: 100%;
+}
+
+.z-40.fixed-header .panel {
+  border-radius: 0px;
+}
+
+.mantine-Table-th {
+  /* background-color: #09a0b129 !important; */
+  background-color: #d1f3f7 !important;
+}
+
+.space-y-cc,
+.space-y-c button {
+  background-color: #09a0b129 !important;
+  margin-bottom: 16px;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  scrollbar-width: auto;
+}
+
+.mantine-Table-tr-detail-panel .mantine-Table-td {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+/* ************ mrt-table ************** */
+.mrt-table-cell {
+  right: 0;
+}
+
+.MRT_TableHeadCell-module_root__6y50a[data-column-pinned][data-column-pinned="right"] {
+  left: calc(var(--mrt-table-cell-right, 0) * 1px);
+}
+
+.MRT_TableHeadCell-module_root__6y50a[data-column-pinned][data-column-pinned="right"][data-first-right-pinned] {
+  box-shadow: -6px 0 3px -6px
+    color-mix(in srgb, var(--mantine-color-gray-outline), transparent 50%) inset !important;
+}
+
+.MRT_TableBodyRow-module_root__2c3D4
+  td[data-column-pinned][data-column-pinned="right"] {
+  left: calc(var(--mrt-table-cell-right, 0) * 1px);
+}
+
+.MRT_TableBodyRow-module_root__2c3D4
+  td[data-column-pinned][data-column-pinned="right"][data-first-right-pinned]::before {
+  box-shadow: -6px 0 3px -6px
+    color-mix(in srgb, var(--mantine-color-gray-outline), transparent 50%) inset !important;
+}
+
+.columnColor_FFFACD {
+  background-color: #fffacd !important;
+}
+
+.columnColor_F5DEB3 {
+  background-color: #f5deb3 !important;
+}
+
+.columnColor_E3E3E3 {
+  background-color: #e3e3e3 !important;
+}
+
+.columnColor_E0FFFF {
+  background-color: #e0ffff !important;
+}
+
+.columnColor_FAEBD7 {
+  background-color: #faebd7 !important;
+}
+
+.columnColor_D3D3D3 {
+  background-color: #d3d3d3 !important;
+}
+
+.columnColor_E0FFFF {
+  background-color: #e0ffff !important;
+}
+
+.columnColor_BCF7B7 {
+  background-color: #bcf7b7 !important;
+}
+
+.columnColor_FAF0E6 {
+  background-color: #faf0e6 !important;
+}
+
+.columnColor_FFDAB9 {
+  background-color: #ffdab9 !important;
+}
+
+/* .columnColorGroupHeader1 {
+    background-color: rgba(42, 176, 170, 1) !important;
+} */
+
+.columnColorStyle {
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+}
+
+.mantine-focus-auto:focus {
+  color: #ffffff;
+}
+
+.mantine-Table-thead .fixed {
+  position: sticky;
+  top: 100px;
+}
+
+.mantine-cdbiq {
+  direction: rtl;
+  font-family: iranyekan !important;
+}
+
+.selectHeder div {
+  background-color: #ceebee;
+  border-radius: 15px;
+  border: none;
+  color: #0a9cac;
+}
+
+.selectHeder div span {
+  width: 0px;
+}
+
+.selectHeder div:focus {
+  background-color: red;
+}
+
+.selectHeder svg {
+  color: #0a9cac;
+}
+
+.css-1nmdiq5-menu {
+  z-index: 99999 !important;
+  /* position: sticky !important; */
+}
+
+/* Sidebar */
+.sidebar:hover .nav-item > a {
+  @apply w-auto;
+}
+
+.sidebar .nav-item > button,
+.sidebar .nav-item > a {
+  @apply /* dark:hover:text-white-dark; */ flex w-full items-center justify-between overflow-hidden rounded-[25px] p-2.5 whitespace-nowrap text-[#fff] hover:bg-[#000]/[0.08] hover:text-black dark:hover:bg-[#181f32];
+}
+.sidebar .nav-item > button.active,
+.sidebar .nav-item > a.active {
+  /* @apply bg-[#000]/[0.08] text-[#D1DCE6] dark:bg-[#ffffff] dark:text-white-dark; */
+  @apply bg-[#fff] text-[#089bab] dark:bg-[#ffffff] dark:text-red-600;
+}
+
+.sidebar .nav-item > button.active > div > span,
+.sidebar .nav-item > a.active > div > span {
+  @apply dark:!text-gray-800;
+}
+
+.sidebar ul.sub-menu li button,
+.sidebar ul.sub-menu li a {
+  @apply hover:text-primary-50 hover:before:!bg-primary-50 dark:hover:text-primary-50 flex w-full items-center px-6 py-2.5 before:h-0.5 before:w-2 before:rounded before:bg-gray-300 hover:bg-gray-100 ltr:before:mr-0 rtl:before:ml-0 dark:before:bg-gray-500 dark:hover:bg-gray-900;
+}
+.sidebar ul.sub-menu li button.active,
+.sidebar ul.sub-menu li a.active {
+  @apply text-primary-50 before:bg-primary-50;
+}
+
+.sidebar .nav-item a div:first-child svg,
+.sidebar .nav-item button div:first-child svg {
+  @apply h-5 w-5;
+}
