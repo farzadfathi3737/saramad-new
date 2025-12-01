@@ -27,13 +27,17 @@ export async function POST(req: Request) {
     }
 
     const res = NextResponse.json({ message: 'ok' })
+
+    // توکن را در httpOnly cookie ذخیره کنید
+    const isSecure = process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_APP_URL?.startsWith('https')
+
     res.cookies.set('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: isSecure || false, // localhost نیازی به secure ندارد
+        sameSite: isSecure ? 'strict' : 'lax', // production: strict, development: lax
         path: '/',
-        maxAge: 60 * 60 // 1 hour — تنظیم بر اساس نیاز
+        maxAge: 60 * 60 * 24 // 24 hours
     })
-
 
     return res
 }

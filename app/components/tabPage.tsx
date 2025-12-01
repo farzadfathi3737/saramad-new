@@ -15,8 +15,44 @@ import Company from "../Shareholding/company";
 import CompanyAdd from "../Shareholding/company/add";
 import CompanyEdit from "../Shareholding/company/[id]";
 
-import Fiscalyear from "../Shareholding/fiscalyear";
-import { ITabData } from "@/interface/dataModel";
+import FiscalYear from "../Shareholding/fiscalyear";
+import FiscalYearAdd from "../Shareholding/fiscalyear/add";
+import FiscalYearEdit from "../Shareholding/fiscalyear/[id]";
+
+import CompanyTradingCode from "../Shareholding/companytradingcode";
+import CompanyTradingCodeAdd from "../Shareholding/companytradingcode/add";
+import CompanyTradingCodeEdit from "../Shareholding/companytradingcode/[id]";
+import TradingCodeDiscount from "../Shareholding/tradingcodediscount";
+import TradingCodeDiscountAdd from "../Shareholding/tradingcodediscount/add";
+
+import Stock from "../Shareholding/stock";
+import StockView from "../Shareholding/stock/[id]";
+
+import Share from "../Shareholding/share";
+import ShareAdd from "../Shareholding/share/add";
+import ShareAddT from "../Shareholding/share/addt";
+import ShareEdit from "../Shareholding/share/[id]";
+
+
+import ShareRelationType from "../Shareholding/sharerelationtype";
+import ShareRelationTypeAdd from "../Shareholding/sharerelationtype/add";
+import ShareRelationTypeEdit from "../Shareholding/sharerelationtype/[id]";
+
+import CompanyBroker from "../Shareholding/companybroker";
+import CompanyBrokerAdd from "../Shareholding/companybroker/add";
+import CompanyBrokerAll from "../Shareholding/companybroker/all";
+import CompanyBrokerEdit from "../Shareholding/companybroker/[id]";
+import CompanyBrokerCode from "../Shareholding/companybroker/code/[id]";
+
+import Companybrokerdiscount from "../Shareholding/companybrokerdiscount";
+import CompanybrokerdiscountAdd from "../Shareholding/companybrokerdiscount/add";
+
+import Shareinitialbalance from "../Shareholding/shareinitialbalance";
+import ShareinitialbalanceAdd from "../Shareholding/shareinitialbalance/add";
+import ShareinitialbalanceEdit from "../Shareholding/shareinitialbalance/[id]";
+
+
+import { IKeyValue, ITabData } from "@/interface/dataModel";
 
 export default function TabsWithRouting() {
     const { t } = useLanguage();
@@ -25,14 +61,6 @@ export default function TabsWithRouting() {
     const dispatch = useDispatch();
     const appConf = useSelector((state: IRootState) => state.appConfig);
 
-    // const [tabs, setTabs] = useState<ITabData[]>([]);
-    // const [activeTab, setActiveTab] = useState<number | null>(null);
-
-    useEffect(() => {
-
-    }, []);
-
-    // مقداردهی اولیه از localStorage و query string
     useEffect(() => {
         // const savedTabs: ITabData[] =
         //     JSON.parse(localStorage.getItem("tabsData") || "[]");
@@ -46,10 +74,8 @@ export default function TabsWithRouting() {
             key: "dashboard",
             name: "dashboard",
             orter: 0,
-            filters: {
-                search: "",
-                category: "all"
-            }
+            filters: [],
+            params: []
         }])
         ))!);
         dispatch(setActiveTab(localStorage.getItem('activeTab'!) || 'dashboard')!);
@@ -63,36 +89,6 @@ export default function TabsWithRouting() {
         }
     }, [searchParams]);
 
-    // // ذخیره تب‌ها در localStorage
-    // useEffect(() => {
-    //     localStorage.setItem("tabsData", JSON.stringify(tabs));
-    // }, [tabs]);
-
-    // useEffect(() => {
-    //     localStorage.setItem("activeTab", JSON.stringify(activeTab));
-    // }, [activeTab]);
-
-    // // افزودن تب جدید (حداکثر ۶ عدد)
-    // const addTab = ({ key, name }: TabData) => {
-    //     if (tabs.length >= 6) {
-    //         alert("حداکثر ۶ تب مجاز است!");
-    //         return;
-    //     }
-
-    //     const newTab: TabData = {
-    //         id: Date.now(),
-    //         key: key,
-    //         name: name,
-    //         filters: { search: "", category: "all" },
-    //     };
-
-    //     const updatedTabs = [...tabs, newTab];
-    //     setTabs(updatedTabs);
-    //     setActiveTab(newTab.id);
-    //     router.replace(`?tab=${newTab.id}`);
-    // };
-
-    // حذف تب
     const removeTab = (id: string) => {
         const updatedTabs = appConf.tabs.filter((tab) => tab.id !== id);
         dispatch(setTabs(updatedTabs));
@@ -108,17 +104,6 @@ export default function TabsWithRouting() {
         }
     };
 
-    // تغییر فیلتر در هر تب
-    // const updateFilter = (tabId: number, key: keyof TabFilters, value: string) => {
-    //     setTabs((prev) =>
-    //         prev.map((tab) =>
-    //             tab.id === tabId
-    //                 ? { ...tab, filters: { ...tab.filters, [key]: value } }
-    //                 : tab
-    //         )
-    //     );
-    // };
-
     const handleTabClick = (tabId: string) => {
         dispatch(setActiveTab(tabId));
         router.replace(`?tab=${tabId}`);
@@ -127,19 +112,80 @@ export default function TabsWithRouting() {
     const active: ITabData = appConf.tabs.find((t) => t.id === appConf.activeTab)!;
     const _tabs = [...appConf.tabs].sort((a, b) => a.orther - b.orther);
 
+    const getFilterData = (key: string) => {
+        let _data = '';
+        if (Array.isArray(active?.filters)) {
+            const idFilter = active.filters.find((f) => f.key === key);
+            _data = idFilter?.value || '';
+        } else if (active?.filters && typeof active.filters === 'object') {
+            _data = (active.filters as any).value.toString() || '';
+        }
+        return _data;
+    }
+
+    const getParamData = (key: string) => {
+        let _data = '';
+        if (Array.isArray(active?.params)) {
+            const idFilter = active.params.find((f) => f.key === key);
+            _data = idFilter?.value || '';
+        } else if (active?.params && typeof active.params === 'object') {
+            _data = (active.params as any).value.toString() || '';
+        }
+        return _data;
+    }
+
+
     const renderContent = () => {
-        switch (active.name) {
+
+        switch (active.id) {
             case "dashboard":
                 return <Dashboard />;
 
-            case "companyProfile":
-                if (active.key == "companyProfile/add") return <CompanyAdd />
-                if (active.key == "companyProfile/edit") return <CompanyEdit />
+            case "company":
+                if (active.key == "add") return <CompanyAdd />
+                if (active.key == "edit") return <CompanyEdit id={getParamData('id')} />;
                 return <Company />;
 
-            case "fiscalYear":
-                return <Fiscalyear />;
+            case "fiscalyear":
+                if (active.key == "add") return <FiscalYearAdd />
+                if (active.key == "edit") return <FiscalYearEdit id={getParamData('id')} />;
+                return <FiscalYear />;
 
+            case "companytradingcode":
+                if (active.key == "add") return <CompanyTradingCodeAdd />
+                if (active.key == "edit") return <CompanyTradingCodeEdit id={getParamData('id')} />;
+                if (active.key == "tradingcodediscount") return <TradingCodeDiscount tradingCodeId={getFilterData('tradingCodeId')} tradingCode={getFilterData('tradingCode')} />;
+                if (active.key == "tradingcodediscount/add") return <TradingCodeDiscountAdd tradingCodeId={getFilterData('tradingCodeId')} tradingCode={getFilterData('tradingCode')} />;
+                return <CompanyTradingCode />;
+
+            case "stock":
+                if (active.key == "view") return <StockView id={getParamData('id')} master={getParamData('master')} />;
+                return <Stock />;
+
+            case "share":
+                if (active.key == "add") return <ShareAdd />;
+                if (active.key == "addt") return <ShareAddT />;
+                if (active.key == "edit") return <ShareEdit id={getParamData('id')} />;
+                if (active.key == "stock/view") return <StockView id={getParamData('id')} master={getParamData('master')} />;
+                if (active.key == "shareinitialbalance") return <Shareinitialbalance id={getParamData('id')} name={getParamData('name')} />;
+                if (active.key == "shareinitialbalance/add") return <ShareinitialbalanceAdd shareId={getParamData('shareId')} name={getParamData('name')} />;
+                if (active.key == "shareinitialbalance/edit") return <ShareinitialbalanceEdit id={getParamData('id')} shareId={getParamData('shareId')} name={getParamData('name')} />;
+
+                return <Share />;
+
+            case "sharerelationtype":
+                if (active.key == "add") return <ShareRelationTypeAdd />;
+                if (active.key == "edit") return <ShareRelationTypeEdit id={getParamData('id')} />;
+                return <ShareRelationType />;
+
+            case "companybroker":
+                if (active.key == "add") return <CompanyBrokerAdd />;
+                if (active.key == "all") return <CompanyBrokerAll />;
+                if (active.key == "edit") return <CompanyBrokerEdit id={getParamData('id')} />;
+                if (active.key == "code") return <CompanyBrokerCode id={getParamData('id')} brokerName={getParamData('brokerName')} master={getParamData('master')} />;
+                if (active.key == "companybrokerdiscount") return <Companybrokerdiscount id={getParamData('id')} brokerName={getParamData('brokerName')} />;
+                if (active.key == "companybrokerdiscount/add") return <CompanybrokerdiscountAdd id={getParamData('id')} brokerName={getParamData('brokerName')} />;
+                return <CompanyBroker />;
 
             default:
                 return <></>;
@@ -160,14 +206,19 @@ export default function TabsWithRouting() {
                                 : "border hover:text-black hover:bg-gray-300"
                                 }`}
                         >
-                            {t(tab.name)}
-                            <Tooltip label={`حذف ${tab.name}`}>
-                                <ActionIcon
-                                    onClick={() => removeTab(tab.id)}
-                                    className="mr-2 flex items-center rounded-xl w-9 h-9 p-0 !bg-transparent !hover:bg-red-500">
-                                    <i className={`fa-duotone fa-solid fa-xmark text-sm ${appConf.activeTab === tab.id ? 'text-gray-900' : 'text-gray-600 hover:t'}`} />
-                                </ActionIcon>
-                            </Tooltip>
+                            {tab.id == 'dashboard' ? <div className="flex h-full">
+                                <i className={`fa-duotone fa-solid fa-gauge text-2xl ${appConf.activeTab === tab.id ? 'text-gray-900' : 'text-gray-600 hover:t'}`} />
+                            </div> :
+                                <>{t(tab.name)}
+                                    <Tooltip label={`حذف ${tab.id}`}>
+                                        <ActionIcon
+                                            onClick={() => removeTab(tab.id)}
+                                            className="mr-2 flex items-center rounded-xl w-9 h-9 p-0 !bg-transparent !hover:bg-red-500">
+                                            <i className={`fa-duotone fa-solid fa-xmark text-sm ${appConf.activeTab === tab.id ? 'text-gray-900' : 'text-gray-600 hover:t'}`} />
+                                        </ActionIcon>
+                                    </Tooltip></>
+                            }
+
                         </div>
                     ))}
                 </div>

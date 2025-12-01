@@ -1,25 +1,23 @@
-// import IconCaretDown from '@/components/Icon/IconCaretDown';
 import FDateField from '@/app/components/inputs/dateField';
 import FSelectField from '@/app/components/inputs/selectField';
 import FSelectModelField from '@/app/components/inputs/selectModelField';
 import FTextField from '@/app/components/inputs/textField';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
-// import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { Tooltip } from '@mantine/core';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-// import AnimateHeight from 'react-animate-height';
-import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 const Add = () => {
-    const { t } = useTranslation();
+    const { t } = useLanguage();
+    const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
@@ -79,7 +77,7 @@ const Add = () => {
             //setAddModal(false);
             //fetchData();
             setLoading(false);
-            router.back();
+            subPage(model?.name.toLocaleLowerCase() ?? '')
         } else {
             const result = res && (await res?.json());
             ColoredToast('danger', result);
@@ -90,20 +88,24 @@ const Add = () => {
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div>
+                <div className="flex h-[3rem] items-start justify-start border-b border-gray-300 pl-3">
+                    <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => router.back()}>
-                                {/* <FontAwesomeIcon icon={faArrowRight} size="lg" className="ml-2" /> */}
-                                <i className={`fa-duotone fa-solid fa-arrowRight text-xl ml-2`} />
-                            </ActionIcon>
+                            <div
+                                //className="flex items-center justify-center rounded-full p-5 !hover:bg-[#2D9AA0] hover:text-blue-900" 
+                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
+                                <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
+                            </div>
                         </Tooltip>
                     </div>
-                    <div className="p-2">تعریف سال مالی - {appConfig.company.name}</div>
+                    <div className='px-2 h-full flex flex-col justify-center align-middle'>
+                        <div className="p-2">تعریف سال مالی - {appConfig.company.name}</div>
+                    </div>
                 </div>
 
-                <div className="">
-                    <div className="">
+                <div className="table-responsive px-5">
+                    <div className="p-5">
                         <Formik
                             initialValues={{}}
                             validationSchema={SignupSchema}
@@ -114,7 +116,7 @@ const Add = () => {
                             }}
                         >
                             <Form>
-                                <div className="grid w-full grid-cols-1 gap-2 px-10 sm:grid-cols-2">
+                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                     <div className="w-full">
                                         <Field id="name" name="name" label="نام سال مالی" component={FTextField} />
                                     </div>
@@ -245,7 +247,7 @@ const Add = () => {
                                     </div>
                                 </div> */}
 
-                                <div className="mt-8 flex items-center justify-end px-10">
+                                <div className="mt-8 flex items-center justify-end">
                                     <button type="button" onClick={() => router.back()} className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                         {t('cancel')}
                                     </button>

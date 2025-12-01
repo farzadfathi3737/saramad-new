@@ -1,17 +1,15 @@
 import FColorField from '@/app/components/inputs/colorField';
 import FTextField from '@/app/components/inputs/textField';
+import { ColoredToast } from '@/app/components/Notifications/colorNotification';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { IDataModel } from '@/interface/dataModel';
+import { apiFetch } from '@/lib/apiFetch';
 import { getEntityModel } from '@/models/entity';
-// import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { Tooltip } from '@mantine/core';
 import { Field, Form, Formik } from 'formik';
-import { useRouter } from 'next/navigation';
-import { useRouter as Router } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-//import axios from 'axios';
 
 interface ICompany {
     name: string;
@@ -19,53 +17,41 @@ interface ICompany {
     textColor: string;
 }
 
-const Add = () => {
-    const { t } = useTranslation();
+const Edit = ({ id }: { id: string }) => {
+    const { t } = useLanguage();
+    const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [data, setData] = useState<ICompany>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [rowId, setRowId] = useState<string>();
-
-    const router = useRouter();
-    const _router = Router();
-    const { query } = _router;
 
     useEffect(() => {
-        setRowId(query.id?.toString());
-
         const setdata = async () => {
-            const _model = getEntityModel('company');
+            const _model = await getEntityModel('company');
             setModel(_model);
-            //fetchData();
         };
 
         setdata();
     }, []);
 
     useEffect(() => {
-        const setdata = async () => {
-            rowId && fetchData(rowId);
-        };
+        if (id && model) {
+            fetchData(id);
+        }
+    }, [id, model]);
 
-        setdata();
-    }, [rowId]);
-
-    const fetchData = async (id: string) => {
+    const fetchData = async (companyId: string) => {
         setIsLoading(true);
 
-        const res = await fetch(`${model?.read?.url.replace('{id}', id)}`);
+        const res = await apiFetch(`${model?.read?.url.replace('{id}', companyId)}`);
 
         if (res.ok) {
             const result: ICompany = await res?.json();
             setData(result);
-            console.log('>>>>>.', result);
             setIsLoading(false);
         } else {
             setData(undefined);
             setIsLoading(false);
         }
-
-        //console.log('2222222222', result);
     };
 
     const SignupSchema = Yup.object().shape({
@@ -74,8 +60,7 @@ const Add = () => {
 
     const handlEditClick = async (data: ICompany) => {
         setIsLoading(true);
-        console.log(data);
-        const res = await fetch(`${model?.update?.url.replace('{id}', rowId ? rowId : '')}`, {
+        const res = await fetch(`${model?.update?.url.replace('{id}', id)}`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,14 +69,11 @@ const Add = () => {
         });
 
         if (res.ok) {
-            const result = res && (await res?.json());
-            //setInitialRecords(result);
-            //setAddModal(false);
-            //fetchData();
             setIsLoading(false);
-            router.back();
+            subPage(model?.name.toLocaleLowerCase() ?? '')
         } else {
-            //setInitialRecords({ pageNumber: 1, pageSize: 10, totalPages: 1, totalCount: 10, items: [] });
+            const result = res && (await res?.json());
+            ColoredToast('danger', result);
         }
         setIsLoading(false);
     };
@@ -99,18 +81,22 @@ const Add = () => {
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div>
+
+                <div className="flex h-[3rem] items-start justify-start border-b border-gray-300 pl-3">
+                    <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => router.back()}>
-                                {/* <FontAwesomeIcon icon={faArrowRight} size="lg" className="ml-2" /> */}
-                                <i className={`fa-duotone fa-solid fa-arrowRight text-xl ml-2`} />
-                            </ActionIcon>
+                            <div
+                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
+                                <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
+                            </div>
                         </Tooltip>
                     </div>
-                    {/* <div className="p-2">تعریف شرکت ها - نام شرکت</div> */}
-                    <div className="p-2">{t('edit')} {t('companes')}</div>
+                    <div className='px-2 h-full flex flex-col justify-center align-middle'>
+                        <div className="p-2">{t('edit')} {t('companes')}</div>
+                    </div>
                 </div>
+
                 {data && (
                     <div className="table-responsive px-5">
                         <div className="p-5">
@@ -118,9 +104,7 @@ const Add = () => {
                                 initialValues={data}
                                 validationSchema={SignupSchema}
                                 onSubmit={(values) => {
-                                    console.log('ok', values);
                                     handlEditClick(values);
-                                    //alert(JSON.stringify(values, null, 2));
                                 }}
                             >
                                 <Form>
@@ -140,7 +124,9 @@ const Add = () => {
                                     </div>
 
                                     <div className="mt-8 flex items-center justify-end">
-                                        <button type="button" onClick={() => router.back()} className="btn btn-outline-[#2D9AA0] font-iranyekan">
+                                        <button type="button"
+                                            onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}
+                                            className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                             {t('cancel')}
                                         </button>
 
@@ -153,10 +139,11 @@ const Add = () => {
                             </Formik>
                         </div>
                     </div>
-                )}
-            </div>
-        </div>
+                )
+                }
+            </div >
+        </div >
     );
 };
 
-export default Add;
+export default Edit;

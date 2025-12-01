@@ -1,7 +1,6 @@
 'use client'
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/contexts/LanguageContext';
 // import { useSelector } from 'react-redux';
 import Link from 'next/link';
@@ -25,7 +24,7 @@ const Sidebar = () => {
     const [currentMenu, setCurrentMenu] = useState<string>('');
     const [lasttMenu, setLastMenu] = useState<string>('');
     const [currentSubMenu, setCurrentSubMenu] = useState<string>('');
-    const [lasttSubMenu, setLastSubMenu] = useState<string>('');
+    const [, setLastSubMenu] = useState<string>('');
     const router = useRouter();
     const dispatch = useDispatch();
     const appConf = useSelector((state: IRootState) => state.appConfig);
@@ -58,11 +57,12 @@ const Sidebar = () => {
         if (!_newTab) {
             const newTab: ITabData = {
                 //id: Date.now(),
-                id: param.key,
+                id: param.id,
                 key: param.key,
                 name: param.name,
                 orther: param.key == 'dashboard' ? 0 : appConf.tabs.length,
-                filters: [{ search: "", category: "all" }],
+                filters: [],
+                params: [],
             };
 
             // console.log(appConf.tabs)
@@ -80,149 +80,159 @@ const Sidebar = () => {
     };
 
     const MenuData = [
-        { name: 'dashboard', title: 'داشبورد', link: '/', icon: 'fa-gauge' },
+        { id: 'dashboard', name: 'dashboard', title: 'داشبورد', link: '/', icon: 'fa-gauge' },
         {
+            id: 'baseData',
             name: 'baseData',
             title: 'تعاریف پایه',
             link: '/',
             icon: 'fa-folder',
             childe: [
-                { name: 'companyProfile', title: 'تعریف شرکت', link: '/Shareholding/company', icon: '' },
-                { name: 'fiscalYear', title: 'سال مالی شرکت', link: '/Shareholding/fiscalyear', icon: '' },
-                { name: 'tradingBasket', title: 'سبد معاملاتی', link: '/Shareholding/companytradingcode', icon: '' },
-                { name: 'securitiesList', title: 'فهرست اوراق بهادار', link: '/Shareholding/stock', icon: '' },
-                { name: 'portfolioOfAssets', title: 'فهرست دارایی ها', link: '/Shareholding/share', icon: '' },
-                { name: 'companyType', title: 'نوع وابستگی سهم', link: '/Shareholding/sharerelationtype', icon: '' },
-                { name: 'listOfBrokers', title: 'فهرست کارگزاران', link: '/Shareholding/companybroker', icon: '' },
+                { id: 'company', name: 'companyProfile', title: 'تعریف شرکت', link: '/Shareholding/company', icon: '' },
+                { id: 'fiscalyear', name: 'fiscalYear', title: 'سال مالی شرکت', link: '/Shareholding/fiscalyear', icon: '' },
+                { id: 'companytradingcode', name: 'tradingBasket', title: 'سبد معاملاتی', link: '/Shareholding/companytradingcode', icon: '' },
+                { id: 'stock', name: 'securitiesList', title: 'فهرست اوراق بهادار', link: '/Shareholding/stock', icon: '' },
+                { id: 'share', name: 'portfolioOfAssets', title: 'فهرست دارایی ها', link: '/Shareholding/share', icon: '' },
+                { id: 'sharerelationtype', name: 'companyType', title: 'نوع وابستگی سهم', link: '/Shareholding/sharerelationtype', icon: '' },
+                { id: 'companybroker', name: 'listOfBrokers', title: 'فهرست کارگزاران', link: '/Shareholding/companybroker', icon: '' },
             ],
         },
         {
+            id: 'actions',
             name: 'actions',
             title: 'عملیات',
             link: '/',
             icon: 'fa-gears',
             childe: [
-                { name: 'transactionimportsession', title: 'بارگزاری اطلاعات خرید و فروش', link: '/Shareholding/transactionImportsession', icon: '' },
-                { name: 'buyingAndSellingListBurs', title: 'فهرست خرید و فروش بورسی', link: '/Shareholding/sharetransactionbatch', icon: '' },
-                { name: 'buyingAndSellingListNoBurs', title: 'فهرست خرید و فروش غیر بورسی', link: '/pages/buyingAndSellingListNoBurs', icon: '' },
-                { name: '', title: 'انتقال کد به کد', link: '/', icon: '' },
-                { name: 'shareMeeting', title: 'فهرست مجامع دارایی ها', link: '/Shareholding/shareMeeting', icon: '' },
-                { name: 'brokercontradictions', title: 'مغایرت گیری با کارگزاری', link: '/Shareholding/brokercontradictions', icon: '' },
-                { name: '', title: 'مغایرت گیری با سپرده گذاری', link: '/', icon: '' },
+                { id: 'transactionimportsession', name: 'transactionimportsession', title: 'بارگزاری اطلاعات خرید و فروش', link: '/Shareholding/transactionImportsession', icon: '' },
+                { id: 'buyingAndSellingListBurs', name: 'buyingAndSellingListBurs', title: 'فهرست خرید و فروش بورسی', link: '/Shareholding/sharetransactionbatch', icon: '' },
+                { id: 'buyingAndSellingListNoBurs', name: 'buyingAndSellingListNoBurs', title: 'فهرست خرید و فروش غیر بورسی', link: '/pages/buyingAndSellingListNoBurs', icon: '' },
+                { id: 'transferCodeToCode', name: 'transferCodeToCode', title: 'انتقال کد به کد', link: '/', icon: '' },
+                { id: 'shareMeeting', name: 'shareMeeting', title: 'فهرست مجامع دارایی ها', link: '/Shareholding/shareMeeting', icon: '' },
+                { id: 'brokercontradictions', name: 'brokercontradictions', title: 'مغایرت گیری با کارگزاری', link: '/Shareholding/brokercontradictions', icon: '' },
+                { id: 'discrepancyWithDepositary', name: 'discrepancyWithDepositary', title: 'مغایرت گیری با سپرده گذاری', link: '/', icon: '' },
             ],
         },
         {
-            name: 'p1',
+            id: 'optionContract',
+            name: 'optionContract',
             title: 'قرارداد اختیار معامله',
             link: '/',
             icon: "fa-file",
             childe: [
-                { name: 'optioncontract', title: 'تسویه قراردادهای باز', link: '/Shareholding/optioncontract', icon: '' },
-                { name: '', title: 'تاریخچه تسویه اختیار', link: '/', icon: '' },
-                { name: '', title: 'بستن موقعیت به سود و زیان', link: '/', icon: '' },
+                { id: 'optioncontract', name: 'optioncontract', title: 'تسویه قراردادهای باز', link: '/Shareholding/optioncontract', icon: '' },
+                { id: 'optionHistorySettlement', name: 'optionHistorySettlement', title: 'تاریخچه تسویه اختیار', link: '/', icon: '' },
+                { id: 'closingPositionPL', name: 'closingPositionPL', title: 'بستن موقعیت به سود و زیان', link: '/', icon: '' },
             ],
         },
         {
+            id: 'accountingDocuments',
             name: 'accountingDocuments',
             title: 'اسناد حسابداری',
             link: '/',
             icon: "fa-newspaper",
             childe: [
-                { name: '', title: 'صدور سند', link: '/Shareholding/accountings/journalarticle', icon: '' },
-                { name: '', title: 'آزادسازی و بستن اسناد', link: '/pages/buyingAndSellingListBurs', icon: '' },
+                { id: 'issueDocument', name: 'issueDocument', title: 'صدور سند', link: '/Shareholding/accountings/journalarticle', icon: '' },
+                { id: 'documentReleaseLock', name: 'documentReleaseLock', title: 'آزادسازی و بستن اسناد', link: '/pages/buyingAndSellingListBurs', icon: '' },
             ],
         },
         {
-            name: 'p2',
+            id: 'investmentReturns',
+            name: 'investmentReturns',
             title: 'بازده سرمایه گذاری',
             link: '/',
             icon: "fa-gamepad",
             childe: [
-                { name: '', title: 'بازده ساده (ROR)', link: '/', icon: '' },
-                { name: '', title: 'نرخ بازده پولی وزنی (MWRR)', link: '/', icon: '' },
-                { name: '', title: 'نرخ بازده زمان وزنی (TWRR)', link: '/', icon: '' },
+                { id: 'simpleReturn', name: 'simpleReturn', title: 'بازده ساده (ROR)', link: '/', icon: '' },
+                { id: 'moneyWeightedReturn', name: 'moneyWeightedReturn', title: 'نرخ بازده پولی وزنی (MWRR)', link: '/', icon: '' },
+                { id: 'timeWeightedReturn', name: 'timeWeightedReturn', title: 'نرخ بازده زمان وزنی (TWRR)', link: '/', icon: '' },
             ],
         },
         {
+            id: 'reports',
             name: 'reports',
             title: 'گزارشات',
             link: '/',
             icon: 'fa-print',
             childe: [
-                { name: 'stackedbuysell', title: 'خرید و فروش', link: '/reports/stackedbuysell', icon: '' },
-                { name: 'shareturnover', title: 'گردش سهام', link: '/reports/shareturnover', icon: '' },
-                { name: 'cardex', title: 'کاردکس ریز سهام', link: '/reports/cardex', icon: '' },
-                { name: 'stackedcardex', title: 'روند موجودی', link: '/reports/stackedcardex', icon: '' },
-                { name: 'sharebalance', title: 'مانده سهام', link: '/reports/sharebalance', icon: '' },
-                { name: 'realizeedprofit', title: 'سود و زیان تحقق یافته', link: '/reports/realizedprofit', icon: '' },
-                { name: 'investmentdepreciationreserve', title: 'ذخیره کاهش ارزش سرمایه گزاری', link: '/reports/investmentdepreciationreserve', icon: '' },
-                { name: 'capitalraise', title: 'افزایش سرمایه', link: '/reports/capitalraise', icon: '' },
-                { name: 'cashdividend', title: 'گزارش شناسایی سود اوراق بهادار ', link: '/reports/cashdividend', icon: '' },
-                { name: 'cashdividenddeposit', title: 'گزارش واریز سود اوراق بهادار', link: '/reports/cashdividenddeposit', icon: '' },
-                { name: '', title: 'گزارش اختیارات باز', link: '/reports/', icon: '' },
-                { name: 'marketnotice', title: 'آگهی های کدال', link: '/reports/marketnotice', icon: '' },
-                // { name: 'comprehensive', title: 'گزارش جامع گردش سهام', link: '/reports/comprehensive', icon: '' },
-                { name: 'comprehensive', title: 'گزارش جامع گردش سهام', link: '/commingsoon', icon: '' },
-                { name: 'consolidation', title: 'گزارش تجمیع سبد سهام', link: '/reports/consolidation', icon: '' },
+                { id: 'stackedbuysell', name: 'stackedbuysell', title: 'خرید و فروش', link: '/reports/stackedbuysell', icon: '' },
+                { id: 'shareturnover', name: 'shareturnover', title: 'گردش سهام', link: '/reports/shareturnover', icon: '' },
+                { id: 'cardex', name: 'cardex', title: 'کاردکس ریز سهام', link: '/reports/cardex', icon: '' },
+                { id: 'stackedcardex', name: 'stackedcardex', title: 'روند موجودی', link: '/reports/stackedcardex', icon: '' },
+                { id: 'sharebalance', name: 'sharebalance', title: 'مانده سهام', link: '/reports/sharebalance', icon: '' },
+                { id: 'realizedprofit', name: 'realizeedprofit', title: 'سود و زیان تحقق یافته', link: '/reports/realizedprofit', icon: '' },
+                { id: 'investmentdepreciationreserve', name: 'investmentdepreciationreserve', title: 'ذخیره کاهش ارزش سرمایه گزاری', link: '/reports/investmentdepreciationreserve', icon: '' },
+                { id: 'capitalraise', name: 'capitalraise', title: 'افزایش سرمایه', link: '/reports/capitalraise', icon: '' },
+                { id: 'cashdividend', name: 'cashdividend', title: 'گزارش شناسایی سود اوراق بهادار ', link: '/reports/cashdividend', icon: '' },
+                { id: 'cashdividenddeposit', name: 'cashdividenddeposit', title: 'گزارش واریز سود اوراق بهادار', link: '/reports/cashdividenddeposit', icon: '' },
+                { id: 'openOptionReports', name: 'openOptionReports', title: 'گزارش اختیارات باز', link: '/reports/', icon: '' },
+                { id: 'marketnotice', name: 'marketnotice', title: 'آگهی های کدال', link: '/reports/marketnotice', icon: '' },
+                { id: 'comprehensive', name: 'comprehensive', title: 'گزارش جامع گردش سهام', link: '/commingsoon', icon: '' },
+                { id: 'consolidation', name: 'consolidation', title: 'گزارش تجمیع سبد سهام', link: '/reports/consolidation', icon: '' },
             ],
         },
         {
+            id: 'support',
             name: 'support',
             title: 'پشتیبان',
             link: '/',
             icon: 'fa-headphones',
             childe: [
-                { name: '', title: 'تعدیلات خرید و فروش', link: '/', icon: '' },
-                { name: '', title: 'فرمول های محاسباتی', link: '/', icon: '' },
+                { id: 'buyingSellingAdjustments', name: 'buyingSellingAdjustments', title: 'تعدیلات خرید و فروش', link: '/', icon: '' },
+                { id: 'calculationFormulas', name: 'calculationFormulas', title: 'فرمول های محاسباتی', link: '/', icon: '' },
                 {
-                    name: 'karmozd',
+                    id: 'commissions',
+                    name: 'commissions',
                     title: 'کارمزد ها',
                     link: '/',
                     icon: '',
                     childe: [
-                        { name: 'transactioncommissionreapply', title: 'محاسبه مجدد کارمزد ها', link: '/Shareholding/transactioncommission', icon: '' },
-                        { name: 'transactioncommissiondiscountreapply', title: 'محاسبه مجدد تخفیف ها', link: '/Shareholding/transactioncommissiondiscount', icon: '' },
-                        { name: 'transactioncommissiondiscountapply', title: 'اعمال تخفیف دلخواه', link: '/Shareholding/transactioncommissiondiscount/apply', icon: '' },
-                        { name: 'transactioncommissiondiscountremove', title: 'حذف تخفیف ها', link: '/Shareholding/transactioncommissiondiscount/remove', icon: '' }
+                        { id: 'transactioncommissionreapply', name: 'transactioncommissionreapply', title: 'محاسبه مجدد کارمزد ها', link: '/Shareholding/transactioncommission', icon: '' },
+                        { id: 'transactioncommissiondiscountreapply', name: 'transactioncommissiondiscountreapply', title: 'محاسبه مجدد تخفیف ها', link: '/Shareholding/transactioncommissiondiscount', icon: '' },
+                        { id: 'transactioncommissiondiscountapply', name: 'transactioncommissiondiscountapply', title: 'اعمال تخفیف دلخواه', link: '/Shareholding/transactioncommissiondiscount/apply', icon: '' },
+                        { id: 'transactioncommissiondiscountremove', name: 'transactioncommissiondiscountremove', title: 'حذف تخفیف ها', link: '/Shareholding/transactioncommissiondiscount/remove', icon: '' }
                     ],
                 },
                 {
-                    name: 'majameh',
+                    id: 'assemblies',
+                    name: 'assemblies',
                     title: 'مجامع',
                     link: '/',
                     icon: '',
                     childe: [
-                        { name: 'transactioncommissiondiscountapply', title: 'اعمال مجدد مجامع', link: '/Shareholding/shareMeeting/reapply', icon: '' },
+                        { id: 'shareMeetingReapply', name: 'shareMeetingReapply', title: 'اعمال مجدد مجامع', link: '/Shareholding/shareMeeting/reapply', icon: '' },
                     ],
                 },
                 {
-                    name: 'accountings',
+                    id: 'accounting',
+                    name: 'accounting',
                     title: 'حسابداری',
                     link: '/Shareholding/accountings',
                     icon: '',
                     childe: [
-                        { name: 'accountingSettings', title: 'تنظیمات حسابداری', link: '/Shareholding/accountingSettings', icon: '' },
-                        { name: 'stockCategoryCode', title: 'کدینگ گروه اوراق بهادار', link: '/Shareholding/stockcategorycode', icon: '' },
-                        { name: 'industrySub-industrySecuritiesGroup', title: 'کدینگ صنعت اوراق بهادار', link: '/Shareholding/stockindustrycode', icon: '' },
-                        { name: 'investmentType', title: 'نوع سرمایه ‌گذاری', link: '/Shareholding/investmenttypecode', icon: '' },
-                        { name: 'accountingArticleElements', title: 'فهرست المان ها', link: '/Shareholding/accountings/articleelements', icon: '' },
-                        { name: 'accountingVoucherTemplates', title: 'فهرست قالب ها', link: '/Shareholding/accountings/vouchertemplates', icon: '' },
+                        { id: 'accountingSettings', name: 'accountingSettings', title: 'تنظیمات حسابداری', link: '/Shareholding/accountingSettings', icon: '' },
+                        { id: 'stockCategoryCode', name: 'stockCategoryCode', title: 'کدینگ گروه اوراق بهادار', link: '/Shareholding/stockcategorycode', icon: '' },
+                        { id: 'industrySecuritiesGroup', name: 'industrySecuritiesGroup', title: 'کدینگ صنعت اوراق بهادار', link: '/Shareholding/stockindustrycode', icon: '' },
+                        { id: 'investmentType', name: 'investmentType', title: 'نوع سرمایه ‌گذاری', link: '/Shareholding/investmenttypecode', icon: '' },
+                        { id: 'accountingArticleElements', name: 'accountingArticleElements', title: 'فهرست المان ها', link: '/Shareholding/accountings/articleelements', icon: '' },
+                        { id: 'accountingVoucherTemplates', name: 'accountingVoucherTemplates', title: 'فهرست قالب ها', link: '/Shareholding/accountings/vouchertemplates', icon: '' },
                     ],
                 },
-                { name: '', title: 'بارگزاری ابتدای دوره', link: '/', icon: '' },
-                { name: '', title: 'انتقال سال مالی', link: '/', icon: '' },
-                { name: '', title: 'جلسه پشتیبانی', link: '/', icon: '' },
+                { id: 'periodBeginningUpload', name: 'periodBeginningUpload', title: 'بارگزاری ابتدای دوره', link: '/', icon: '' },
+                { id: 'fiscalYearTransfer', name: 'fiscalYearTransfer', title: 'انتقال سال مالی', link: '/', icon: '' },
+                { id: 'supportSession', name: 'supportSession', title: 'جلسه پشتیبانی', link: '/', icon: '' },
             ],
         },
         {
-            name: 'p3',
+            id: 'system',
+            name: 'system',
             title: 'سیستم',
             link: '/',
             icon: 'fa-sliders',
             childe: [
-                { name: '', title: 'مدیریت کاربران', link: '/', icon: '' },
-                { name: '', title: 'مدیریت فعالیت ها', link: '/', icon: '' },
-                { name: '', title: 'مدیریت رخداد ها', link: '/', icon: '' },
+                { id: 'userManagement', name: 'userManagement', title: 'مدیریت کاربران', link: '/', icon: '' },
+                { id: 'activityManagement', name: 'activityManagement', title: 'مدیریت فعالیت ها', link: '/', icon: '' },
+                { id: 'eventManagement', name: 'eventManagement', title: 'مدیریت رخداد ها', link: '/', icon: '' },
             ],
         },
     ];
@@ -273,11 +283,11 @@ const Sidebar = () => {
 
                                                 <button
                                                     type="button"
-                                                    className={`${currentMenu === item.name ? 'active' : ''} nav-link group w-full font-iranyekan flex px-2`}
+                                                    className={`${currentMenu === item.id ? 'active' : ''} nav-link group w-full font-iranyekan flex px-2`}
                                                     onClick={() => {
                                                         const data: ITabData = {
-                                                            id: item.name,
-                                                            key: item.name,
+                                                            id: item.id,
+                                                            key: item.id,
                                                             name: item.name,
                                                             orther: 0
                                                         };
@@ -336,11 +346,11 @@ const Sidebar = () => {
                                                                     </Link> */}
                                                                     <button
                                                                         type="button"
-                                                                        className={`${currentMenu === item.name ? 'active' : ''} nav-link group w-full font-iranyekan flex px-2`}
+                                                                        className={`${currentMenu === item.id ? 'active' : ''} nav-link group w-full font-iranyekan flex px-2`}
                                                                         onClick={() => {
                                                                             const data: ITabData = {
-                                                                                id: "0",
-                                                                                key: subItem.name,
+                                                                                id: subItem.id,
+                                                                                key: subItem.id,
                                                                                 name: subItem.name,
                                                                                 orther: 0
                                                                             };

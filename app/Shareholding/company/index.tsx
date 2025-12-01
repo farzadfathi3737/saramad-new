@@ -1,27 +1,19 @@
 import { getEntityModel } from '@/models/entity';
 import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Demo from '../../components/Datatable/MRT';
 // import 'tippy.js/dist/tippy.css';
 //import axios from 'axios';
-import { IDataModel, IFieldsTable, ITabData } from '@/interface/dataModel';
-import Link from 'next/link';
-import { ActionIcon, keys, Tooltip } from '@mantine/core';
+import { IDataModel, IFieldsTable } from '@/interface/dataModel';
+import { ActionIcon, Tooltip } from '@mantine/core';
 import { apiFetch } from '@/lib/apiFetch';
-import { useDispatch, useSelector } from 'react-redux';
-import { IRootState } from '@/store';
-import { setTabs } from '@/store/appConfigSlice';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
 
 const Company = () => {
     const { t } = useLanguage();
-    const [model, setModel] = useState<IDataModel>();
+    const subPage = useSubPage();
     const [modelData, setModelData] = useState<IDataModel>();
-    const [isLoading, setIsLoading] = useState(false);
     const tableRefreshRef = useRef<{ fetchData: () => void }>(null);
-
-    const appConf = useSelector((state: IRootState) => state.appConfig);
-    const dispatch = useDispatch();
 
     useEffect(() => {
         const setdata = async () => {
@@ -68,8 +60,6 @@ const Company = () => {
     }, []);
 
     const SetIsHolding = async (id: any) => {
-        setIsLoading(true);
-
         const _modelholding = getEntityModel('companysetasholding');
 
         const res = await apiFetch(_modelholding?.register?.url as string, {
@@ -87,21 +77,19 @@ const Company = () => {
             tableRefreshRef?.current?.fetchData();
         } else {
         }
-
-        setIsLoading(false);
     };
 
-    const loadSubPage = (name: string) => {
-        const _newTabs: ITabData[] = appConf.tabs.filter((x) => x.id !== "companyProfile")!;
-        const _newTab: ITabData = appConf.tabs.find((x) => x.id == "companyProfile")!;
+    // const loadSubPage = (name: string) => {
+    //     const _newTabs: ITabData[] = appConf.tabs.filter((x) => x.id !== "companyProfile")!;
+    //     const _newTab: ITabData = appConf.tabs.find((x) => x.id == "companyProfile")!;
 
-        if (_newTab) {
-            const newTab = { ..._newTab, key: name, filters: [] };
-            console.log(newTab);
-            const updatedTabs = [..._newTabs, newTab];
-            dispatch(setTabs(updatedTabs));
-        };
-    };
+    //     if (_newTab) {
+    //         const newTab = { ..._newTab, key: name, filters: [] };
+    //         console.log(newTab);
+    //         const updatedTabs = [..._newTabs, newTab];
+    //         dispatch(setTabs(updatedTabs));
+    //     };
+    // };
 
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
@@ -114,7 +102,7 @@ const Company = () => {
 
                     <div className='p-2 h-full flex flex-col justify-center align-middle pl-2'>
                         <button type="button" className="btn btn-outline mr-3 flex items-center rounded-xl p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
-                            onClick={() => loadSubPage('companyProfile/add')}>
+                            onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '', 'add')}>
                             <i className={`fa-duotone fa-solid fa-plus text-lg ml-2`} />
                             {t('add')}
                         </button>
@@ -134,7 +122,7 @@ const Company = () => {
                     </button>
                 </div> */}
 
-                <div className="table-responsive px-5 pt-5">
+                <div className="table-responsive p-5">
                     {modelData && (
                         <Demo
                             model={modelData}

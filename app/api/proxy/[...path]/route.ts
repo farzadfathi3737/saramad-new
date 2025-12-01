@@ -2,12 +2,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Token } from '@/lib/types'
 
-type Params = {
-    params: {
-        path: string[]
-    }
-}
-
 async function refreshToken(oldToken: Token): Promise<Token | null> {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_EXTERNAL_API}/api/Membership/User/refresh-token`, {
@@ -26,75 +20,6 @@ async function refreshToken(oldToken: Token): Promise<Token | null> {
     }
 }
 
-async function proxyHandlerOLD(req: NextRequest, path: string) {
-    const tokenStr = req.cookies.get('token')?.value
-    if (!tokenStr) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-    let token: Token
-    try {
-        token = JSON.parse(tokenStr)
-    } catch {
-        return NextResponse.json({ error: 'Invalid token format' }, { status: 400 })
-    }
-    console.log('Token:', token)
-    const targetUrl = `${process.env.NEXT_PUBLIC_EXTERNAL_API}/${path}`
-
-    const headers: Record<string, string> = {}
-    req.headers.forEach((v, k) => {
-        if (k !== 'host' && k !== 'cookie') headers[k] = v
-    })
-    headers['Authorization'] = `Bearer ${token.accessToken}`
-
-    if (req.headers.get('content-type')) {
-        headers['Content-Type'] = req.headers.get('content-type')!
-    }
-
-    const method = req.method || 'GET'
-    const body =
-        method === 'GET' || method === 'HEAD' ? undefined : await req.text()
-
-    // ⛔ اولین درخواست
-    let externalRes = await fetch(targetUrl, { method, headers, body })
-
-    console.log("1-1");
-    console.log(externalRes && token.refreshToken)
-    // اگر توکن منقضی شده بود:
-    if (externalRes.status === 401 && token.refreshToken) {
-        const newToken = await refreshToken(token)
-        if (newToken) {
-            // کوکی جدید ذخیره شود
-            const res = NextResponse.next()
-            res.cookies.set('token', JSON.stringify(newToken), {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                path: '/',
-            })
-
-            // دوباره با accessToken جدید درخواست بده
-            headers['Authorization'] = `Bearer ${newToken.accessToken}`
-            externalRes = await fetch(targetUrl, { method, headers, body })
-        } else {
-            const resp = NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-            resp.cookies.delete('token')
-            return resp
-        }
-    }
-
-    const text = await externalRes.text()
-
-    const responseHeaders: Record<string, string> = {}
-    externalRes.headers.forEach((value, key) => {
-        responseHeaders[key] = value
-    })
-
-    return new NextResponse(text, {
-        status: externalRes.status,
-        headers: responseHeaders,
-    })
-}
-
-
 
 async function proxyHandler(req: NextRequest, path: string) {
     const tokenStr = req.cookies.get('token')?.value
@@ -111,9 +36,12 @@ async function proxyHandler(req: NextRequest, path: string) {
         return NextResponse.json({ error: 'Invalid token format' }, { status: 400 })
     }
 
-    console.log('✅ Current token:', token)
+    //console.log('✅ Current token:', token)
 
-    const targetUrl = `${process.env.NEXT_PUBLIC_EXTERNAL_API}/${path}`
+    // اضافه کردن query string به URL
+    const queryString = req.nextUrl.search
+    console.log('🔍 Query String in proxy:', queryString, '| Length:', queryString.length)
+    const targetUrl = `${process.env.NEXT_PUBLIC_EXTERNAL_API}/${path}${queryString}`
     const headers: Record<string, string> = {}
 
     req.headers.forEach((v, k) => {
@@ -125,7 +53,8 @@ async function proxyHandler(req: NextRequest, path: string) {
     const body =
         method === 'GET' || method === 'HEAD' ? undefined : await req.text()
 
-    console.log(`🌍 Calling external API: ${targetUrl}`)
+    console.log(`🌍 Final target URL: ${targetUrl}`)
+    console.log(`📊 Method: ${method}`)
     let externalRes = await fetch(targetUrl, { method, headers, body })
 
     console.log(`🔁 externalRes.status = ${externalRes.status}`)
@@ -157,6 +86,7 @@ async function proxyHandler(req: NextRequest, path: string) {
     }
 
     const text = await externalRes.text()
+    console.log('----/> ', text)
     return new NextResponse(text, { status: externalRes.status })
 }
 
@@ -164,7 +94,15 @@ async function proxyHandler(req: NextRequest, path: string) {
 // ==== Routes =====
 export async function GET(req: NextRequest, context: { params: Promise<{ path: string[] }> }) {
     const { path } = await context.params
-    return proxyHandler(req, path.join('/'))
+    const fullPath = path.join('/')
+    const queryStr = req.nextUrl.search
+    console.log('📥 GET Request Details:', {
+        fullPath,
+        queryStr,
+        fullUrl: req.nextUrl.toString(),
+        pathname: req.nextUrl.pathname
+    })
+    return proxyHandler(req, fullPath)
 }
 export async function POST(req: NextRequest, context: { params: Promise<{ path: string[] }> }) {
     const { path } = await context.params

@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { FieldProps } from 'formik';
 import Select from 'react-select';
 import { IListRef, IstaticParam, IOptionType } from '@/interface/dataModel';
-import { useTranslation } from 'react-i18next';
 import { getEntityModel } from '@/models/entity';
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CustomSelectProps extends FieldProps {
     label: string;
@@ -33,7 +31,7 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
     staticParams = null,
     className = '',
 }) => {
-    const { t } = useTranslation();
+    const { t } = useLanguage();
     const [options, setOptions] = useState<IOptionType[]>([]);
     const [selectedValue, setSelectedValue] = useState<IOptionType | IOptionType[] | undefined>(undefined);
     const [defaultValue, setDefaultValue] = useState<IOptionType | undefined>(undefined);

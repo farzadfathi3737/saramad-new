@@ -13,36 +13,18 @@ import {
     type MRT_ColumnDef,
 } from 'mantine-react-table';
 import { MRT_Localization_FA } from '../../../locales/fa';
-import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { DatatableProps, IDataModel, IstaticParam } from '../../../interface/dataModel';
 import { ActionIcon, Box, Flex, Tooltip } from '@mantine/core';
 import { IconCaretDown, IconRefresh, IconSearch } from '@tabler/icons-react';
 import AnimateHeight from 'react-animate-height';
-import { useRouter } from 'next/navigation';
 import { Dialog, Transition } from '@headlessui/react';
-
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 import { ColoredToast } from '../Notifications/colorNotification';
 import DForms from '../Forms';
 
-// import IconPDF from '../Icon/IconPDF';
-// import IconExcel from '../Icon/IconExcel';
-// import IconEdit from '../Icon/IconEdit';
-// import IconTrash from '../Icon/IconTrash';
-
-import useSWR from "swr";
 import { apiFetch } from '@/lib/apiFetch';
 import { useSubPage } from '../Notifications/useSubPage';
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-type ColumnSort = {
-    id: string;
-    desc: boolean;
-};
 
 interface GroupColumn {
     header: string;
@@ -71,11 +53,6 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     staticParams = null,
     isShowSearchForm = true,
     loadingDataInit = true,
-    isPagination = true,
-    isRtl = false,
-    isShowHideCol = false,
-    defaulthidenCol = [],
-    showHideColList = [],
     hideColList = ['id'],
     labaleNameList = [],
     changeColumnName = [],
@@ -91,28 +68,22 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     enableRowSelection = false,
     enableMultiRowSelection = true,
     enableStickyFooter = false,
-    enableStickyHeader = false,
-    mantineTableBodyRowBackgroundColor,
-    mantineTableBodyRowBackgroundColorChangeByField,
     groupColumn = null,
     manualPagination = false,
+    mantineTableBodyRowBackgroundColor,
+    mantineTableBodyRowBackgroundColorChangeByField,
 }) => {
     const { t } = useLanguage();
     const subPage = useSubPage();
-    const [columns, setColumns] = useState(useMemo(() => model?.list?.responses.filter((f) => !hideColList.includes(f?.accessor)) as unknown as MRT_ColumnDef<any[0]>[], []));
+    const [columns, setColumns] = useState(useMemo(() => model?.list?.responses.filter((f) => !hideColList.includes(f?.accessor)) as unknown as MRT_ColumnDef<any[0]>[], [hideColList, model?.list?.responses]));
     // const [cols, setCols] = useState<IFieldsTable[] | undefined>(model?.list?.responses.filter((f) => !hideColList.includes(f.accessor)));
     const [initialRecords, setInitialRecords] = useState({ pageNumber: 1, numberOfElements: 10, pageSize: 10, totalPages: 1, totalCount: 10, items: [] });
     const [filedNotShow, setFiledNotShow] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
+    const [, setIsDeleting] = useState(false);
     const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
     const [expandedRow, setExpandedRow] = useState<string | null>(null);
-    const router = useRouter();
-    const [sortStatus, setSortStatus] = useState<ColumnSort>({
-        id: 'id',
-        desc: false,
-    });
-    const [filterdata, setFilterdata] = useState<any>([]);
+    const [filterdata, setFilterdata] = useState<Record<string, any>>({});
     const [active2, setActive2] = useState<string>('0');
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -137,7 +108,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
             return oldValue === value ? '' : value;
         });
     };
-    const [filterModal, setFilterModal] = useState(false);
+    const [, setFilterModal] = useState(false);
 
     const handleClick = (data: IstaticParam) => {
         console.log(data);
@@ -231,7 +202,9 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         // }
 
         //const res = await fetch(`${model.list?.url}${filteData != '' ? `?${filteData}` : ''}`);
-        const res = await apiFetch(`${model.list?.url}${filteData != '' ? `?${filteData}` : ''}`);
+        const fetchUrl = `${model.list?.url}${filteData != '' ? `?${filteData}` : ''}`;
+        // console.log('🔗 FetchURL:', fetchUrl);
+        const res = await apiFetch(fetchUrl);
         // console.log(res);
         // const res = await axios.post(model?.list?.url as string,
         //     JSON.stringify(filter)
@@ -294,11 +267,13 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
 
             changeColumnName?.map((item) => {
                 // console.log(item);
-                columns.find((x) => {
+                const updatedColumns = columns.map((x) => {
                     if (x.accessorKey == item.label) {
-                        x.accessorKey = item.value;
+                        return { ...x, accessorKey: item.value };
                     }
+                    return x;
                 });
+                setColumns(updatedColumns);
             });
 
             // console.log(columns);
@@ -333,7 +308,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                 if (_isLink) {
                     columns[i] = {
                         ...columns[i],
-                        Cell: ({ row, cell }) => {
+                        Cell: ({ cell }) => {
                             const _value = cell.getValue();
 
                             return (
@@ -349,11 +324,6 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                     columns[i] = {
                         ...columns[i],
                         Footer: (props) => {
-                            const totalPage = props.table.getRowModel().rows.reduce((sum, row) => {
-                                const value = Number(row.getValue(_Footersum!));
-                                return sum + (isNaN(value) ? 0 : value);
-                            }, 0);
-
                             const totalFilter = props.table.getFilteredRowModel().rows.reduce((sum, row) => {
                                 const value = Number(row.getValue(_Footersum!));
                                 return sum + (isNaN(value) ? 0 : value);
@@ -387,7 +357,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
             if (groupColumn) {
                 let _groupColumns: MRT_GroupColumnDef<any | { header: string; columns: (MRT_ColumnDef<any> | undefined | unknown)[][] }>[] = [];
 
-                groupColumn.map((item, i) => {
+                groupColumn.map((item) => {
                     console.log(item);
                     _groupColumns = [
                         ..._groupColumns,
@@ -421,16 +391,22 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                 setColumns(columns);
             }
 
-            loadingDataInit && FetchData();
+            if (loadingDataInit) {
+                FetchData();
+            }
         }
     }, [model, staticParams]);
 
     useEffect(() => {
-        Object.keys(filterdata)?.length > 0 && FetchData();
+        if (Object.keys(filterdata)?.length > 0) {
+            FetchData();
+        }
     }, [filterdata]);
 
     useEffect(() => {
-        manualPagination && pagination.pageIndex > 0 && FetchData();
+        if (manualPagination && pagination.pageIndex > 0) {
+            FetchData();
+        }
     }, [pagination]);
 
     // const csvConfig = mkConfig({
@@ -463,7 +439,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         enablePagination: true,
         manualPagination: manualPagination,
         onPaginationChange: setPagination,
-        renderTopToolbarCustomActions: ({ table }) => (
+        renderTopToolbarCustomActions: () => (
             <div
                 className="flex w-full"
                 style={{
@@ -544,9 +520,9 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         enableRowActions: isEditable || isDeleteable || action ? true : false,
         mantineTableBodyRowProps: ({ row }) => ({
             onClick: () => {
-                detailPanel && setExpandedRow(() => {
-                    return row.original.id;
-                });
+                if (detailPanel) {
+                    setExpandedRow(row.original.id);
+                }
             },
             style: {
                 backgroundColor: row.original[mantineTableBodyRowBackgroundColorChangeByField!] ? mantineTableBodyRowBackgroundColor : '',
@@ -585,13 +561,13 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         },
 
         renderDetailPanel: detailPanel,
-        renderRowActions: ({ row, table }) => (
+        renderRowActions: ({ row }) => (
             <Box className="flex">
                 {isEditable && (
                     <Tooltip label="ویرایش">
                         <ActionIcon
                             //onClick={() => router.push(`${model.name.toString().toLowerCase()}/${row.original.id}`)}
-                            onClick={() => subPage(cmpName:'companyProfile', subName:'edit', filters: ["id": row.original.id])}
+                            onClick={() => subPage(model.name.toLowerCase(), 'edit', undefined, [{ key: 'id', value: row.original.id.toString() }])}
                             className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light w-9 h-9 p-0 font-iranyekan text-secondary">
 
                             {/* <IconEdit className="color-red-400" /> */}
@@ -606,7 +582,8 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                             <IconEdit />
                         </Link> */}
                     </Tooltip>
-                )}
+                )
+                }
                 {isDeleteable && model.delete && (
                     <Tooltip label="حذف">
                         <ActionIcon
@@ -633,7 +610,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                     <IconEdit />
                 </ActionIcon> */}
                 {action && action(row.original)}
-            </Box>
+            </Box >
         ),
         mantineTableBodyCellProps: ({ cell }) => {
             const meta = cell.column.columnDef.meta as { bodyClassName?: string };
@@ -661,10 +638,6 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         //table.data = initialRecords.content;
     }, [initialRecords.items]);
     // console.log(model?.list?.parameters);
-
-    type MyColumnMeta = {
-        backgroundColor?: string;
-    };
 
     return (
         <>
@@ -740,7 +713,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                     <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
                         <div className="fixed inset-0" />
                     </Transition.Child>
-                    <div className="fixed inset-0 z-[999] overflow-y-auto bg-[black]/60">
+                    <div className="fixed inset-0 z-50 overflow-y-auto bg-[black]/60">
                         <div className="flex min-h-screen items-start justify-center px-4">
                             <Transition.Child
                                 as={Fragment}
@@ -751,17 +724,15 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="panel relative my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
-                                    <div className="flex items-center justify-between border-b-2 bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                                        <div className="flex text-lg font-bold">
-                                            <div className="flex w-40 pl-2 text-danger">
-                                                {/* <IconTrash className="ml-2" /> */}
+                                <Dialog.Panel className="panel relative z-50 my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark bg-white">
+                                    <div className="flex items-center justify-between border-b-2 border-gray-300 bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                                        <div className="flex text-lg font-bold ">
+                                            <div className="w-40 pl-2 text-red-500 flex items-center">
                                                 <i className={`fa-duotone fa-solid fa-trash ml-2`} />
                                                 حذف
                                             </div>
                                         </div>
-                                        <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="text-white-dark hover:text-dark">
-                                            {/* <FontAwesomeIcon icon={faClose} size="xl" className="m-1 text-gray-500" /> */}
+                                        <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="text-gray-600 hover:text-gray-900 flex items-center justify-center px-1">
                                             <i className={`fa-duotone fa-solid fa-close text-xl`} />
                                         </button>
                                     </div>
@@ -769,10 +740,10 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                                     {modalMessage && <div className="p-1 text-center text-xl text-gray-900">{`( ${modalMessage} )`}</div>}
                                     <div className="p-5">
                                         <div className="mt-8 flex items-center justify-end">
-                                            <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="btn btn-outline-danger">
+                                            <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="btn outline outline-red-500 text-red-500 hover:bg-red-500 hover:text-white">
                                                 انصراف
                                             </button>
-                                            <button type="button" onClick={() => handlerDelete(currentRowId)} className={`btn btn-danger flex w-32 ltr:ml-4 rtl:mr-4 ${isLoading ? 'disabled' : ''}}`}>
+                                            <button type="button" onClick={() => handlerDelete(currentRowId)} className={`btn bg-red-500 text-white flex w-32 ltr:ml-4 rtl:mr-4 items-center justify-center ${isLoading ? 'disabled' : ''}}`}>
                                                 {isLoading ? (
                                                     <span className="inline-block h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-white border-l-transparent align-middle ltr:mr-4 rtl:ml-4"></span>
                                                 ) : (

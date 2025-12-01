@@ -3,51 +3,36 @@ import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useRouter as Router } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { IRootState } from '@/store';
 import FSelectField from '@/app/components/inputs/selectField';
 import FDateField from '@/app/components/inputs/dateField';
 import FSelectModelField from '@/app/components/inputs/selectModelField';
 import { ActionIcon, Tooltip } from '@mantine/core';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
 
-interface ICompany {
+interface IFiscalYear {
     name: string;
-    backgroundColor: string;
-    textColor: string;
+    begin: string;
+    end: string;
     companyId: string;
+    voucherTemplateId?: string;
+    primeCostCalculationType?: string;
 }
 
-const Add = () => {
-    const { t } = useTranslation();
+const Edit = ({ id }: { id: string }) => {
+    const { t } = useLanguage();
+    const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
-    const [data, setData] = useState<ICompany>();
+    const [data, setData] = useState<IFiscalYear>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [rowId, setRowId] = useState<string>();
     const appConfig = useSelector((state: IRootState) => state.appConfig);
     const [companyId, setCompanyId] = useState('');
 
     const router = useRouter();
-    const _router = Router();
-    const { query } = _router;
-
-    useEffect(() => {
-        setRowId(query.id?.toString());
-
-        const setdata = async () => {
-            const _model = getEntityModel('fiscalyear');
-            setModel(_model);
-            //fetchData();
-        };
-
-        setdata();
-    }, []);
 
     useEffect(() => {
         setCompanyId(appConfig.company.id);
@@ -55,19 +40,26 @@ const Add = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            rowId && fetchData(rowId);
+            const _model = getEntityModel('fiscalyear');
+            setModel(_model);
         };
 
         setdata();
-    }, [rowId]);
+    }, []);
 
-    const fetchData = async (id: string) => {
+    useEffect(() => {
+        if (id && model) {
+            fetchData(id);
+        }
+    }, [id, model]);
+
+    const fetchData = async (fiscalYearId: string) => {
         setIsLoading(true);
 
-        const res = await fetch(`${model?.read?.url.replace('{id}', id)}`);
+        const res = await fetch(`${model?.read?.url.replace('{id}', fiscalYearId)}`);
 
         if (res.ok) {
-            const result: ICompany = await res?.json();
+            const result: IFiscalYear = await res?.json();
             setData(result);
             console.log('>>>>>.', result);
             setIsLoading(false);
@@ -75,20 +67,20 @@ const Add = () => {
             setData(undefined);
             setIsLoading(false);
         }
-
-        //console.log('2222222222', result);
     };
 
     const SignupSchema = Yup.object().shape({
-        name: Yup.string().required('ورود نام شرکت اجباری است'),
+        name: Yup.string().required(t('required').toString()),
+        begin: Yup.string().required(t('required').toString()),
+        end: Yup.string().required(t('required').toString()),
     });
 
-    const handlEditClick = async (data: ICompany) => {
+    const handlEditClick = async (data: IFiscalYear) => {
         setIsLoading(true);
 
         data.companyId = appConfig.company.id;
 
-        const res = await fetch(`${model?.update?.url.replace('{id}', rowId ? rowId : '')}`, {
+        const res = await fetch(`${model?.update?.url.replace('{id}', id)}`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,12 +89,8 @@ const Add = () => {
         });
 
         if (res.ok) {
-            const result = res && (await res?.json());
-            //setInitialRecords(result);
-            //setAddModal(false);
-            //fetchData();
             setIsLoading(false);
-            router.back();
+            subPage(model?.name.toLocaleLowerCase() ?? '')
         } else {
             //setInitialRecords({ pageNumber: 1, pageSize: 10, totalPages: 1, totalCount: 10, items: [] });
         }
@@ -112,20 +100,24 @@ const Add = () => {
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div>
+
+                <div className="flex h-[3rem] items-start justify-start border-b border-gray-300 pl-3">
+                    <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => router.back()}>
-                                {/* <FontAwesomeIcon icon={faArrowRight} size="lg" className="ml-2" /> */}
-                                <i className={`fa-duotone fa-solid fa-arrowRight text-xl ml-2`} />
-                            </ActionIcon>
+                            <div
+                                //className="flex items-center justify-center rounded-full p-5 !hover:bg-[#2D9AA0] hover:text-blue-900" 
+                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
+                                <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
+                            </div>
                         </Tooltip>
                     </div>
-                    <div className="p-2">
-                        {t('edit')} {t('fiscalyear')} - {appConfig.company.name}
+                    <div className='px-2 h-full flex flex-col justify-center align-middle'>
+                        <div className="p-2">
+                            {t('edit')} {t('fiscalyear')} - {appConfig.company.name}
+                        </div>
                     </div>
                 </div>
-
                 {data && (
                     <div className="table-responsive px-5">
                         <div className="p-5">
@@ -206,4 +198,4 @@ const Add = () => {
     );
 };
 
-export default Add;
+export default Edit;

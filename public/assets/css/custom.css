@@ -178,3 +178,7 @@ body {
 .sidebar .nav-item button div:first-child svg {
   @apply h-5 w-5;
 }
+
+.dashboard .panel {
+  @apply relative rounded-[25px] bg-white p-5 shadow dark:bg-black;
+}

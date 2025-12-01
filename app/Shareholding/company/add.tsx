@@ -1,40 +1,20 @@
-//import IconCaretDown from '@/components/Icon/IconCaretDown';
-//import IconSearch from '@/components/Icon/IconSearch';
 import FColorField from '@/app/components/inputs/colorField';
 import FTextField from '@/app/components/inputs/textField';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
-import { IDataModel, ITabData } from '@/interface/dataModel';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
-import { IRootState } from '@/store';
-import { setTabs } from '@/store/appConfigSlice';
-//import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { Tooltip } from '@mantine/core';
 import { Field, Form, Formik } from 'formik';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-//import AnimateHeight from 'react-animate-height';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 const Add = () => {
-    const { t } = useTranslation();
+    const { t } = useLanguage();
     const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [loading, setLoading] = useState<boolean>(false);
-    const router = useRouter();
-    const [active1, setActive1] = useState<boolean>(true);
-
-    const appConf = useSelector((state: IRootState) => state.appConfig);
-    const dispatch = useDispatch();
-
-    const togglePara1 = (value: boolean) => {
-        setActive1((oldValue) => {
-            return oldValue === value ? false : value;
-        });
-    };
 
     useEffect(() => {
         const setdata = async () => {
@@ -66,7 +46,7 @@ const Add = () => {
             //setAddModal(false);
             //fetchData();
             setLoading(false);
-            router.back();
+            subPage(model?.name.toLocaleLowerCase() ?? '')
         } else {
             const result = res && (await res?.json());
             ColoredToast('danger', result);
@@ -81,9 +61,8 @@ const Add = () => {
                     <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
                             <div
-                                //className="flex items-center justify-center rounded-full p-5 !hover:bg-[#2D9AA0] hover:text-blue-900" 
                                 className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
-                                onClick={() => subPage('companyProfile')}>
+                                onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
                         </Tooltip>
@@ -99,9 +78,7 @@ const Add = () => {
                             initialValues={{}}
                             validationSchema={SignupSchema}
                             onSubmit={(values) => {
-                                //console.log('ok', values);
                                 handleAddClick(values);
-                                //alert(JSON.stringify(values, null, 2));
                             }}
                         >
                             <Form>
@@ -120,37 +97,10 @@ const Add = () => {
                                     </div>
                                 </div>
 
-                                {/* <div className="flex w-full">
-                                    <div className="mb-5 w-full">
-                                        <div className="space-y-2 font-iranyekan">
-                                            <div className="border-y border-[#d3d3d3] dark:border-[#1b2e4b]">
-                                                <button
-                                                    type="button"
-                                                    className={`flex w-full items-center p-4 font-iranyekan text-[#089bab] dark:bg-[#1b2e4b] ${active1 ? '!#089bab' : '#089bab'}`}
-                                                    onClick={() => togglePara1(true)}
-                                                >
-                                                    <div className="px-5">مشخصات سند حسابداری</div>
-                                                    <div className={`text-[#089bab] ltr:ml-auto rtl:mr-auto ${active1 === true ? 'rotate-180' : ''}`}>
-                                                        <IconCaretDown />
-                                                    </div>
-                                                </button>
-                                                <div>
-                                                    <AnimateHeight duration={300} height={active1 ? 'auto' : 0}>
-                                                        <div className="grid w-full grid-cols-1 gap-2 px-10 pt-5 sm:grid-cols-2">
-                                                            <div className="w-full">
-                                                                <Field id="name" name="name" label="شرح سند حسابداری" component={FTextField} />
-                                                            </div>
-                                                            <div className="w-full"></div>
-                                                        </div>
-                                                    </AnimateHeight>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> */}
-
                                 <div className="mt-8 flex items-center justify-end">
-                                    <button type="button" onClick={() => router.back()} className="btn btn-outline-[#2D9AA0] font-iranyekan">
+                                    <button type="button"
+                                        onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}
+                                        className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                         {t('cancel')}
                                     </button>
 

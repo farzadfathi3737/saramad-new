@@ -158,8 +158,9 @@ export interface DatatableProps {
 }
 
 export interface ITabFilters {
-    search: string;
-    category: string;
+    search?: string;
+    category?: string;
+    [key: string]: string | undefined;
 }
 
 export interface ITabData {
@@ -167,10 +168,16 @@ export interface ITabData {
     key: string;
     name: string;
     orther: number;
-    filters?: ITabFilters[];
+    filters?: IKeyValue[] | ITabFilters;
+    params?: IKeyValue[] | ITabFilters;
 }
 
 export interface IAuth {
     username: string;
     password: string;
+}
+
+export interface IKeyValue {
+    key: string;
+    value: string;
 }
