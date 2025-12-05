@@ -46,7 +46,7 @@ const Fiscalyear = () => {
                     </div>
                 </div>
 
-                <div className="table-responsive px-5">
+                <div className="table-responsive p-5">
                     {modelData && (
                         <Demo
                             model={modelData}

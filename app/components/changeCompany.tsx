@@ -8,7 +8,7 @@ import { Field, Form, Formik } from 'formik';
 import FSelectModelField from './inputs/selectModelField';
 import { getEntityModel } from '@/models/entity';
 import { ICompanyParam, IOptionType, IstaticParam } from '@/interface/dataModel';
-import { setCompany, setFiscalYear } from '@/store/appConfigSlice';
+import { setActiveTab, setCompany, setFiscalYear, setTabs } from '@/store/appConfigSlice';
 import * as Yup from 'yup';
 import { Dropdown } from 'flowbite-react';
 
@@ -58,6 +58,16 @@ const ChangeCompany = () => {
                     textColor: result?.textColor,
                 })
             );
+
+            dispatch(setTabs([{
+                id: "dashboard",
+                key: "dashboard",
+                name: "dashboard",
+                orter: 0,
+                filters: [], params: []
+            }]));
+            dispatch(setActiveTab('dashboard'));
+
             window.location.reload();
         } else {
         }

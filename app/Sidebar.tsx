@@ -47,36 +47,39 @@ const Sidebar = () => {
 
         //console.log(param.key, param.name)
 
-        if (appConf.tabs.length >= 6) {
-            alert("حداکثر ۶ تب مجاز است!");
+        // بررسی: اگر تب قبلاً وجود دارد، فقط آن را فعال کن
+        const _existingTab = appConf.tabs.find((x) => x.id == param.id);
+
+        if (_existingTab) {
+            // تب قبلاً وجود دارد - فقط فعال کن
+            dispatch(setActiveTab(param.id));
+            router.replace(`?tab=${param.id}`);
             return;
         }
 
-        const _newTab = appConf.tabs.find((x) => x.id == param.key);
+        // اگر تب جدید است و تعداد < 6، اضافه کن
+        if (appConf.tabs.length >= 7) {
+            alert("حداکثر 7 تب مجاز است!");
+            return;
+        }
 
-        if (!_newTab) {
-            const newTab: ITabData = {
-                //id: Date.now(),
-                id: param.id,
-                key: param.key,
-                name: param.name,
-                orther: param.key == 'dashboard' ? 0 : appConf.tabs.length,
-                filters: [],
-                params: [],
-            };
-
-            // console.log(appConf.tabs)
-
-            const updatedTabs = [...appConf.tabs, newTab];
-            dispatch(setTabs(updatedTabs));
+        // اضافه کردن تب جدید
+        const newTab: ITabData = {
+            id: param.id,
+            key: param.key,
+            name: param.name,
+            title: param.title,
+            orther: param.key == 'dashboard' ? 0 : appConf.tabs.length,
+            filters: [],
+            params: [],
         };
 
-        dispatch(setActiveTab(param.key));
+        const updatedTabs = [...appConf.tabs, newTab];
+        dispatch(setTabs(updatedTabs));
 
-        // console.log(appConf.tabs);
-        // console.log(appConf.activeTab);
-
-        router.replace(`?tab=${param.key}`);
+        // فعال کردن تب جدید
+        dispatch(setActiveTab(param.id));
+        router.replace(`?tab=${param.id}`);
     };
 
     const MenuData = [
@@ -88,13 +91,13 @@ const Sidebar = () => {
             link: '/',
             icon: 'fa-folder',
             childe: [
-                { id: 'company', name: 'companyProfile', title: 'تعریف شرکت', link: '/Shareholding/company', icon: '' },
-                { id: 'fiscalyear', name: 'fiscalYear', title: 'سال مالی شرکت', link: '/Shareholding/fiscalyear', icon: '' },
-                { id: 'companytradingcode', name: 'tradingBasket', title: 'سبد معاملاتی', link: '/Shareholding/companytradingcode', icon: '' },
-                { id: 'stock', name: 'securitiesList', title: 'فهرست اوراق بهادار', link: '/Shareholding/stock', icon: '' },
-                { id: 'share', name: 'portfolioOfAssets', title: 'فهرست دارایی ها', link: '/Shareholding/share', icon: '' },
-                { id: 'sharerelationtype', name: 'companyType', title: 'نوع وابستگی سهم', link: '/Shareholding/sharerelationtype', icon: '' },
-                { id: 'companybroker', name: 'listOfBrokers', title: 'فهرست کارگزاران', link: '/Shareholding/companybroker', icon: '' },
+                { id: 'company', name: 'companyProfile', title: 'تعریف شرکت', link: '/Shareholding/company', icon: 'fa-building' },
+                { id: 'fiscalyear', name: 'fiscalYear', title: 'سال مالی شرکت', link: '/Shareholding/fiscalyear', icon: 'fa-calendar' },
+                { id: 'companytradingcode', name: 'tradingBasket', title: 'سبد معاملاتی', link: '/Shareholding/companytradingcode', icon: 'fa-basket-shopping' },
+                { id: 'stock', name: 'securitiesList', title: 'فهرست اوراق بهادار', link: '/Shareholding/stock', icon: 'fa-list' },
+                { id: 'share', name: 'portfolioOfAssets', title: 'فهرست دارایی ها', link: '/Shareholding/share', icon: 'fa-money-bill-wave' },
+                { id: 'sharerelationtype', name: 'companyType', title: 'نوع وابستگی سهم', link: '/Shareholding/sharerelationtype', icon: 'fa-share-nodes' },
+                { id: 'companybroker', name: 'listOfBrokers', title: 'فهرست کارگزاران', link: '/Shareholding/companybroker', icon: 'fa-users' },
             ],
         },
         {
@@ -104,13 +107,13 @@ const Sidebar = () => {
             link: '/',
             icon: 'fa-gears',
             childe: [
-                { id: 'transactionimportsession', name: 'transactionimportsession', title: 'بارگزاری اطلاعات خرید و فروش', link: '/Shareholding/transactionImportsession', icon: '' },
-                { id: 'buyingAndSellingListBurs', name: 'buyingAndSellingListBurs', title: 'فهرست خرید و فروش بورسی', link: '/Shareholding/sharetransactionbatch', icon: '' },
-                { id: 'buyingAndSellingListNoBurs', name: 'buyingAndSellingListNoBurs', title: 'فهرست خرید و فروش غیر بورسی', link: '/pages/buyingAndSellingListNoBurs', icon: '' },
-                { id: 'transferCodeToCode', name: 'transferCodeToCode', title: 'انتقال کد به کد', link: '/', icon: '' },
-                { id: 'shareMeeting', name: 'shareMeeting', title: 'فهرست مجامع دارایی ها', link: '/Shareholding/shareMeeting', icon: '' },
-                { id: 'brokercontradictions', name: 'brokercontradictions', title: 'مغایرت گیری با کارگزاری', link: '/Shareholding/brokercontradictions', icon: '' },
-                { id: 'discrepancyWithDepositary', name: 'discrepancyWithDepositary', title: 'مغایرت گیری با سپرده گذاری', link: '/', icon: '' },
+                { id: 'transactionimportsession', name: 'transactionimportsession', title: 'بارگزاری اطلاعات خرید و فروش', link: '/Shareholding/transactionImportsession', icon: 'fa-upload' },
+                { id: 'buyingAndSellingListBurs', name: 'buyingAndSellingListBurs', title: 'فهرست خرید و فروش بورسی', link: '/Shareholding/sharetransactionbatch', icon: 'fa-chart-line' },
+                { id: 'buyingAndSellingListNoBurs', name: 'buyingAndSellingListNoBurs', title: 'فهرست خرید و فروش غیر بورسی', link: '/pages/buyingAndSellingListNoBurs', icon: 'fa-rectangle-list' },
+                { id: 'transferCodeToCode', name: 'transferCodeToCode', title: 'انتقال کد به کد', link: '/', icon: 'fa-shuffle' },
+                { id: 'shareMeeting', name: 'shareMeeting', title: 'فهرست مجامع دارایی ها', link: '/Shareholding/shareMeeting', icon: 'fa-people-group' },
+                { id: 'brokercontradictions', name: 'brokercontradictions', title: 'مغایرت گیری با کارگزاری', link: '/Shareholding/brokercontradictions', icon: 'fa-triangle-exclamation' },
+                { id: 'discrepancyWithDepositary', name: 'discrepancyWithDepositary', title: 'مغایرت گیری با سپرده گذاری', link: '/', icon: 'fa-scale-balanced' },
             ],
         },
         {
@@ -120,9 +123,9 @@ const Sidebar = () => {
             link: '/',
             icon: "fa-file",
             childe: [
-                { id: 'optioncontract', name: 'optioncontract', title: 'تسویه قراردادهای باز', link: '/Shareholding/optioncontract', icon: '' },
-                { id: 'optionHistorySettlement', name: 'optionHistorySettlement', title: 'تاریخچه تسویه اختیار', link: '/', icon: '' },
-                { id: 'closingPositionPL', name: 'closingPositionPL', title: 'بستن موقعیت به سود و زیان', link: '/', icon: '' },
+                { id: 'optioncontract', name: 'optioncontract', title: 'تسویه قراردادهای باز', link: '/Shareholding/optioncontract', icon: 'fa-handshake' },
+                { id: 'optionHistorySettlement', name: 'optionHistorySettlement', title: 'تاریخچه تسویه اختیار', link: '/', icon: 'fa-history' },
+                { id: 'closingPositionPL', name: 'closingPositionPL', title: 'بستن موقعیت به سود و زیان', link: '/', icon: 'fa-check-circle' },
             ],
         },
         {
@@ -132,8 +135,8 @@ const Sidebar = () => {
             link: '/',
             icon: "fa-newspaper",
             childe: [
-                { id: 'issueDocument', name: 'issueDocument', title: 'صدور سند', link: '/Shareholding/accountings/journalarticle', icon: '' },
-                { id: 'documentReleaseLock', name: 'documentReleaseLock', title: 'آزادسازی و بستن اسناد', link: '/pages/buyingAndSellingListBurs', icon: '' },
+                { id: 'issueDocument', name: 'issueDocument', title: 'صدور سند', link: '/Shareholding/accountings/journalarticle', icon: 'fa-file-contract' },
+                { id: 'documentReleaseLock', name: 'documentReleaseLock', title: 'آزادسازی و بستن اسناد', link: '/pages/buyingAndSellingListBurs', icon: 'fa-lock-open' },
             ],
         },
         {
@@ -143,9 +146,9 @@ const Sidebar = () => {
             link: '/',
             icon: "fa-gamepad",
             childe: [
-                { id: 'simpleReturn', name: 'simpleReturn', title: 'بازده ساده (ROR)', link: '/', icon: '' },
-                { id: 'moneyWeightedReturn', name: 'moneyWeightedReturn', title: 'نرخ بازده پولی وزنی (MWRR)', link: '/', icon: '' },
-                { id: 'timeWeightedReturn', name: 'timeWeightedReturn', title: 'نرخ بازده زمان وزنی (TWRR)', link: '/', icon: '' },
+                { id: 'simpleReturn', name: 'simpleReturn', title: 'بازده ساده (ROR)', link: '/', icon: 'fa-chart-simple' },
+                { id: 'moneyWeightedReturn', name: 'moneyWeightedReturn', title: 'نرخ بازده پولی وزنی (MWRR)', link: '/', icon: 'fa-coins' },
+                { id: 'timeWeightedReturn', name: 'timeWeightedReturn', title: 'نرخ بازده زمان وزنی (TWRR)', link: '/', icon: 'fa-hourglass-end' },
             ],
         },
         {
@@ -155,20 +158,20 @@ const Sidebar = () => {
             link: '/',
             icon: 'fa-print',
             childe: [
-                { id: 'stackedbuysell', name: 'stackedbuysell', title: 'خرید و فروش', link: '/reports/stackedbuysell', icon: '' },
-                { id: 'shareturnover', name: 'shareturnover', title: 'گردش سهام', link: '/reports/shareturnover', icon: '' },
-                { id: 'cardex', name: 'cardex', title: 'کاردکس ریز سهام', link: '/reports/cardex', icon: '' },
-                { id: 'stackedcardex', name: 'stackedcardex', title: 'روند موجودی', link: '/reports/stackedcardex', icon: '' },
-                { id: 'sharebalance', name: 'sharebalance', title: 'مانده سهام', link: '/reports/sharebalance', icon: '' },
-                { id: 'realizedprofit', name: 'realizeedprofit', title: 'سود و زیان تحقق یافته', link: '/reports/realizedprofit', icon: '' },
-                { id: 'investmentdepreciationreserve', name: 'investmentdepreciationreserve', title: 'ذخیره کاهش ارزش سرمایه گزاری', link: '/reports/investmentdepreciationreserve', icon: '' },
-                { id: 'capitalraise', name: 'capitalraise', title: 'افزایش سرمایه', link: '/reports/capitalraise', icon: '' },
-                { id: 'cashdividend', name: 'cashdividend', title: 'گزارش شناسایی سود اوراق بهادار ', link: '/reports/cashdividend', icon: '' },
-                { id: 'cashdividenddeposit', name: 'cashdividenddeposit', title: 'گزارش واریز سود اوراق بهادار', link: '/reports/cashdividenddeposit', icon: '' },
-                { id: 'openOptionReports', name: 'openOptionReports', title: 'گزارش اختیارات باز', link: '/reports/', icon: '' },
-                { id: 'marketnotice', name: 'marketnotice', title: 'آگهی های کدال', link: '/reports/marketnotice', icon: '' },
-                { id: 'comprehensive', name: 'comprehensive', title: 'گزارش جامع گردش سهام', link: '/commingsoon', icon: '' },
-                { id: 'consolidation', name: 'consolidation', title: 'گزارش تجمیع سبد سهام', link: '/reports/consolidation', icon: '' },
+                { id: 'stackedbuysell', name: 'stackedbuysell', title: 'خرید و فروش', link: '/reports/stackedbuysell', icon: 'fa-columns' },
+                { id: 'shareturnover', name: 'shareturnover', title: 'گردش سهام', link: '/reports/shareturnover', icon: 'fa-arrow-right-arrow-left' },
+                { id: 'cardex', name: 'cardex', title: 'کاردکس ریز سهام', link: '/reports/cardex', icon: 'fa-cards' },
+                { id: 'stackedcardex', name: 'stackedcardex', title: 'روند موجودی', link: '/reports/stackedcardex', icon: 'fa-arrows-up-down' },
+                { id: 'sharebalance', name: 'sharebalance', title: 'مانده سهام', link: '/reports/sharebalance', icon: 'fa-scale-balanced' },
+                { id: 'realizedprofit', name: 'realizeedprofit', title: 'سود و زیان تحقق یافته', link: '/reports/realizedprofit', icon: 'fa-dollar-sign' },
+                { id: 'investmentdepreciationreserve', name: 'investmentdepreciationreserve', title: 'ذخیره کاهش ارزش سرمایه گزاری', link: '/reports/investmentdepreciationreserve', icon: 'fa-piggy-bank' },
+                { id: 'capitalraise', name: 'capitalraise', title: 'افزایش سرمایه', link: '/reports/capitalraise', icon: 'fa-arrow-up-long' },
+                { id: 'cashdividend', name: 'cashdividend', title: 'گزارش شناسایی سود اوراق بهادار ', link: '/reports/cashdividend', icon: 'fa-hand-holding-dollar' },
+                { id: 'cashdividenddeposit', name: 'cashdividenddeposit', title: 'گزارش واریز سود اوراق بهادار', link: '/reports/cashdividenddeposit', icon: 'fa-credit-card' },
+                { id: 'openOptionReports', name: 'openOptionReports', title: 'گزارش اختیارات باز', link: '/reports/', icon: 'fa-book-open' },
+                { id: 'marketnotice', name: 'marketnotice', title: 'آگهی های کدال', link: '/reports/marketnotice', icon: 'fa-bell' },
+                { id: 'comprehensive', name: 'comprehensive', title: 'گزارش جامع گردش سهام', link: '/commingsoon', icon: 'fa-diagram-project' },
+                { id: 'consolidation', name: 'consolidation', title: 'گزارش تجمیع سبد سهام', link: '/reports/consolidation', icon: 'fa-layer-group' },
             ],
         },
         {
@@ -178,19 +181,19 @@ const Sidebar = () => {
             link: '/',
             icon: 'fa-headphones',
             childe: [
-                { id: 'buyingSellingAdjustments', name: 'buyingSellingAdjustments', title: 'تعدیلات خرید و فروش', link: '/', icon: '' },
-                { id: 'calculationFormulas', name: 'calculationFormulas', title: 'فرمول های محاسباتی', link: '/', icon: '' },
+                { id: 'buyingSellingAdjustments', name: 'buyingSellingAdjustments', title: 'تعدیلات خرید و فروش', link: '/', icon: 'fa-sliders' },
+                { id: 'calculationFormulas', name: 'calculationFormulas', title: 'فرمول های محاسباتی', link: '/', icon: 'fa-calculator' },
                 {
                     id: 'commissions',
                     name: 'commissions',
                     title: 'کارمزد ها',
                     link: '/',
-                    icon: '',
+                    icon: 'fa-percent',
                     childe: [
-                        { id: 'transactioncommissionreapply', name: 'transactioncommissionreapply', title: 'محاسبه مجدد کارمزد ها', link: '/Shareholding/transactioncommission', icon: '' },
-                        { id: 'transactioncommissiondiscountreapply', name: 'transactioncommissiondiscountreapply', title: 'محاسبه مجدد تخفیف ها', link: '/Shareholding/transactioncommissiondiscount', icon: '' },
-                        { id: 'transactioncommissiondiscountapply', name: 'transactioncommissiondiscountapply', title: 'اعمال تخفیف دلخواه', link: '/Shareholding/transactioncommissiondiscount/apply', icon: '' },
-                        { id: 'transactioncommissiondiscountremove', name: 'transactioncommissiondiscountremove', title: 'حذف تخفیف ها', link: '/Shareholding/transactioncommissiondiscount/remove', icon: '' }
+                        { id: 'transactioncommissionreapply', name: 'transactioncommissionreapply', title: 'محاسبه مجدد کارمزد ها', link: '/Shareholding/transactioncommission', icon: 'fa-rotate' },
+                        { id: 'transactioncommissiondiscountreapply', name: 'transactioncommissiondiscountreapply', title: 'محاسبه مجدد تخفیف ها', link: '/Shareholding/transactioncommissiondiscount', icon: 'fa-rotate' },
+                        { id: 'transactioncommissiondiscountapply', name: 'transactioncommissiondiscountapply', title: 'اعمال تخفیف دلخواه', link: '/Shareholding/transactioncommissiondiscount/apply', icon: 'fa-check' },
+                        { id: 'transactioncommissiondiscountremove', name: 'transactioncommissiondiscountremove', title: 'حذف تخفیف ها', link: '/Shareholding/transactioncommissiondiscount/remove', icon: 'fa-trash' }
                     ],
                 },
                 {
@@ -198,9 +201,9 @@ const Sidebar = () => {
                     name: 'assemblies',
                     title: 'مجامع',
                     link: '/',
-                    icon: '',
+                    icon: 'fa-users',
                     childe: [
-                        { id: 'shareMeetingReapply', name: 'shareMeetingReapply', title: 'اعمال مجدد مجامع', link: '/Shareholding/shareMeeting/reapply', icon: '' },
+                        { id: 'shareMeetingReapply', name: 'shareMeetingReapply', title: 'اعمال مجدد مجامع', link: '/Shareholding/shareMeeting/reapply', icon: 'fa-rotate' },
                     ],
                 },
                 {
@@ -208,19 +211,19 @@ const Sidebar = () => {
                     name: 'accounting',
                     title: 'حسابداری',
                     link: '/Shareholding/accountings',
-                    icon: '',
+                    icon: 'fa-receipt',
                     childe: [
-                        { id: 'accountingSettings', name: 'accountingSettings', title: 'تنظیمات حسابداری', link: '/Shareholding/accountingSettings', icon: '' },
-                        { id: 'stockCategoryCode', name: 'stockCategoryCode', title: 'کدینگ گروه اوراق بهادار', link: '/Shareholding/stockcategorycode', icon: '' },
-                        { id: 'industrySecuritiesGroup', name: 'industrySecuritiesGroup', title: 'کدینگ صنعت اوراق بهادار', link: '/Shareholding/stockindustrycode', icon: '' },
-                        { id: 'investmentType', name: 'investmentType', title: 'نوع سرمایه ‌گذاری', link: '/Shareholding/investmenttypecode', icon: '' },
-                        { id: 'accountingArticleElements', name: 'accountingArticleElements', title: 'فهرست المان ها', link: '/Shareholding/accountings/articleelements', icon: '' },
-                        { id: 'accountingVoucherTemplates', name: 'accountingVoucherTemplates', title: 'فهرست قالب ها', link: '/Shareholding/accountings/vouchertemplates', icon: '' },
+                        { id: 'accountingSettings', name: 'accountingSettings', title: 'تنظیمات حسابداری', link: '/Shareholding/accountingSettings', icon: 'fa-gear' },
+                        { id: 'stockCategoryCode', name: 'stockCategoryCode', title: 'کدینگ گروه اوراق بهادار', link: '/Shareholding/stockcategorycode', icon: 'fa-code' },
+                        { id: 'industrySecuritiesGroup', name: 'industrySecuritiesGroup', title: 'کدینگ صنعت اوراق بهادار', link: '/Shareholding/stockindustrycode', icon: 'fa-code' },
+                        { id: 'investmentType', name: 'investmentType', title: 'نوع سرمایه ‌گذاری', link: '/Shareholding/investmenttypecode', icon: 'fa-tag' },
+                        { id: 'accountingArticleElements', name: 'accountingArticleElements', title: 'فهرست المان ها', link: '/Shareholding/accountings/articleelements', icon: 'fa-cubes' },
+                        { id: 'accountingVoucherTemplates', name: 'accountingVoucherTemplates', title: 'فهرست قالب ها', link: '/Shareholding/accountings/vouchertemplates', icon: 'fa-file-pdf' },
                     ],
                 },
-                { id: 'periodBeginningUpload', name: 'periodBeginningUpload', title: 'بارگزاری ابتدای دوره', link: '/', icon: '' },
-                { id: 'fiscalYearTransfer', name: 'fiscalYearTransfer', title: 'انتقال سال مالی', link: '/', icon: '' },
-                { id: 'supportSession', name: 'supportSession', title: 'جلسه پشتیبانی', link: '/', icon: '' },
+                { id: 'periodBeginningUpload', name: 'periodBeginningUpload', title: 'بارگزاری ابتدای دوره', link: '/', icon: 'fa-upload' },
+                { id: 'fiscalYearTransfer', name: 'fiscalYearTransfer', title: 'انتقال سال مالی', link: '/', icon: 'fa-arrow-right' },
+                { id: 'supportSession', name: 'supportSession', title: 'جلسه پشتیبانی', link: '/', icon: 'fa-phone' },
             ],
         },
         {
@@ -230,9 +233,9 @@ const Sidebar = () => {
             link: '/',
             icon: 'fa-sliders',
             childe: [
-                { id: 'userManagement', name: 'userManagement', title: 'مدیریت کاربران', link: '/', icon: '' },
-                { id: 'activityManagement', name: 'activityManagement', title: 'مدیریت فعالیت ها', link: '/', icon: '' },
-                { id: 'eventManagement', name: 'eventManagement', title: 'مدیریت رخداد ها', link: '/', icon: '' },
+                { id: 'userManagement', name: 'userManagement', title: 'مدیریت کاربران', link: '/', icon: 'fa-user-tie' },
+                { id: 'activityManagement', name: 'activityManagement', title: 'مدیریت فعالیت ها', link: '/', icon: 'fa-tasks' },
+                { id: 'eventManagement', name: 'eventManagement', title: 'مدیریت رخداد ها', link: '/', icon: 'fa-calendar-check' },
             ],
         },
     ];
@@ -254,6 +257,30 @@ const Sidebar = () => {
         }
     }, []);
 
+    // باز کردن منوی والد وقتی تب فعال تغییر می‌کنه
+    useEffect(() => {
+        if (appConf.activeTab) {
+            // پیدا کردن منوی والد برای تب فعال
+            MenuData.forEach((menu) => {
+                if (menu.childe) {
+                    const hasActiveChild = menu.childe.some((child: any) => {
+                        if (child.id === appConf.activeTab) {
+                            return true;
+                        }
+                        // چک کردن زیرمنوهای تو در تو
+                        if (child.childe) {
+                            return child.childe.some((subChild: any) => subChild.id === appConf.activeTab);
+                        }
+                        return false;
+                    });
+
+                    if (hasActiveChild && currentMenu !== menu.name) {
+                        setCurrentMenu(menu.name);
+                    }
+                }
+            });
+        }
+    }, [appConf.activeTab]);
 
 
     return (
@@ -272,7 +299,7 @@ const Sidebar = () => {
                                 >
                                     <ul>
                                         {!item.childe ? (
-                                            <li key={item.name} className="nav-item px-2">
+                                            <li key={item.name} className="nav-item">
                                                 {/* <Link href={item.link} className="group">
                                                     <div className="flex items-center">
                                                         {/* <FontAwesomeIcon icon={item.icon} size="2x" className="m-1" /> /}
@@ -283,12 +310,16 @@ const Sidebar = () => {
 
                                                 <button
                                                     type="button"
-                                                    className={`${currentMenu === item.id ? 'active' : ''} nav-link group w-full font-iranyekan flex px-2`}
+                                                    className={`nav-link group w-full font-iranyekan flex py-2 rounded-lg transition-all ${appConf.activeTab === item.id
+                                                        ? 'bg-[#2ab0aa] text-white'
+                                                        : 'hover:bg-[#2ab0aa]/20 text-gray-200 hover:text-white'
+                                                        }`}
                                                     onClick={() => {
                                                         const data: ITabData = {
                                                             id: item.id,
                                                             key: item.id,
                                                             name: item.name,
+                                                            title: item.title,
                                                             orther: 0
                                                         };
 
@@ -297,7 +328,7 @@ const Sidebar = () => {
                                                     }
                                                 >
                                                     <div className="flex items-center">
-                                                        <i className={`fa-duotone fa-solid ${item.icon} ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#089bab]' : 'text-[#fff]'} text-xl`} />
+                                                        <i className={`fa-duotone fa-solid ${item.icon} text-xl ml-0`} />
                                                         <span className="ltr:pl-3 rtl:pr-3">{t(item.name)}</span>
                                                     </div>
                                                 </button>
@@ -333,7 +364,7 @@ const Sidebar = () => {
                                                 </button>
 
                                                 <AnimateHeight duration={300} height={currentMenu === item.name ? 'auto' : 0}>
-                                                    <ul className="rounded-[20px] bg-[#FFFFFF] text-gray-500">
+                                                    <ul className="rounded-[20px] bg-[#FFFFFF] text-gray-500 px-1">
                                                         {item.childe.map((subItem) =>
                                                             !subItem.childe ? (
                                                                 <li key={subItem.title} className="nav-item">
@@ -346,12 +377,16 @@ const Sidebar = () => {
                                                                     </Link> */}
                                                                     <button
                                                                         type="button"
-                                                                        className={`${currentMenu === item.id ? 'active' : ''} nav-link group w-full font-iranyekan flex px-2`}
+                                                                        className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
+                                                                            ? 'bg-[#2ab0aa] text-white'
+                                                                            : 'text-[#089bab] hover:bg-[#2ab0aa]/30 hover:text-gray-900'
+                                                                            }`}
                                                                         onClick={() => {
                                                                             const data: ITabData = {
                                                                                 id: subItem.id,
                                                                                 key: subItem.id,
                                                                                 name: subItem.name,
+                                                                                title: subItem.title,
                                                                                 orther: 0
                                                                             };
 
@@ -361,8 +396,8 @@ const Sidebar = () => {
                                                                         }
                                                                     >
                                                                         <div className="flex items-center">
-                                                                            <i className={`fa-duotone fa-solid ${subItem.icon} ${currentMenu === subItem.name || lasttMenu === subItem.name ? 'text-[#089bab]' : 'text-[#fff]'} text-xl`} />
-                                                                            <span className="ltr:pl-3 rtl:pr-3">{t(subItem.title)}</span>
+                                                                            <i className={`fa-duotone fa-solid ${subItem.icon} text-lg ml-2`} />
+                                                                            <span className="text-sm">{t(subItem.title)}</span>
                                                                         </div>
                                                                     </button>
                                                                 </li>

@@ -135,7 +135,7 @@ const Company = () => {
                             myRef={tableRefreshRef}
                             action={(row) => {
                                 return (
-                                    <Tooltip label="انتخواب به عنوان هلدینگ">
+                                    <Tooltip label="انتخاب به عنوان هلدینگ">
                                         <ActionIcon
                                             onClick={() => SetIsHolding(row.id.toString())}
                                             className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light w-9 h-9 p-0 font-iranyekan text-secondary">

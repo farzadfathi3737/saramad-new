@@ -53,6 +53,7 @@ import ShareinitialbalanceEdit from "../Shareholding/shareinitialbalance/[id]";
 
 
 import { IKeyValue, ITabData } from "@/interface/dataModel";
+import { title } from "process";
 
 export default function TabsWithRouting() {
     const { t } = useLanguage();
@@ -73,6 +74,7 @@ export default function TabsWithRouting() {
             id: "dashboard",
             key: "dashboard",
             name: "dashboard",
+            title: "داشبورد",
             orter: 0,
             filters: [],
             params: []
@@ -90,17 +92,32 @@ export default function TabsWithRouting() {
     }, [searchParams]);
 
     const removeTab = (id: string) => {
+        const deletedIndex = appConf.tabs.findIndex(t => t.id === id);
         const updatedTabs = appConf.tabs.filter((tab) => tab.id !== id);
+
+        // ابتدا تب‌ها را update کن
         dispatch(setTabs(updatedTabs));
 
-        console.log(updatedTabs[0].id);
+        // فقط اگر تب حذف‌شده فعال بود، تب دیگری رو انتخاب کن
+        if (id === appConf.activeTab) {
+            let nextActiveTab: string;
 
-        if (updatedTabs.length > 0) {
-            dispatch(setActiveTab(updatedTabs[0].id));
-            router.replace(`?tab=${updatedTabs[0].id}`);
-        } else {
-            dispatch(setActiveTab(null));
-            router.replace(`?`);
+            if (updatedTabs.length > 0) {
+                if (deletedIndex < updatedTabs.length) {
+                    // تب بعدی موجود است
+                    nextActiveTab = updatedTabs[deletedIndex].id;
+                } else {
+                    // تب حذف‌شده آخرین تب بود، آخرین تب باقی‌مانده را انتخاب کن
+                    nextActiveTab = updatedTabs[updatedTabs.length - 1].id;
+                }
+            } else {
+                // اگر هیچ تب دیگری نیست، داشبرد را انتخاب کن
+                nextActiveTab = 'dashboard';
+            }
+
+            // سپس tab فعال را تغییر بده
+            dispatch(setActiveTab(nextActiveTab));
+            router.replace(`?tab=${nextActiveTab}`);
         }
     };
 
@@ -109,83 +126,86 @@ export default function TabsWithRouting() {
         router.replace(`?tab=${tabId}`);
     };
 
+    const getFilterData = (key: string, tab?: ITabData) => {
+        const active = appConf.tabs.find((t) => t.id === appConf.activeTab)!;
+        const targetTab = tab || active;
+        let _data = '';
+        if (Array.isArray(targetTab?.filters)) {
+            const idFilter = targetTab.filters.find((f) => f.key === key);
+            _data = idFilter?.value || '';
+        } else if (targetTab?.filters && typeof targetTab.filters === 'object') {
+            _data = (targetTab.filters as any).value.toString() || '';
+        }
+        return _data;
+    }
+
+    const getParamData = (key: string, tab?: ITabData) => {
+        const active = appConf.tabs.find((t) => t.id === appConf.activeTab)!;
+        const targetTab = tab || active;
+        let _data = '';
+        if (Array.isArray(targetTab?.params)) {
+            const idFilter = targetTab.params.find((f) => f.key === key);
+            _data = idFilter?.value || '';
+        } else if (targetTab?.params && typeof targetTab.params === 'object') {
+            _data = (targetTab.params as any).value.toString() || '';
+        }
+        return _data;
+    }
+
     const active: ITabData = appConf.tabs.find((t) => t.id === appConf.activeTab)!;
     const _tabs = [...appConf.tabs].sort((a, b) => a.orther - b.orther);
-
-    const getFilterData = (key: string) => {
-        let _data = '';
-        if (Array.isArray(active?.filters)) {
-            const idFilter = active.filters.find((f) => f.key === key);
-            _data = idFilter?.value || '';
-        } else if (active?.filters && typeof active.filters === 'object') {
-            _data = (active.filters as any).value.toString() || '';
-        }
-        return _data;
-    }
-
-    const getParamData = (key: string) => {
-        let _data = '';
-        if (Array.isArray(active?.params)) {
-            const idFilter = active.params.find((f) => f.key === key);
-            _data = idFilter?.value || '';
-        } else if (active?.params && typeof active.params === 'object') {
-            _data = (active.params as any).value.toString() || '';
-        }
-        return _data;
-    }
-
 
     const renderContent = () => {
 
         switch (active.id) {
             case "dashboard":
-                return <Dashboard />;
+                return <Dashboard key={active.id} />;
 
             case "company":
-                if (active.key == "add") return <CompanyAdd />
-                if (active.key == "edit") return <CompanyEdit id={getParamData('id')} />;
-                return <Company />;
+                if (active.key == "add") return <CompanyAdd key={active.id} />
+                if (active.key == "edit") return <CompanyEdit key={active.id} id={getParamData('id')} />;
+                return <Company key={active.id} />;
 
             case "fiscalyear":
-                if (active.key == "add") return <FiscalYearAdd />
-                if (active.key == "edit") return <FiscalYearEdit id={getParamData('id')} />;
-                return <FiscalYear />;
+                if (active.key == "add") return <FiscalYearAdd key={active.id} />
+                if (active.key == "edit") return <FiscalYearEdit key={active.id} id={getParamData('id')} />;
+                return <FiscalYear key={active.id} />;
 
             case "companytradingcode":
-                if (active.key == "add") return <CompanyTradingCodeAdd />
-                if (active.key == "edit") return <CompanyTradingCodeEdit id={getParamData('id')} />;
-                if (active.key == "tradingcodediscount") return <TradingCodeDiscount tradingCodeId={getFilterData('tradingCodeId')} tradingCode={getFilterData('tradingCode')} />;
-                if (active.key == "tradingcodediscount/add") return <TradingCodeDiscountAdd tradingCodeId={getFilterData('tradingCodeId')} tradingCode={getFilterData('tradingCode')} />;
-                return <CompanyTradingCode />;
+                if (active.key == "add") return <CompanyTradingCodeAdd key={active.id} />
+                if (active.key == "edit") return <CompanyTradingCodeEdit key={active.id} id={getParamData('id')} />;
+                if (active.key == "tradingcodediscount") return <TradingCodeDiscount key={active.id} tradingCodeId={getFilterData('tradingCodeId')} tradingCode={getFilterData('tradingCode')} />;
+                if (active.key == "tradingcodediscount/add") return <TradingCodeDiscountAdd key={active.id} tradingCodeId={getFilterData('tradingCodeId')} tradingCode={getFilterData('tradingCode')} />;
+                return <CompanyTradingCode key={active.id} />;
 
             case "stock":
-                if (active.key == "view") return <StockView id={getParamData('id')} master={getParamData('master')} />;
-                return <Stock />;
+                if (active.key == "view") return <StockView key={active.id} id={getParamData('id')} master={getParamData('master')} />;
+                return <Stock key={active.id} />;
 
             case "share":
-                if (active.key == "add") return <ShareAdd />;
-                if (active.key == "addt") return <ShareAddT />;
-                if (active.key == "edit") return <ShareEdit id={getParamData('id')} />;
-                if (active.key == "stock/view") return <StockView id={getParamData('id')} master={getParamData('master')} />;
-                if (active.key == "shareinitialbalance") return <Shareinitialbalance id={getParamData('id')} name={getParamData('name')} />;
-                if (active.key == "shareinitialbalance/add") return <ShareinitialbalanceAdd shareId={getParamData('shareId')} name={getParamData('name')} />;
-                if (active.key == "shareinitialbalance/edit") return <ShareinitialbalanceEdit id={getParamData('id')} shareId={getParamData('shareId')} name={getParamData('name')} />;
+                if (active.key == "add") return <ShareAdd key={active.id} />;
+                if (active.key == "addt") return <ShareAddT key={active.id} />;
+                if (active.key == "edit") return <ShareEdit key={active.id} id={getParamData('id')} />;
+                if (active.key == "stock/view") return <StockView key={active.id} id={getParamData('id')} master={getParamData('master')} />;
+                if (active.key == "shareinitialbalance") return <Shareinitialbalance key={active.id} id={getParamData('id')} name={getParamData('name')} />;
+                if (active.key == "shareinitialbalance/add") return <ShareinitialbalanceAdd key={active.id} shareId={getParamData('shareId')} name={getParamData('name')} />;
+                if (active.key == "shareinitialbalance/edit") return <ShareinitialbalanceEdit key={active.id} id={getParamData('id')} shareId={getParamData('shareId')} name={getParamData('name')} />;
 
-                return <Share />;
+                return <Share key={active.id} />;
 
             case "sharerelationtype":
-                if (active.key == "add") return <ShareRelationTypeAdd />;
-                if (active.key == "edit") return <ShareRelationTypeEdit id={getParamData('id')} />;
-                return <ShareRelationType />;
+                if (active.key == "add") return <ShareRelationTypeAdd key={active.id} />;
+                if (active.key == "edit") return <ShareRelationTypeEdit key={active.id} id={getParamData('id')} />;
+                return <ShareRelationType key={active.id} />;
 
             case "companybroker":
-                if (active.key == "add") return <CompanyBrokerAdd />;
-                if (active.key == "all") return <CompanyBrokerAll />;
-                if (active.key == "edit") return <CompanyBrokerEdit id={getParamData('id')} />;
-                if (active.key == "code") return <CompanyBrokerCode id={getParamData('id')} brokerName={getParamData('brokerName')} master={getParamData('master')} />;
-                if (active.key == "companybrokerdiscount") return <Companybrokerdiscount id={getParamData('id')} brokerName={getParamData('brokerName')} />;
-                if (active.key == "companybrokerdiscount/add") return <CompanybrokerdiscountAdd id={getParamData('id')} brokerName={getParamData('brokerName')} />;
-                return <CompanyBroker />;
+                if (active.key == "add") return <CompanyBrokerAdd key={active.id} />;
+                if (active.key == "all") return <CompanyBrokerAll key={active.id} />;
+                if (active.key == "edit") return <CompanyBrokerEdit key={active.id} id={getParamData('id')} />;
+                if (active.key == "code") return <CompanyBrokerCode key={active.id} id={getParamData('id')} brokerName={getParamData('brokerName')} master={getParamData('master')} />;
+                if (active.key == "companybrokerdiscount") return <Companybrokerdiscount key={active.id} id={getParamData('id')} brokerName={getParamData('brokerName')} />;
+                if (active.key == "companybrokerdiscount/add") return <CompanybrokerdiscountAdd key={active.id} id={getParamData('id')} brokerName={getParamData('brokerName')} />;
+                return <CompanyBroker key={active.id} />;
 
             default:
                 return <></>;
@@ -209,10 +229,13 @@ export default function TabsWithRouting() {
                             {tab.id == 'dashboard' ? <div className="flex h-full">
                                 <i className={`fa-duotone fa-solid fa-gauge text-2xl ${appConf.activeTab === tab.id ? 'text-gray-900' : 'text-gray-600 hover:t'}`} />
                             </div> :
-                                <>{t(tab.name)}
+                                <>{t(tab.title)}
                                     <Tooltip label={`حذف ${tab.id}`}>
                                         <ActionIcon
-                                            onClick={() => removeTab(tab.id)}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                removeTab(tab.id);
+                                            }}
                                             className="mr-2 flex items-center rounded-xl w-9 h-9 p-0 !bg-transparent !hover:bg-red-500">
                                             <i className={`fa-duotone fa-solid fa-xmark text-sm ${appConf.activeTab === tab.id ? 'text-gray-900' : 'text-gray-600 hover:t'}`} />
                                         </ActionIcon>
@@ -225,15 +248,84 @@ export default function TabsWithRouting() {
             </div>
 
             {/* محتوای تب فعال */}
-            {active ? (
-                <div className={`bg-white rounded-b-md shadow border border-gray-400 `}>
-                    <div className="space-y-3">
-                        {renderContent()}
-                    </div>
+            <div className="bg-white rounded-b-md shadow border border-gray-200">
+                <div className="space-y-3">
+                    {_tabs.map((tab) => (
+                        <div
+                            key={tab.id}
+                            className={appConf.activeTab === tab.id ? 'block' : 'hidden'}
+                        >
+                            {tab.id === "dashboard" && <Dashboard />}
+
+                            {tab.id === "company" && (
+                                <>
+                                    {tab.key === "add" && <CompanyAdd />}
+                                    {tab.key === "edit" && <CompanyEdit id={getParamData('id', tab)} />}
+                                    {tab.key === "company" && <Company />}
+                                </>
+                            )}
+
+                            {tab.id === "fiscalyear" && (
+                                <>
+                                    {tab.key === "add" && <FiscalYearAdd />}
+                                    {tab.key === "edit" && <FiscalYearEdit id={getParamData('id', tab)} />}
+                                    {tab.key === "fiscalyear" && <FiscalYear />}
+                                </>
+                            )}
+
+                            {tab.id === "companytradingcode" && (
+                                <>
+                                    {tab.key === "add" && <CompanyTradingCodeAdd />}
+                                    {tab.key === "edit" && <CompanyTradingCodeEdit id={getParamData('id', tab)} />}
+                                    {tab.key === "tradingcodediscount" && <TradingCodeDiscount tradingCodeId={getFilterData('tradingCodeId', tab)} tradingCode={getFilterData('tradingCode', tab)} />}
+                                    {tab.key === "tradingcodediscount/add" && <TradingCodeDiscountAdd tradingCodeId={getFilterData('tradingCodeId', tab)} tradingCode={getFilterData('tradingCode', tab)} />}
+                                    {tab.key === "companytradingcode" && <CompanyTradingCode />}
+                                </>
+                            )}
+
+                            {tab.id === "stock" && (
+                                <>
+                                    {tab.key === "view" && <StockView id={getParamData('id', tab)} master={getParamData('master', tab)} />}
+                                    {tab.key === "stock" && <Stock />}
+                                </>
+                            )}
+
+                            {tab.id === "share" && (
+                                <>
+                                    {tab.key === "add" && <ShareAdd />}
+                                    {tab.key === "addt" && <ShareAddT />}
+                                    {tab.key === "edit" && <ShareEdit id={getParamData('id', tab)} />}
+                                    {tab.key === "stock/view" && <StockView id={getParamData('id', tab)} master={getParamData('master', tab)} />}
+                                    {tab.key === "shareinitialbalance" && <Shareinitialbalance id={getParamData('id', tab)} name={getParamData('name', tab)} />}
+                                    {tab.key === "shareinitialbalance/add" && <ShareinitialbalanceAdd shareId={getParamData('shareId', tab)} name={getParamData('name', tab)} />}
+                                    {tab.key === "shareinitialbalance/edit" && <ShareinitialbalanceEdit id={getParamData('id', tab)} shareId={getParamData('shareId', tab)} name={getParamData('name', tab)} />}
+                                    {tab.key === "share" && <Share />}
+                                </>
+                            )}
+
+                            {tab.id === "sharerelationtype" && (
+                                <>
+                                    {tab.key === "add" && <ShareRelationTypeAdd />}
+                                    {tab.key === "edit" && <ShareRelationTypeEdit id={getParamData('id', tab)} />}
+                                    {tab.key === "sharerelationtype" && <ShareRelationType />}
+                                </>
+                            )}
+
+                            {tab.id === "companybroker" && (
+                                <>
+                                    {tab.key === "add" && <CompanyBrokerAdd />}
+                                    {tab.key === "all" && <CompanyBrokerAll />}
+                                    {tab.key === "edit" && <CompanyBrokerEdit id={getParamData('id', tab)} />}
+                                    {tab.key === "code" && <CompanyBrokerCode id={getParamData('id', tab)} brokerName={getParamData('brokerName', tab)} master={getParamData('master', tab)} />}
+                                    {tab.key === "companybrokerdiscount" && <Companybrokerdiscount id={getParamData('id', tab)} brokerName={getParamData('brokerName', tab)} />}
+                                    {tab.key === "companybrokerdiscount/add" && <CompanybrokerdiscountAdd id={getParamData('id', tab)} brokerName={getParamData('brokerName', tab)} />}
+                                    {tab.key === "companybroker" && <CompanyBroker />}
+                                </>
+                            )}
+                        </div>
+                    ))}
                 </div>
-            ) : (
-                <p className="text-center text-gray-500">هنوز تبی ایجاد نشده است.</p>
-            )}
+            </div>
         </div>
     );
 }

@@ -152,7 +152,7 @@ body {
 
 .sidebar .nav-item > button,
 .sidebar .nav-item > a {
-  @apply /* dark:hover:text-white-dark; */ flex w-full items-center justify-between overflow-hidden rounded-[25px] p-2.5 whitespace-nowrap text-[#fff] hover:bg-[#000]/[0.08] hover:text-black dark:hover:bg-[#181f32];
+  @apply /* dark:hover:text-white-dark; */ flex w-full items-center justify-between overflow-hidden rounded-[25px] p-2.5 whitespace-nowrap hover:bg-[#000]/[0.08] hover:text-black dark:hover:bg-[#181f32];
 }
 .sidebar .nav-item > button.active,
 .sidebar .nav-item > a.active {

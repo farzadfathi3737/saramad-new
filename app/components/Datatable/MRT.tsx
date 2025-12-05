@@ -568,7 +568,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                         <ActionIcon
                             //onClick={() => router.push(`${model.name.toString().toLowerCase()}/${row.original.id}`)}
                             onClick={() => subPage(model.name.toLowerCase(), 'edit', undefined, [{ key: 'id', value: row.original.id.toString() }])}
-                            className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light w-9 h-9 p-0 font-iranyekan text-secondary">
+                            className="btn btn-outline mr-3 flex items-center rounded-xl bg-[#1B334D] w-9 h-9 p-0 font-iranyekan text-white">
 
                             {/* <IconEdit className="color-red-400" /> */}
                             <i className={`fa-duotone fa-solid fa-pen-to-square text-xl`} />
@@ -588,7 +588,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                     <Tooltip label="حذف">
                         <ActionIcon
                             onClick={() => handlerShowDeleteModal(row.original.id.toString(), row?.original.name)}
-                            className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light w-9 h-9 p-0 font-iranyekan text-secondary"
+                            className="btn btn-outline mr-3 flex items-center rounded-xl bg-[#1B334D] w-9 h-9 p-0 font-iranyekan text-white"
                         >
                             {/* <IconTrash className="color-red-400" /> */}
                             <i className={`fa-duotone fa-solid fa-trash color-red-400`} />

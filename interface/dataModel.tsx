@@ -167,6 +167,7 @@ export interface ITabData {
     id: string;
     key: string;
     name: string;
+    title: string;
     orther: number;
     filters?: IKeyValue[] | ITabFilters;
     params?: IKeyValue[] | ITabFilters;
