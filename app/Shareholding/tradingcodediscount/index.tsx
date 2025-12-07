@@ -47,7 +47,7 @@ const Company = ({ tradingCodeId, tradingCode }: { tradingCodeId: string, tradin
                     </div>
 
                     <div className='p-2 h-full flex flex-col justify-center align-middle pl-2'>
-                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-xl p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
+                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
                             //onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '', 'add',  )}>
                             onClick={() => subPage('companytradingcode', 'tradingcodediscount/add', [{ key: 'tradingCodeId', value: tradingCodeId }, { key: 'tradingCode', value: tradingCode }], undefined)}>
                             <i className={`fa-duotone fa-solid fa-plus text-lg ml-2`} />
@@ -64,6 +64,10 @@ const Company = ({ tradingCodeId, tradingCode }: { tradingCodeId: string, tradin
                             staticParams={[{ name: 'TradingCodeId', value: tradingCodeId! }]}
                             hideColList={['id', 'companyId', 'brokerId', 'accountingCode']}
                             labaleNameList={[{ label: 'Keyword', value: 'companytradingcode' }]}
+                            editAction={(id: string) =>
+                                //console.log("editAction id:", id)
+                                subPage('companytradingcode', 'tradingcodediscount/edit', [{ key: 'id', value: id }, { key: 'tradingCodeId', value: tradingCodeId }, { key: 'tradingCode', value: tradingCode }], undefined)
+                            }
                         //changeColumnName={[{ label: 'type', value: 'typeName' }]}
                         // action={(row) => {
                         //     return (

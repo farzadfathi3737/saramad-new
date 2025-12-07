@@ -44,7 +44,7 @@ const FSelectField: React.FC<CustomSelectProps> = ({ field, form, options, label
             <label className="text-white-dark">{label}</label>
             <Select
                 menuPosition="absolute"
-                className=""
+                className="form-input"
                 id={field.name}
                 name={field.name}
                 value={selectedValue}
@@ -59,7 +59,7 @@ const FSelectField: React.FC<CustomSelectProps> = ({ field, form, options, label
                     <i className={`fa-duotone fa-solid fa-xmark text-lg ml-2`} />
                 </div>
             )}
-            {form.touched[field.name] && form.errors[field.name] ? <div className="text-warning">{form.errors[field.name]?.toString()}</div> : null}
+            {form.touched[field.name] && form.errors[field.name] ? <div className="text-red-500">{form.errors[field.name]?.toString()}</div> : null}
         </div>
     );
 };

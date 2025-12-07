@@ -38,9 +38,17 @@
 }
 
 .m_326d024a:where([data-active]) {
-  color: #fff;
+  background-color: transparent !important;
+  border-color: #1b334d !important;
+  color: #1b334d !important;
+  font-weight: bold !important;
 }
 
 .m_326d024a:where([data-active]):hover {
-  color: #089bab;
+  background-color: #e8f4f8 !important;
+  color: #1b334d !important;
+}
+
+.m_326d024a:hover:not([data-active]) {
+  background-color: #f0f0f0 !important;
 }

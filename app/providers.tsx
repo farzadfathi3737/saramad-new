@@ -5,22 +5,53 @@ import { Provider } from 'react-redux';
 import { MantineProvider, createTheme } from '@mantine/core';
 
 const theme = createTheme({
-    primaryColor: 'custom',
-    colors: {
-        custom: [
-            '#e8f4f8',
-            '#d1e9f1',
-            '#a3d3e3',
-            '#75bdd5',
-            '#1B334D',
-            '#162940',
-            '#121f33',
-            '#0d1526',
-            '#090a13',
-            '#06070a',
-        ],
+    components: {
+        // Button: {
+        //     defaultProps: {
+        //         color: 'custom',
+        //     },
+        //     styles: {
+        //         root: {
+        //             '&:hover': {
+        //                 backgroundColor: '#162940',
+        //             },
+        //         },
+        //     },
+        // },
+        // ActionIcon: {
+        //     defaultProps: {
+        //         color: 'custom',
+        //     },
+        //     styles: {
+        //         root: {
+        //             backgroundColor: '#1B334D',
+        //             color: '#ffffff',
+        //             '&:hover': {
+        //                 backgroundColor: '#162940',
+        //             },
+        //         },
+        //     },
+        // },
+        Pagination: {
+            styles: {
+                control: {
+                    '&[data-active]': {
+                        backgroundColor: 'transparent !important',
+                        borderColor: '#1B334D !important',
+                        color: '#1B334D !important',
+                        fontWeight: 'bold',
+                        '&:hover': {
+                            backgroundColor: '#e8f4f8 !important',
+                            color: '#1B334D !important',
+                        },
+                    },
+                    '&:hover:not([data-active])': {
+                        backgroundColor: '#f0f0f0 !important',
+                    },
+                },
+            },
+        },
     },
-    primaryShade: 4,
 });
 
 export function Providers({ children }: { children: React.ReactNode }) {

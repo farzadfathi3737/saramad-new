@@ -294,25 +294,17 @@ const Sidebar = () => {
                             {MenuData.map((item) => (
                                 <li
                                     key={item.name}
-                                    className={`${item.childe ? 'menu nav-item' : 'nav-item'} ${currentMenu === item.name || lasttMenu == item.name ? 'rounded-[20px] bg-[#FFFFFF] text-[##089bab]' : ''
-                                        } text-[#089bab]`}
+                                    className={`${item.childe ? 'menu nav-item' : 'nav-item'} ${currentMenu === item.name || lasttMenu == item.name ? 'rounded-lg bg-[#FFFFFF] text-[#0f337a]' : ''
+                                        } text-[#0f337a]`}
                                 >
                                     <ul>
                                         {!item.childe ? (
                                             <li key={item.name} className="nav-item">
-                                                {/* <Link href={item.link} className="group">
-                                                    <div className="flex items-center">
-                                                        {/* <FontAwesomeIcon icon={item.icon} size="2x" className="m-1" /> /}
-                                                <i className={`fa-duotone fa-solid ${item.icon} text-[#fff] text-xl`} />
-                                                <span className="ltr:pl-3 rtl:pr-3">{t(item.name)}</span>
-                                            </div>
-                                                </Link> */}
-
                                                 <button
                                                     type="button"
                                                     className={`nav-link group w-full font-iranyekan flex py-2 rounded-lg transition-all ${appConf.activeTab === item.id
-                                                        ? 'bg-[#2ab0aa] text-white'
-                                                        : 'hover:bg-[#2ab0aa]/20 text-gray-200 hover:text-white'
+                                                        ? 'bg-[#2691bf] text-white'
+                                                        : 'hover:bg-[#2691bf]/20 text-gray-200 hover:text-white'
                                                         }`}
                                                     onClick={() => {
                                                         const data: ITabData = {
@@ -328,8 +320,8 @@ const Sidebar = () => {
                                                     }
                                                 >
                                                     <div className="flex items-center">
-                                                        <i className={`fa-duotone fa-solid ${item.icon} text-xl ml-0`} />
-                                                        <span className="ltr:pl-3 rtl:pr-3">{t(item.name)}</span>
+                                                        <i className={`fa-duotone fa-solid ${item.icon} text-lg ml-0`} />
+                                                        <span className="text-sm ltr:pl-3 rtl:pr-3">{t(item.name)}</span>
                                                     </div>
                                                 </button>
 
@@ -338,48 +330,32 @@ const Sidebar = () => {
                                             <li key={item.name} className="menu nav-item my-1">
                                                 <button
                                                     type="button"
-                                                    className={`${currentMenu === item.name ? 'active' : ''} nav-link group w-full font-iranyekan flex px-2`}
+                                                    className={`${currentMenu === item.name ? 'active' : ''} nav-link group w-full font-iranyekan flex px-2 transition-all duration-300 hover:bg-[#2ab0aa]/10 rounded-lg py-2`}
                                                     onClick={() => toggleMenu(item.name)}
 
                                                 >
                                                     <div className="flex items-center justify-start w-full">
-                                                        {/* <FontAwesomeIcon icon={item.icon} size="2x" className="m-1" /> */}
-                                                        <i className={`fa-duotone fa-solid ${item.icon} text-xl ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#089bab]' : 'text-[#fff]'}`} />
-
+                                                        <i className={`fa-duotone fa-solid ${item.icon} text-xl transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a]' : 'text-[#fff]'}`} />
                                                         <span
-                                                            className={`${currentMenu === item.name || lasttMenu === item.name ? 'text-[#089bab]' : 'text-[#fff]'
+                                                            className={`text-sm transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a] font-bold' : 'text-white'
                                                                 } dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3`}
                                                         >
                                                             {t(item.title)}
                                                         </span>
                                                     </div>
-                                                    {/* <div
-                                                        className={`justify-end ${currentMenu === item.name ? '-rotate-90 rtl:rotate-90' : ''} ${lasttMenu === item.name ? '!text-[#089bab] ' : '!text-[#fff]'
-                                                            }`}
-                                                    >
-                                                        <i className={`fa-duotone fa-solid fa-angle-down text-xl ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#089bab]' : 'text-[#fff]'}`} />
-                                                    </div> */}
-                                                    <i className={`fa-duotone fa-solid fa-angle-down text-xl ${currentMenu === item.name ? '-rotate-90 rtl:rotate-90' : ''} ${lasttMenu === item.name ? '!text-[#089bab] ' : '!text-[#fff]'}`} />
-
+                                                    <i className={`fa-duotone fa-solid fa-angle-down text-lg transition-transform duration-300 ${currentMenu === item.name ? '-rotate-180 rtl:rotate-180' : ''} ${lasttMenu === item.name ? 'text-[#0f337a]!' : 'text-white!'}`} />
                                                 </button>
 
                                                 <AnimateHeight duration={300} height={currentMenu === item.name ? 'auto' : 0}>
-                                                    <ul className="rounded-[20px] bg-[#FFFFFF] text-gray-500 px-1">
+                                                    <ul className="rounded-lg bg-[#FFFFFF] text-gray-500 p-1">
                                                         {item.childe.map((subItem) =>
                                                             !subItem.childe ? (
                                                                 <li key={subItem.title} className="nav-item">
-                                                                    {/* <Link className="group" key={subItem.name + "fat"} href={subItem.link}>
-                                                                        <div className="flex items-center">
-                                                                            <span className="text-[#777d74] group-hover:text-[#089bab] dark:text-[#506690] ltr:pl-3 rtl:pr-3">
-                                                                                {t(subItem.title)}
-                                                                            </span>
-                                                                        </div>
-                                                                    </Link> */}
                                                                     <button
                                                                         type="button"
                                                                         className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
-                                                                            ? 'bg-[#2ab0aa] text-white'
-                                                                            : 'text-[#089bab] hover:bg-[#2ab0aa]/30 hover:text-gray-900'
+                                                                            ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
+                                                                            : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
                                                                             }`}
                                                                         onClick={() => {
                                                                             const data: ITabData = {
@@ -396,8 +372,8 @@ const Sidebar = () => {
                                                                         }
                                                                     >
                                                                         <div className="flex items-center">
-                                                                            <i className={`fa-duotone fa-solid ${subItem.icon} text-lg ml-2`} />
-                                                                            <span className="text-sm">{t(subItem.title)}</span>
+                                                                            <i className={`fa-duotone fa-solid ${subItem.icon} text-base ml-2`} />
+                                                                            <span className="text-xs">{t(subItem.title)}</span>
                                                                         </div>
                                                                     </button>
                                                                 </li>
@@ -405,21 +381,19 @@ const Sidebar = () => {
                                                                 <li key={subItem.name} className="menu nav-item pl-2">
                                                                     <button
                                                                         type="button"
-                                                                        className={`${currentSubMenu === subItem.name + item.name ? 'active' : ''} nav-link group w-full font-iranyekan`}
+                                                                        className={`${currentSubMenu === subItem.name + item.name ? 'active' : ''} nav-link group w-full font-iranyekan transition-all duration-300 hover:bg-[#2ab0aa]/20 rounded-lg py-2 px-2`}
                                                                         onClick={() => toggleSubMenu(subItem.name, item.name)}
                                                                     >
                                                                         <div className="flex items-center">
-                                                                            <span className={`text-[#089bab] dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3`}>
+                                                                            <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3`}>
                                                                                 {t(subItem.title)}
                                                                             </span>
                                                                         </div>
 
                                                                         <div
-                                                                            className={`${currentSubMenu === subItem.name + item.name ? '-rotate-90 rtl:rotate-90' : ''} ${'!text-[#089bab] '}`}
+                                                                            className={`transition-transform duration-300 ${currentSubMenu === subItem.name + item.name ? '-rotate-180 rtl:rotate-180' : ''} ${'!text-[#089bab] '}`}
                                                                         >
-                                                                            {/* <IconCaretDown /> */}
-
-                                                                            <i className={`fa-duotone fa-solid fa-angle-down text-xl`} />
+                                                                            <i className={`fa-duotone fa-solid fa-angle-down text-xl text-[#0f337a]`} />
                                                                         </div>
                                                                     </button>
                                                                     <AnimateHeight duration={300} height={currentSubMenu === subItem.name + item.name ? 'auto' : 0}>
@@ -428,15 +402,11 @@ const Sidebar = () => {
                                                                                 <li key={sub2Item.name}>
                                                                                     <Link className="group" key={sub2Item.name} href={sub2Item.link}>
                                                                                         <div className="flex items-center">
-                                                                                            <span className="text-[#777d74] group-hover:text-[#089bab] dark:text-[#506690] ltr:pl-3 rtl:pr-3">
+                                                                                            <span className="text-[#777d74] text-xs  dark:text-[#506690] ltr:pl-3 rtl:pr-3">
                                                                                                 {t(sub2Item.title)}
                                                                                             </span>
                                                                                         </div>
                                                                                     </Link>
-
-                                                                                    {/* <a href="/pages/error404" target="_blank">
-                                                                                                {t(sub2Item.title)}
-                                                                                            </a> */}
                                                                                 </li>
                                                                             ))}
                                                                         </ul>

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../../../.flowbite-react/class-list.json";
 
 @plugin "flowbite-react/plugin/tailwindcss";
 @import "./../icons/all.css";
@@ -18,7 +19,13 @@
 }
 
 .bg-Custom {
-  background: #2bb1aa;
+  background: linear-gradient(
+    45deg,
+    rgba(38, 145, 191, 1) 0%,
+    rgba(15, 51, 122, 1) 100%
+  );
+
+  /* background: #2bb1aa;
   background: -moz-linear-gradient(
     bottom left,
     rgba(42, 176, 170, 1) 0%,
@@ -50,7 +57,7 @@
     to top right,
     rgba(42, 176, 170, 1) 0%,
     rgba(21, 69, 108, 1) 100%
-  );
+  ); */
 }
 
 @layer base {

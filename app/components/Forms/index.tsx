@@ -154,13 +154,13 @@ const DForms: React.FC<DFormsProps> = ({
                     </div>
                     <div className="mt-8 flex items-center justify-end">
                         {cancelBtnText && (
-                            <button type="button" onClick={() => setModal(false)} className="btn btn-outline-[#2D9AA0] rounded-xl font-iranyekan">
+                            <button type="button" onClick={() => setModal(false)} className="btn btn-outline-[#2D9AA0] rounded-lg font-iranyekan">
                                 {t(cancelBtnText)}
                             </button>
                         )}
 
                         {sucsesBtnText && (
-                            <button type="submit" className="btn btn-outline px-15 mr-3 flex items-center rounded-xl bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                            <button type="submit" className="btn btn-outline px-15 mr-3 flex items-center rounded-lg bg-[#2D9AA0] font-iranyekan text-[#fff]">
                                 {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
                                 {t(sucsesBtnText)}
                             </button>

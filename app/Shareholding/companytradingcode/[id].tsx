@@ -11,6 +11,7 @@ import FSelectField from '@/app/components/inputs/selectField';
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
+import { apiFetch } from '@/lib/apiFetch';
 
 interface ITradingCode {
     tradingCode: string;
@@ -19,6 +20,7 @@ interface ITradingCode {
 }
 
 const Edit = ({ id }: { id: string }) => {
+    console.log('id', id);
     const { t } = useLanguage();
     const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
@@ -30,7 +32,7 @@ const Edit = ({ id }: { id: string }) => {
 
     useEffect(() => {
         const setdata = async () => {
-            const _model = getEntityModel('companytradingcode');
+            const _model = await getEntityModel('companytradingcode');
             setModel(_model);
         };
 
@@ -46,7 +48,7 @@ const Edit = ({ id }: { id: string }) => {
     const fetchData = async (tradingCodeId: string) => {
         setIsLoading(true);
 
-        const res = await fetch(`${model?.read?.url.replace('{id}', tradingCodeId)}`);
+        const res = await apiFetch(`${model?.read?.url.replace('{id}', tradingCodeId)}`);
 
         if (res.ok) {
             const result: ITradingCode = await res?.json();
@@ -65,7 +67,7 @@ const Edit = ({ id }: { id: string }) => {
 
     const handlEditClick = async (data: ITradingCode) => {
         setIsLoading(true);
-        const res = await fetch(`${model?.update?.url.replace('{id}', id)}`, {
+        const res = await apiFetch(`${model?.update?.url.replace('{id}', id)}`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +99,7 @@ const Edit = ({ id }: { id: string }) => {
                         </Tooltip>
                     </div>
                     <div className='px-2 h-full flex flex-col justify-center align-middle'>
-                        <div className="p-2">ویرایش سبد معاملاتی - {appConfig.company.name}</div>
+                        <div className="p-2">ویرایش سبد معاملاتی</div>
                     </div>
                 </div>
                 {data && (

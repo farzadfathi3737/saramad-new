@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense, useState } from "react";
+import { Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
 
 import ChangeCompany from "../components/changeCompany";
 import { DarkThemeToggle } from "flowbite-react";
@@ -11,6 +12,9 @@ import TabPage from "../components/tabPage";
 export default function Home() {
   const [isOpen, setIsOpen] = useState(true);
 
+  const [isOpenUser, setIsOpenUser] = useState(false);
+  const handleClose = () => setIsOpenUser(false);
+
   return (
 
     <div className="flex min-h-screen flex-row w-full">
@@ -18,7 +22,7 @@ export default function Home() {
         className={`bg-Custom relative overflow-hidden transition-all duration-500 ease-in-out dark:border-gray-800 dark:bg-gray-900 ${isOpen ? "w-[320px]" : "w-[0px]"}`}
       >
         <div
-          className={`absolute w-[270px] transition-all duration-500 ease-in-out ${isOpen ? "left-0" : "left-10"}`}
+          className={`absolute w-full transition-all duration-500 ease-in-out ${isOpen ? "left-0" : "left-10"}`}
         >
           <div className="justify-items-center bg-inherit pb-1 bt-0 ">
             <div className="container flex flex-row justify-between gap-2.5">
@@ -85,22 +89,16 @@ export default function Home() {
                 type="button"
                 className="p-0 bg-other-blue-gray-light hover:text-other-blue-gray-light hover:bg-text-primary h-[42px] w-[42px] flex-col rounded-full text-center text-sm text-red-600"
               >
-                <i className={`fa-duotone fa-solid fa-envelope text-xl text-primary-500`} />
+                <i className={`fa-duotone fa-solid fa-envelope text-xl text-gray-400 hover:text-primary-500`} />
               </button>
               <button
                 type="button"
                 className="p-0 bg-other-blue-gray-light hover:text-other-blue-gray-light hover:bg-text-primary h-[42px] w-[42px] flex-col rounded-full text-center text-sm text-red-600"
               >
-                <i className={`fa-duotone fa-solid fa-bell text-xl text-primary-500`} />
+                <i className={`fa-duotone fa-solid fa-bell text-xl text-gray-400 hover:text-orange-500`} />
               </button>
               {/* <DarkThemeToggle className="bg-gray-200 text-primary h-[42px] w-[42px] rounded-full focus:ring-0" /> */}
-              <button
-                type="button"
-                className="p-0 bg-other-blue-gray-light hover:text-other-blue-gray-light hover:bg-text-primary h-[42px] w-[42px] flex-col rounded-full text-center text-sm text-red-600"
-              >
-                <i className={`fa-duotone fa-solid fa-circle-user text-4xl text-gray-400`} />
-              </button>
-              <DarkThemeToggle />
+
               {/* <button
                   type="button"
                   className="bg-other-blue-gray-light text-text-primary h-[42px] w-[42px] flex-col rounded-full p-2.5 text-center text-sm hover:bg-gray-700 focus:ring-gray-300 focus:outline-none"
@@ -118,25 +116,51 @@ export default function Home() {
 
 
 
-              <div className="flex">
-                {/* <div>
-                                {/* <img className="h-9 w-9 rounded-full object-cover saturate-50 group-hover:saturate-100" src="/assets/images/user-profile.jpeg" alt="userProfile" /> /}
-                                <button
-                                    type="button"
-                                    className="p-0 bg-other-blue-gray-light hover:text-other-blue-gray-light hover:bg-text-primary h-[42px] w-[42px] flex-col rounded-full text-center text-sm text-red-600"
-                                >
-                                    <i className={`fa-duotone fa-solid fa-circle-user text-4xl text-gray-600 h-full w-full`} />
-                                </button>
-                            </div> */}
-                <div className="text-base flex flex-col text-gray-900">
-                  <div className="text-base pb-1">سید محسن الهامی</div>
-                  <span className="rounded w-fit bg-green-200 px-1 text-xs text-green-500">پشتیبان</span>
+              <div className="flex justify-center items-center">
+                <div className="flex" onClick={() => setIsOpenUser(true)}>
+                  <div className="pl-2 h-full">
+                    <button
+                      type="button"
+                      className=" p-0 bg-other-blue-gray-light hover:text-other-blue-gray-light hover:bg-text-primary h-[42px] w-[42px] flex rounded-full text-center text-sm text-red-600 justify-center items-center"
+                    >
+                      <i className={`fa-duotone fa-solid fa-circle-user text-4xl text-gray-400`} />
+                    </button>
+                  </div>
+                  <div className="text-base flex flex-col text-gray-900">
+                    <div className="text-base pb-1">سید محسن الهامی</div>
+                    <span className="rounded w-fit bg-green-200 px-1 text-xs text-green-500">پشتیبان</span>
+                  </div>
                 </div>
+                <Drawer open={isOpenUser} onClose={handleClose}>
+                  <DrawerItems>
+                    <div className="flex justify-between">
+                      <div>اطلاعات کاربر</div>
+                      <div onClick={handleClose}><svg
+                        className="ms-2 h-3.5 w-3.5 rtl:rotate-180"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 14 10"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M1 5h12m0 0L9 1m4 4L9 9"
+                        />
+                      </svg></div>
+                    </div>
+                    <div>
+                      <DarkThemeToggle />
+                    </div>
+                  </DrawerItems>
+                </Drawer>
               </div>
             </div>
 
           </div>
-        </div>
+        </div >
         <div className="h-full justify-items-center bg-white p-2 dark:bg-blue-950">
 
           <Suspense fallback={<div>Loading...</div>}>
@@ -144,7 +168,7 @@ export default function Home() {
           </Suspense>
           {/* <TabPage /> */}
         </div>
-      </div>
+      </div >
     </div >
 
   );

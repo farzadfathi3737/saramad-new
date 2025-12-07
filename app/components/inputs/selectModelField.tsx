@@ -46,8 +46,8 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
 
             setListRef(_model?.listRef);
         };
-        console.log("======++++++", value)
-        console.log("======++++++", field.value)
+        // console.log("======++++++", value)
+        // console.log("======++++++", field.value)
         getModel();
     }, []);
 

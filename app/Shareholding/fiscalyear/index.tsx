@@ -34,11 +34,12 @@ const Fiscalyear = () => {
 
                 <div className="flex h-[3.5rem] items-center justify-between border-b border-gray-300">
                     <div className='p-2 h-full flex flex-col justify-center align-middle pr-5'>
-                        {t('list')} {t('fiscalyear')} - {appConfig.company.name}
+                        {t('list')} {t('fiscalyear')}
+                        {/* - {appConfig.company.name} */}
                     </div>
 
                     <div className='p-2 h-full flex flex-col justify-center align-middle pl-2'>
-                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-xl p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
+                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
                             onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '', 'add')}>
                             <i className={`fa-duotone fa-solid fa-plus text-lg ml-2`} />
                             {t('add')}

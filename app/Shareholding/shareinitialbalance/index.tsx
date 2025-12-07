@@ -48,7 +48,7 @@ const ShareRelationType = ({ id, name }: { id: string, name: string }) => {
                     </div>
 
                     <div className='p-2 h-full flex flex-col justify-center align-middle pl-2'>
-                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-xl p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
+                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
                             onClick={() => subPage('share', 'shareinitialbalance/add', undefined, [{ key: 'shareId', value: id }, { key: 'name', value: name }])}>
                             <i className={`fa-duotone fa-solid fa-plus text-lg ml-2`} />
                             {t('add')}

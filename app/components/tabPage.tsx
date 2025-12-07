@@ -24,6 +24,7 @@ import CompanyTradingCodeAdd from "../Shareholding/companytradingcode/add";
 import CompanyTradingCodeEdit from "../Shareholding/companytradingcode/[id]";
 import TradingCodeDiscount from "../Shareholding/tradingcodediscount";
 import TradingCodeDiscountAdd from "../Shareholding/tradingcodediscount/add";
+import TradingCodeDiscountEdit from "../Shareholding/tradingcodediscount/[id]";
 
 import Stock from "../Shareholding/stock";
 import StockView from "../Shareholding/stock/[id]";
@@ -46,6 +47,7 @@ import CompanyBrokerCode from "../Shareholding/companybroker/code/[id]";
 
 import Companybrokerdiscount from "../Shareholding/companybrokerdiscount";
 import CompanybrokerdiscountAdd from "../Shareholding/companybrokerdiscount/add";
+import CompanybrokerdiscountEdit from "../Shareholding/companybrokerdiscount/[id]";
 
 import Shareinitialbalance from "../Shareholding/shareinitialbalance";
 import ShareinitialbalanceAdd from "../Shareholding/shareinitialbalance/add";
@@ -176,6 +178,8 @@ export default function TabsWithRouting() {
                 if (active.key == "edit") return <CompanyTradingCodeEdit key={active.id} id={getParamData('id')} />;
                 if (active.key == "tradingcodediscount") return <TradingCodeDiscount key={active.id} tradingCodeId={getFilterData('tradingCodeId')} tradingCode={getFilterData('tradingCode')} />;
                 if (active.key == "tradingcodediscount/add") return <TradingCodeDiscountAdd key={active.id} tradingCodeId={getFilterData('tradingCodeId')} tradingCode={getFilterData('tradingCode')} />;
+                if (active.key == "tradingcodediscount/edit") return <TradingCodeDiscountEdit key={active.id} id={getFilterData('id')} tradingCodeId={getFilterData('tradingCodeId')} tradingCode={getFilterData('tradingCode')} />;
+
                 return <CompanyTradingCode key={active.id} />;
 
             case "stock":
@@ -204,7 +208,8 @@ export default function TabsWithRouting() {
                 if (active.key == "edit") return <CompanyBrokerEdit key={active.id} id={getParamData('id')} />;
                 if (active.key == "code") return <CompanyBrokerCode key={active.id} id={getParamData('id')} brokerName={getParamData('brokerName')} master={getParamData('master')} />;
                 if (active.key == "companybrokerdiscount") return <Companybrokerdiscount key={active.id} id={getParamData('id')} brokerName={getParamData('brokerName')} />;
-                if (active.key == "companybrokerdiscount/add") return <CompanybrokerdiscountAdd key={active.id} id={getParamData('id')} brokerName={getParamData('brokerName')} />;
+                if (active.key == "companybrokerdiscount/add") return <CompanybrokerdiscountAdd key={active.id} id={getParamData('tradingCodeId')} brokerName={getParamData('brokerName')} />;
+                if (active.key == "companybrokerdiscount/edit") return <CompanybrokerdiscountEdit key={active.id} id={getParamData('tradingCodeId')} brokerName={getParamData('brokerName')} />;
                 return <CompanyBroker key={active.id} />;
 
             default:
@@ -216,30 +221,30 @@ export default function TabsWithRouting() {
         <div className="w-full mx-auto mt-1">
             {/* نوار تب‌ها */}
             <div className="flex items-center justify-between">
-                <div className="flex flex-wrap w-full gap-2">
+                <div className="flex flex-wrap w-full gap-2 mb-[-1px]">
                     {_tabs.map((tab) => (
                         <div
                             key={tab.id}
                             onClick={() => handleTabClick(tab.id)}
-                            className={`pr-4 pl-2 py-2 rounded-b-none rounded-t-lg border border-b-0 transition-all border-gray-300 bg-gray-100 ${appConf.activeTab === tab.id
-                                ? "border-gray-400 text-gray-900 bg-white border-b"
-                                : "border hover:text-black hover:bg-gray-300"
+                            className={`pr-4 pl-2 py-2 rounded-t-lg border border-b transition-all border-gray-300 bg-gray-100 ${appConf.activeTab === tab.id
+                                ? "border-gray-300 text-gray-700 bg-white border-b border-b-white"
+                                : "border hover:text-black hover:bg-gray-200"
                                 }`}
                         >
-                            {tab.id == 'dashboard' ? <div className="flex h-full">
-                                <i className={`fa-duotone fa-solid fa-gauge text-2xl ${appConf.activeTab === tab.id ? 'text-gray-900' : 'text-gray-600 hover:t'}`} />
+                            {tab.id == 'dashboard' ? <div className="flex h-full ">
+                                <i className={`fa-duotone fa-solid fa-gauge text-2xl ${appConf.activeTab === tab.id ? 'text-[#1b647e]' : 'text-gray-600 hover:t'}`} />
                             </div> :
-                                <>{t(tab.title)}
-                                    <Tooltip label={`حذف ${tab.id}`}>
+                                <div className="flex"><div className={`${appConf.activeTab === tab.id ? 'text-gray-600 font-bold hover:text-gray-900' : 'text-gray-600'}`}>{t(tab.title)}</div>
+                                    <Tooltip label={`حذف ${t(tab.id)}`}>
                                         <ActionIcon
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 removeTab(tab.id);
                                             }}
                                             className="mr-2 flex items-center rounded-xl w-9 h-9 p-0 !bg-transparent !hover:bg-red-500">
-                                            <i className={`fa-duotone fa-solid fa-xmark text-sm ${appConf.activeTab === tab.id ? 'text-gray-900' : 'text-gray-600 hover:t'}`} />
+                                            <i className={`fa-duotone fa-solid fa-xmark text-sm ${appConf.activeTab === tab.id ? 'text-gray-700' : 'text-gray-700 hover:text-gray-900'}`} />
                                         </ActionIcon>
-                                    </Tooltip></>
+                                    </Tooltip></div>
                             }
 
                         </div>
@@ -248,7 +253,7 @@ export default function TabsWithRouting() {
             </div>
 
             {/* محتوای تب فعال */}
-            <div className="bg-white rounded-b-md shadow border border-gray-200">
+            <div className="bg-white rounded-b-md shadow border border-gray-300">
                 <div className="space-y-3">
                     {_tabs.map((tab) => (
                         <div
@@ -279,6 +284,7 @@ export default function TabsWithRouting() {
                                     {tab.key === "edit" && <CompanyTradingCodeEdit id={getParamData('id', tab)} />}
                                     {tab.key === "tradingcodediscount" && <TradingCodeDiscount tradingCodeId={getFilterData('tradingCodeId', tab)} tradingCode={getFilterData('tradingCode', tab)} />}
                                     {tab.key === "tradingcodediscount/add" && <TradingCodeDiscountAdd tradingCodeId={getFilterData('tradingCodeId', tab)} tradingCode={getFilterData('tradingCode', tab)} />}
+                                    {tab.key === "tradingcodediscount/edit" && <TradingCodeDiscountEdit id={getFilterData('id', tab)} tradingCodeId={getFilterData('tradingCodeId', tab)} tradingCode={getFilterData('tradingCode', tab)} />}
                                     {tab.key === "companytradingcode" && <CompanyTradingCode />}
                                 </>
                             )}

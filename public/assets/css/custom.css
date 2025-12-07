@@ -11,7 +11,7 @@
 
 .mantine-Table-th {
   /* background-color: #09a0b129 !important; */
-  background-color: #d1f3f7 !important;
+  background-color: #e6e6e6 !important;
 }
 
 .space-y-cc,
@@ -152,7 +152,7 @@ body {
 
 .sidebar .nav-item > button,
 .sidebar .nav-item > a {
-  @apply /* dark:hover:text-white-dark; */ flex w-full items-center justify-between overflow-hidden rounded-[25px] p-2.5 whitespace-nowrap hover:bg-[#000]/[0.08] hover:text-black dark:hover:bg-[#181f32];
+  @apply /* dark:hover:text-white-dark; */ flex w-full items-center justify-between overflow-hidden rounded-lg p-2.5 whitespace-nowrap hover:bg-[#000]/[0.08] dark:hover:bg-[#181f32];
 }
 .sidebar .nav-item > button.active,
 .sidebar .nav-item > a.active {
@@ -180,5 +180,8 @@ body {
 }
 
 .dashboard .panel {
-  @apply relative rounded-[25px] bg-white p-5 shadow dark:bg-black;
+  @apply relative rounded-xl bg-white p-5 shadow dark:bg-black;
+  --tw-shadow:
+    0 0px 1px 0 var(--tw-shadow-color, #0000001a),
+    0 1px 2px -1px var(--tw-shadow-color, #0000001a);
 }

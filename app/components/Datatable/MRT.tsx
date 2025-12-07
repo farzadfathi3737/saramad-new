@@ -46,6 +46,7 @@ interface CostomMRT extends DatatableProps {
     mantineTableBodyRowBackgroundColorChangeByField?: string | undefined;
     groupColumn?: GroupColumn[] | undefined;
     manualPagination?: boolean;
+    editAction?: any;
 }
 
 const MRT_DataTable: React.FC<CostomMRT> = ({
@@ -72,6 +73,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     manualPagination = false,
     mantineTableBodyRowBackgroundColor,
     mantineTableBodyRowBackgroundColorChangeByField,
+    editAction = null,
 }) => {
     const { t } = useLanguage();
     const subPage = useSubPage();
@@ -538,7 +540,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         renderBottomToolbar: ({ table }) => (
             <Flex align="center" justify="space-between">
                 <MRT_TablePagination table={table} />
-                <div className="m-2 rounded-md border p-2">{`تعدا کل ردیف ها : ${initialRecords?.totalCount?.toLocaleString('fa-IR')}`}</div>
+                <div className="m-2 rounded-sm border border-gray-400 text-gray-500 text-sm p-2">{`تعدا کل ردیف ها : ${initialRecords?.totalCount?.toLocaleString('fa-IR')}`}</div>
             </Flex>
         ),
         enableGrouping: true,
@@ -567,11 +569,14 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                     <Tooltip label="ویرایش">
                         <ActionIcon
                             //onClick={() => router.push(`${model.name.toString().toLowerCase()}/${row.original.id}`)}
-                            onClick={() => subPage(model.name.toLowerCase(), 'edit', undefined, [{ key: 'id', value: row.original.id.toString() }])}
-                            className="btn btn-outline mr-3 flex items-center rounded-xl bg-[#1B334D] w-9 h-9 p-0 font-iranyekan text-white">
+                            onClick={() =>
+                                editAction ? editAction(row.original.id.toString()) : subPage(model.name.toLowerCase(), 'edit', undefined, [{ key: 'id', value: row.original.id.toString() }])
+                            }
+                            variant="transparent"
+                            className="mr-3 w-9 h-9">
 
                             {/* <IconEdit className="color-red-400" /> */}
-                            <i className={`fa-duotone fa-solid fa-pen-to-square text-xl`} />
+                            <i className={`fa-duotone fa-solid fa-pen-to-square text-xl text-gray-400 hover:text-orange-500`} />
                         </ActionIcon>
 
                         {/* <Link
@@ -588,10 +593,11 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                     <Tooltip label="حذف">
                         <ActionIcon
                             onClick={() => handlerShowDeleteModal(row.original.id.toString(), row?.original.name)}
-                            className="btn btn-outline mr-3 flex items-center rounded-xl bg-[#1B334D] w-9 h-9 p-0 font-iranyekan text-white"
+                            variant="transparent"
+                            className="mr-3 w-9 h-9"
                         >
                             {/* <IconTrash className="color-red-400" /> */}
-                            <i className={`fa-duotone fa-solid fa-trash color-red-400`} />
+                            <i className={`fa-duotone fa-solid fa-trash text-xl text-gray-400 hover:text-red-500`} />
                         </ActionIcon>
                         {/* <Link
                             href=""
@@ -648,7 +654,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                     <div className="flex w-full">
                         <div className="mb-5 w-full">
                             <div className="space-y-2 font-iranyekan">
-                                <div className="rounded-2xl border border-[#d3d3d3] dark:border-[#1b2e4b]">
+                                <div className="rounded-lg border border-[#d3d3d3] dark:border-[#1b2e4b]">
                                     <div className="p-5">
                                         <DForms
                                             model={undefined}
@@ -670,14 +676,15 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                     <div className="flex w-full">
                         <div className="mb-5 w-full">
                             <div className="space-y-2 font-iranyekan">
-                                <div className="rounded-2xl border border-[#d3d3d3] dark:border-[#1b2e4b]">
+                                <div className="rounded-lg border border-[#d3d3d3] dark:border-[#1b2e4b]">
                                     <button
                                         type="button"
                                         className={`flex w-full items-center p-4 font-iranyekan text-[#089bab] dark:bg-[#1b2e4b] ${active2 === '1' ? '!#089bab' : '#089bab'}`}
                                         onClick={() => togglePara2('1')}
                                     >
                                         <IconSearch className="shrink-0 text-[#089bab] ltr:mr-2 rtl:ml-2" />
-                                        {t('searchin')} {t(model.name.toLowerCase().toString())}
+                                        {t('search')}
+                                        {/* {t(model.name.toLowerCase().toString())} */}
                                         <div className={`text-[#089bab] ltr:ml-auto rtl:mr-auto ${active2 === '1' ? 'rotate-180' : ''}`}>
                                             <IconCaretDown />
                                         </div>

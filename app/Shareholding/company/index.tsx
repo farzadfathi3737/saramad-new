@@ -27,7 +27,7 @@ const Company = () => {
                             const _bg = cell.getValue();
                             return (
                                 <div className="flex w-full items-center justify-start">
-                                    {_bg ? <div className={`h-8 w-8 rounded-md border `} style={{ backgroundColor: _bg }} /> : <div className={`h-8 w-8 rounded-md border bg-inherit`} />}
+                                    {_bg ? <div className={`h-8 w-8 rounded-md border border-gray-200 shadow-2xl `} style={{ backgroundColor: _bg }} /> : <div className={`h-8 w-8 rounded-md border border-gray-200 bg-inherit`} />}
                                     <div className="pr-2">{_bg}</div>
                                 </div>
                             );
@@ -101,7 +101,7 @@ const Company = () => {
                     </div>
 
                     <div className='p-2 h-full flex flex-col justify-center align-middle pl-2'>
-                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-xl p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
+                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
                             onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '', 'add')}>
                             <i className={`fa-duotone fa-solid fa-plus text-lg ml-2`} />
                             {t('add')}
@@ -138,8 +138,10 @@ const Company = () => {
                                     <Tooltip label="انتخاب به عنوان هلدینگ">
                                         <ActionIcon
                                             onClick={() => SetIsHolding(row.id.toString())}
-                                            className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light w-9 h-9 p-0 font-iranyekan text-secondary">
-                                            <i className={`fa-duotone fa-solid fa-check text-xl`} />
+                                            //className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light w-9 h-9 p-0 font-iranyekan text-secondary">
+                                            variant="transparent"
+                                            className="mr-3 hover:bg-orange-100 w-9 h-9">
+                                            <i className={`fa-duotone fa-solid fa-check text-xl text-gray-400 hover:text-blue-500`} />
                                         </ActionIcon>
                                     </Tooltip>
                                 );

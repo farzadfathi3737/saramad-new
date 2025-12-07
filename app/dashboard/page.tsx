@@ -537,7 +537,7 @@ export default function Dashboard() {
                 <div className="pt-5 dashboard">
                     {initialRecords && !loading ? (
                         <>
-                            <div className="mb-3 grid gap-6 bg-transparent xl:grid-cols-6">
+                            <div className="mb-6 grid gap-6 bg-transparent xl:grid-cols-6">
                                 <div className="panel flex h-full xl:col-span-2">
                                     <div className="h-full w-2 rounded-xl bg-primary-50"></div>
                                     <div className="flex w-full flex-col px-5">
@@ -585,7 +585,7 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-                            <div className="mb-3 grid gap-6 bg-transparent xl:grid-cols-6">
+                            <div className="mb-6 grid gap-6 bg-transparent xl:grid-cols-6">
                                 <div className="panel flex h-full xl:col-span-2">
                                     <div className="h-full w-2 rounded-xl bg-primary-50"></div>
                                     <div className="flex w-full flex-col px-5">
@@ -635,7 +635,7 @@ export default function Dashboard() {
                         </>
                     ) : (
                         <>
-                            <div className="mb-3 grid gap-6 bg-transparent xl:grid-cols-6">
+                            <div className="mb-6 grid gap-6 bg-transparent xl:grid-cols-6">
                                 <div className="panel flex h-full w-full xl:col-span-2">
                                     <div className="flex w-full animate-pulse space-x-4">
                                         <div className="h-full w-2 rounded-xl bg-gray-200"></div>
@@ -680,7 +680,7 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-                            <div className="mb-3 grid gap-6 bg-transparent xl:grid-cols-6">
+                            <div className="mb-6 grid gap-6 bg-transparent xl:grid-cols-6">
                                 <div className="panel flex h-full w-full xl:col-span-2">
                                     <div className="flex w-full animate-pulse space-x-4">
                                         <div className="h-full w-2 rounded-xl bg-gray-200"></div>

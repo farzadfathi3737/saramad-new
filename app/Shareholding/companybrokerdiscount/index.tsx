@@ -38,11 +38,11 @@ const Company = ({ id, brokerName }: { id: string, brokerName: string }) => {
                         </Tooltip>
                     </div>
                     <div className='px-2 h-full w-full flex flex-col justify-center align-middle'>
-                        <div className="p-2">{t('list')} تخفیف کارگزار - {brokerName} - {appConfig.company.name}</div>
+                        <div className="p-2">{t('list')} تخفیف کارگزار - {brokerName} </div>
                     </div>
 
                     <div className='p-2 h-full flex flex-col justify-center align-middle pl-2'>
-                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-xl p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
+                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
                             onClick={() => subPage('companybroker', 'companybrokerdiscount/add', undefined, [{ key: 'id', value: id }, { key: 'brokerName', value: brokerName }])}>
                             <i className={`fa-duotone fa-solid fa-plus text-lg ml-2`} />
                             {t('add')}
@@ -71,6 +71,7 @@ const Company = ({ id, brokerName }: { id: string, brokerName: string }) => {
                                 </div>
                             )}
                             hideColList={['id', 'companyId', 'company']}
+                            editAction={() => subPage('companybroker', 'companybrokerdiscount/edit', undefined, [{ key: 'id', value: id }, { key: 'brokerName', value: brokerName }])}
                         />
                     )}
                 </div>

@@ -34,7 +34,7 @@ const ChangeCompany = () => {
     const [initData, setInitData] = useState<IinitData>();
 
     const appConf = useSelector((state: IRootState) => state.appConfig);
-    console.log("config--------------->>>>>>", appConf)
+    // console.log("config--------------->>>>>>", appConf)
     const SignupSchema = Yup.object().shape({
         company: Yup.string().required('Required'),
         fiscalYear: Yup.string().required('Required'),
@@ -88,7 +88,7 @@ const ChangeCompany = () => {
             openModal();
         }
 
-        console.log("config---------------", appConf)
+        // console.log("config---------------", appConf)
 
     }, [appConf]);
 
@@ -96,7 +96,7 @@ const ChangeCompany = () => {
     useEffect(() => {
 
 
-        console.log("staticParams---------------", staticParams)
+        // console.log("staticParams---------------", staticParams)
 
     }, [staticParams]);
     return (
@@ -112,11 +112,11 @@ const ChangeCompany = () => {
                 appConf.fiscalYear?.name
             }</div>
 
-            <button type="button" className="btn btn-outline mr-3 flex items-center rounded-xl bg-[#2D9AA0] font-iranyekan text-[#fff]" onClick={openModal}>
+            <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg bg-[#2D9AA0] font-iranyekan text-[#fff]" onClick={openModal}>
                 تغییر شرکت
             </button> */}
 
-            <div className='flex items-center justify-between min-w-xs border rounded-full p-2' style={{ backgroundColor: appConf?.company?.backgroundColor, color: appConf?.company?.textColor }}>
+            <div className='flex items-center justify-between min-w-xs border rounded-xl p-2' style={{ backgroundColor: appConf?.company?.backgroundColor, color: appConf?.company?.textColor }}>
                 <div className='pr-2'>شرکت : {appConf.company?.name}</div>
                 <div>سال : {appConf.fiscalYear?.name}</div>
                 <div>

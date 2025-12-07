@@ -50,16 +50,19 @@ const Company = () => {
                             hideColList={['id', 'companyId', 'externalId', 'externalId2', 'optionDetails']}
                             labaleNameList={[
                                 { label: 'Keyword', value: 'نام سهام' },
-                                { label: 'name', value: 'نام سهام' },
+                                { label: 'Name', value: 'نام سهام' },
                                 { label: 'industryName', value: 'زیرصنعت' },
+                                { label: "IncludeDeprecated", value: 'نمادهای حذف شده' },
                             ]}
+
                             isEditable={false}
                             action={(item) => (
                                 <Tooltip label="اطلاعات نماد">
                                     <ActionIcon
-                                        className="btn btn-outline ml-3 flex items-center rounded-xl bg-secondary-light w-9 h-9 p-0 font-iranyekan text-secondary"
+                                        className="ml-3 flex items-center rounded-xl w-9 h-9 p-0 font-iranyekan"
+                                        variant='transparent'
                                         onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '', 'view', undefined, [{ key: 'id', value: item.id }, { key: 'master', value: modelData?.name.toLocaleLowerCase() ?? '' }])}>
-                                        <i className={`fa-duotone fa-solid fa-eye text-xl`} />
+                                        <i className={`fa-duotone fa-solid fa-eye text-xl text-gray-400 hover:text-blue-500`} />
                                     </ActionIcon>
                                 </Tooltip>
                             )}

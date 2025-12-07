@@ -41,12 +41,12 @@ const Company = () => {
                     </div>
 
                     <div className='h-full flex justify-center align-middle p-2'>
-                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-xl p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
+                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
                             onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '', 'add')}>
                             <i className={`fa-duotone fa-solid fa-plus text-lg ml-2`} />
                             دارایی جدید
                         </button>
-                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-xl p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
+                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
                             onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '', 'addt')}>
                             <i className={`fa-duotone fa-solid fa-plus text-lg ml-2`} />
                             دارایی غیربورسی جدید
@@ -68,15 +68,17 @@ const Company = () => {
                                     <Tooltip label="اطلاعات نماد">
                                         <ActionIcon
                                             onClick={() => subPage('share', 'stock/view', undefined, [{ key: 'id', value: row.stockId.toString() }, { key: 'master', value: 'share' }])}
-                                            className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light w-9 h-9 p-0 font-iranyekan text-secondary">
-                                            <i className={`fa-duotone fa-solid fa-hospital-symbol text-xl`} />
+                                            variant="transparent"
+                                            className="mr-3 flex items-center rounded-xl w-9 h-9 p-0">
+                                            <i className={`fa-duotone fa-solid fa-hospital-symbol text-xl text-gray-400 hover:text-blue-500`} />
                                         </ActionIcon>
                                     </Tooltip>
                                     <Tooltip label="مانده ابتدای دوره">
                                         <ActionIcon
                                             onClick={() => subPage(model.name.toLowerCase(), 'shareinitialbalance', undefined, [{ key: 'id', value: row.id.toString() }, { key: 'name', value: row.stockName }])}
-                                            className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light w-9 h-9 p-0 font-iranyekan text-secondary">
-                                            <i className={`fa-duotone fa-solid fa-circle text-xl`} />
+                                            variant='transparent'
+                                            className="mr-3 flex items-center rounded-xl w-9 h-9 p-0">
+                                            <i className={`fa-duotone fa-solid fa-circle text-xl text-gray-400 hover:text-blue-500`} />
                                         </ActionIcon>
                                     </Tooltip>
                                 </>
