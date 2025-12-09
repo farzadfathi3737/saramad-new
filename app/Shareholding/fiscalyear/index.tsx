@@ -17,7 +17,7 @@ const Fiscalyear = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            const _model = getEntityModel('fiscalyear');
+            const _model = await getEntityModel('fiscalyear');
             setModelData(_model);
             //setModel(_model);
         };

@@ -49,9 +49,33 @@ import Companybrokerdiscount from "../Shareholding/companybrokerdiscount";
 import CompanybrokerdiscountAdd from "../Shareholding/companybrokerdiscount/add";
 import CompanybrokerdiscountEdit from "../Shareholding/companybrokerdiscount/[id]";
 
+import BuySell from "../reports/buysell";
+import StackedBuySell from "../reports/stackedbuysell";
+import ShareTurnover from "../reports/shareturnover";
+import Cardex from "../reports/cardex";
+import StackedCardex from "../reports/stackedcardex";
+import ShareBalance from "../reports/sharebalance";
+import RealizedProfit from "../reports/realizedprofit";
+import InvestmentDepreciationReserve from "../reports/investmentdepreciationreserve";
+import CapitalRaise from "../reports/capitalraise";
+import CashDividend from "../reports/cashdividend";
+import CashDividendDeposit from "../reports/cashdividenddeposit";
+import MarketNotice from "../reports/marketnotice";
+import Comprehensive from "../reports/comprehensive";
+import Consolidation from "../reports/consolidation";
+
 import Shareinitialbalance from "../Shareholding/shareinitialbalance";
 import ShareinitialbalanceAdd from "../Shareholding/shareinitialbalance/add";
 import ShareinitialbalanceEdit from "../Shareholding/shareinitialbalance/[id]";
+
+import ArticleElements from "../Shareholding/accountings/articleelements";
+import ArticleElementsAdd from "../Shareholding/accountings/articleelements/add";
+import ArticleElementsEdit from "../Shareholding/accountings/articleelements/[id]";
+
+import JournalArticle from "../Shareholding/accountings/journalarticle";
+
+import VoucherTemplates from "../Shareholding/accountings/vouchertemplates";
+import VoucherTemplatesAdd from "../Shareholding/accountings/vouchertemplates/add";
 
 
 import { IKeyValue, ITabData } from "@/interface/dataModel";
@@ -212,6 +236,60 @@ export default function TabsWithRouting() {
                 if (active.key == "companybrokerdiscount/edit") return <CompanybrokerdiscountEdit key={active.id} id={getParamData('tradingCodeId')} brokerName={getParamData('brokerName')} />;
                 return <CompanyBroker key={active.id} />;
 
+            case "accountingArticleElements":
+                if (active.key == "add") return <ArticleElementsAdd key={active.id} />;
+                if (active.key == "edit") return <ArticleElementsEdit key={active.id} />;
+                return <ArticleElements key={active.id} />;
+
+            case "issueDocument":
+                return <JournalArticle key={active.id} />;
+
+            case "accountingVoucherTemplates":
+                if (active.key == "add") return <VoucherTemplatesAdd key={active.id} />;
+                return <VoucherTemplates key={active.id} />;
+
+            case "buysell":
+                return <BuySell key={active.id} />;
+
+            case "stackedbuysell":
+                return <StackedBuySell key={active.id} />;
+
+            case "shareturnover":
+                return <ShareTurnover key={active.id} />;
+
+            case "cardex":
+                return <Cardex key={active.id} />;
+
+            case "stackedcardex":
+                return <StackedCardex key={active.id} />;
+
+            case "sharebalance":
+                return <ShareBalance key={active.id} />;
+
+            case "realizedprofit":
+                return <RealizedProfit key={active.id} />;
+
+            case "investmentdepreciationreserve":
+                return <InvestmentDepreciationReserve key={active.id} />;
+
+            case "capitalraise":
+                return <CapitalRaise key={active.id} />;
+
+            case "cashdividend":
+                return <CashDividend key={active.id} />;
+
+            case "cashdividenddeposit":
+                return <CashDividendDeposit key={active.id} />;
+
+            case "marketnotice":
+                return <MarketNotice key={active.id} />;
+
+            case "comprehensive":
+                return <Comprehensive key={active.id} />;
+
+            case "consolidation":
+                return <Consolidation key={active.id} />;
+
             default:
                 return <></>;
         }
@@ -328,6 +406,38 @@ export default function TabsWithRouting() {
                                     {tab.key === "companybroker" && <CompanyBroker />}
                                 </>
                             )}
+
+                            {tab.id === "accountingArticleElements" && (
+                                <>
+                                    {tab.key === "add" && <ArticleElementsAdd />}
+                                    {tab.key === "edit" && <ArticleElementsEdit />}
+                                    {tab.key === "accountingArticleElements" && <ArticleElements />}
+                                </>
+                            )}
+
+                            {tab.id === "issueDocument" && <JournalArticle />}
+
+                            {tab.id === "accountingVoucherTemplates" && (
+                                <>
+                                    {tab.key === "add" && <VoucherTemplatesAdd />}
+                                    {tab.key === "accountingVoucherTemplates" && <VoucherTemplates />}
+                                </>
+                            )}
+
+                            {tab.id === "buysell" && <BuySell />}
+                            {tab.id === "stackedbuysell" && <StackedBuySell />}
+                            {tab.id === "shareturnover" && <ShareTurnover />}
+                            {tab.id === "cardex" && <Cardex />}
+                            {tab.id === "stackedcardex" && <StackedCardex />}
+                            {tab.id === "sharebalance" && <ShareBalance />}
+                            {tab.id === "realizedprofit" && <RealizedProfit />}
+                            {tab.id === "investmentdepreciationreserve" && <InvestmentDepreciationReserve />}
+                            {tab.id === "capitalraise" && <CapitalRaise />}
+                            {tab.id === "cashdividend" && <CashDividend />}
+                            {tab.id === "cashdividenddeposit" && <CashDividendDeposit />}
+                            {tab.id === "marketnotice" && <MarketNotice />}
+                            {tab.id === "comprehensive" && <Comprehensive />}
+                            {tab.id === "consolidation" && <Consolidation />}
                         </div>
                     ))}
                 </div>

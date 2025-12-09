@@ -72,7 +72,7 @@ const FloatingLabelInput: React.FC<InputProps> = ({
     <div className={`relative w-full ${className && className}`}>
       <BaseInput
         field={field}
-        //value={val}
+        value={field.value}
         form={form}
         pattern={pattern}
         meta={meta}

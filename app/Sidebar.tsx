@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '@/store';
 import { setActiveTab, setTabs } from '@/store/appConfigSlice';
 import { useRouter } from 'next/navigation';
+import { ColoredToast } from './components/Notifications/colorNotification';
 
 
 const Sidebar = () => {
@@ -59,7 +60,7 @@ const Sidebar = () => {
 
         // اگر تب جدید است و تعداد < 6، اضافه کن
         if (appConf.tabs.length >= 7) {
-            alert("حداکثر 7 تب مجاز است!");
+            ColoredToast('warning', 'حداکثر 7 تب مجاز است!');
             return;
         }
 
