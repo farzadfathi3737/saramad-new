@@ -12,7 +12,7 @@ import AnimateHeight from 'react-animate-height';
 import { IconCaretDown } from '@tabler/icons-react';
 import FileUploadModal from '@/app/components/Forms/uploadFile';
 import { MantineReactTable, MRT_ColumnDef, useMantineReactTable } from 'mantine-react-table';
-import { MRT_Localization_FA } from '@/public/locales/fa';
+import { MRT_Localization_FA } from '@/locales/fa';
 import { Field, Form, Formik } from 'formik';
 import FDateField from '@/app/components/inputs/dateField';
 import * as Yup from 'yup';

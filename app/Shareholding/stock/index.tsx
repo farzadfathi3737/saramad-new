@@ -51,6 +51,7 @@ const Company = () => {
                             labaleNameList={[
                                 { label: 'Keyword', value: 'نام سهام' },
                                 { label: 'Name', value: 'نام سهام' },
+                                { label: 'name', value: 'نام سهام' },
                                 { label: 'industryName', value: 'زیرصنعت' },
                                 { label: "IncludeDeprecated", value: 'نمادهای حذف شده' },
                             ]}

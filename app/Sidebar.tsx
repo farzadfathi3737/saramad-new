@@ -109,10 +109,10 @@ const Sidebar = () => {
             icon: 'fa-gears',
             childe: [
                 { id: 'transactionimportsession', name: 'transactionimportsession', title: 'بارگزاری اطلاعات خرید و فروش', link: '/Shareholding/transactionImportsession', icon: 'fa-upload' },
-                { id: 'buyingAndSellingListBurs', name: 'buyingAndSellingListBurs', title: 'فهرست خرید و فروش بورسی', link: '/Shareholding/sharetransactionbatch', icon: 'fa-chart-line' },
+                { id: 'sharetransactionbatch', name: 'buyingAndSellingListBurs', title: 'فهرست خرید و فروش بورسی', link: '/Shareholding/sharetransactionbatch', icon: 'fa-chart-line' },
                 { id: 'buyingAndSellingListNoBurs', name: 'buyingAndSellingListNoBurs', title: 'فهرست خرید و فروش غیر بورسی', link: '/pages/buyingAndSellingListNoBurs', icon: 'fa-rectangle-list' },
                 { id: 'transferCodeToCode', name: 'transferCodeToCode', title: 'انتقال کد به کد', link: '/', icon: 'fa-shuffle' },
-                { id: 'shareMeeting', name: 'shareMeeting', title: 'فهرست مجامع دارایی ها', link: '/Shareholding/shareMeeting', icon: 'fa-people-group' },
+                { id: 'sharemeeting', name: 'shareMeeting', title: 'فهرست مجامع دارایی ها', link: '/Shareholding/shareMeeting', icon: 'fa-people-group' },
                 { id: 'brokercontradictions', name: 'brokercontradictions', title: 'مغایرت گیری با کارگزاری', link: '/Shareholding/brokercontradictions', icon: 'fa-triangle-exclamation' },
                 { id: 'discrepancyWithDepositary', name: 'discrepancyWithDepositary', title: 'مغایرت گیری با سپرده گذاری', link: '/', icon: 'fa-scale-balanced' },
             ],
@@ -191,8 +191,8 @@ const Sidebar = () => {
                     link: '/',
                     icon: 'fa-percent',
                     childe: [
-                        { id: 'transactioncommissionreapply', name: 'transactioncommissionreapply', title: 'محاسبه مجدد کارمزد ها', link: '/Shareholding/transactioncommission', icon: 'fa-rotate' },
-                        { id: 'transactioncommissiondiscountreapply', name: 'transactioncommissiondiscountreapply', title: 'محاسبه مجدد تخفیف ها', link: '/Shareholding/transactioncommissiondiscount', icon: 'fa-rotate' },
+                        { id: 'transactioncommission', name: 'transactioncommissionreapply', title: 'محاسبه مجدد کارمزد ها', link: '/Shareholding/transactioncommission', icon: 'fa-rotate' },
+                        { id: 'transactioncommissiondiscount', name: 'transactioncommissiondiscountreapply', title: 'محاسبه مجدد تخفیف ها', link: '/Shareholding/transactioncommissiondiscount', icon: 'fa-rotate' },
                         { id: 'transactioncommissiondiscountapply', name: 'transactioncommissiondiscountapply', title: 'اعمال تخفیف دلخواه', link: '/Shareholding/transactioncommissiondiscount/apply', icon: 'fa-check' },
                         { id: 'transactioncommissiondiscountremove', name: 'transactioncommissiondiscountremove', title: 'حذف تخفیف ها', link: '/Shareholding/transactioncommissiondiscount/remove', icon: 'fa-trash' }
                     ],
@@ -338,8 +338,8 @@ const Sidebar = () => {
                                                     <div className="flex items-center justify-start w-full">
                                                         <i className={`fa-duotone fa-solid ${item.icon} text-xl transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a]' : 'text-[#fff]'}`} />
                                                         <span
-                                                            className={`text-sm transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a] font-bold' : 'text-white'
-                                                                } dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3`}
+                                                            className={`text-sm transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a] font-bold' : 'text-white'}
+                                                            } dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}
                                                         >
                                                             {t(item.title)}
                                                         </span>
@@ -386,12 +386,10 @@ const Sidebar = () => {
                                                                         onClick={() => toggleSubMenu(subItem.name, item.name)}
                                                                     >
                                                                         <div className="flex items-center">
-                                                                            <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-[#506690] dark:group-hover:text-white-dark ltr:pl-3 rtl:pr-3`}>
+                                                                            <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}>
                                                                                 {t(subItem.title)}
                                                                             </span>
-                                                                        </div>
-
-                                                                        <div
+                                                                        </div>                                                                        <div
                                                                             className={`transition-transform duration-300 ${currentSubMenu === subItem.name + item.name ? '-rotate-180 rtl:rotate-180' : ''} ${'!text-[#089bab] '}`}
                                                                         >
                                                                             <i className={`fa-duotone fa-solid fa-angle-down text-xl text-[#0f337a]`} />
@@ -401,13 +399,38 @@ const Sidebar = () => {
                                                                         <ul className="sub-menu text-gray-500">
                                                                             {subItem.childe.map((sub2Item) => (
                                                                                 <li key={sub2Item.name}>
-                                                                                    <Link className="group" key={sub2Item.name} href={sub2Item.link}>
+                                                                                    {/* <Link className="group" key={sub2Item.name} href={sub2Item.link}>
                                                                                         <div className="flex items-center">
                                                                                             <span className="text-[#777d74] text-xs  dark:text-[#506690] ltr:pl-3 rtl:pr-3">
                                                                                                 {t(sub2Item.title)}
                                                                                             </span>
                                                                                         </div>
-                                                                                    </Link>
+                                                                                    </Link> */}
+                                                                                    <button
+                                                                                        type="button"
+                                                                                        className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
+                                                                                            ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
+                                                                                            : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+                                                                                            }`}
+                                                                                        onClick={() => {
+                                                                                            const data: ITabData = {
+                                                                                                id: sub2Item.id,
+                                                                                                key: sub2Item.id,
+                                                                                                name: sub2Item.name,
+                                                                                                title: sub2Item.title,
+                                                                                                orther: 0
+                                                                                            };
+
+
+                                                                                            AddTab(data);
+                                                                                        }
+                                                                                        }
+                                                                                    >
+                                                                                        <div className="flex items-center">
+                                                                                            <i className={`fa-duotone fa-solid ${sub2Item.icon} text-base ml-2`} />
+                                                                                            <span className="text-xs">{t(sub2Item.title)}</span>
+                                                                                        </div>
+                                                                                    </button>
                                                                                 </li>
                                                                             ))}
                                                                         </ul>

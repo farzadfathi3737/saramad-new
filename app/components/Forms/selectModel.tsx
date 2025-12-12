@@ -47,7 +47,7 @@ const FSelectModel: React.FC<IselectOption> = ({ listRef, filed }) => {
     return (
         <div className="mb-5 w-full">
             <fieldset>
-                <label htmlFor="ipMask" className="text-white-dark">
+                <label htmlFor="ipMask" className="!text-gray-600">
                     {t(filed.name.toLowerCase().toString())}
                 </label>
                 {filed.required ? <Select placeholder={t("Selectanoption")} options={_options} required /> : <Select placeholder={t("Selectanoption")} options={_options} />}

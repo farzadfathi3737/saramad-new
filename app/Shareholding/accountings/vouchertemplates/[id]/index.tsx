@@ -1,15 +1,14 @@
-import FColorField from '@/components/inputs/colorField';
-import FTextField from '@/components/inputs/textField';
+'use client'
+
+import FColorField from '@/app/components/inputs/colorField';
+import FTextField from '@/app/components/inputs/textField';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
-import { useRouter as Router } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/contexts/LanguageContext';
 import * as Yup from 'yup';
 //import axios from 'axios';
 
@@ -20,21 +19,19 @@ interface ICompany {
 }
 
 const Edit = () => {
-    const { t } = useTranslation();
+    const { t } = useLanguage();
     const [model, setModel] = useState<IDataModel>();
     const [data, setData] = useState<ICompany>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [rowId, setRowId] = useState<string>();
 
     const router = useRouter();
-    const _router = Router();
-    const { query } = _router;
 
     useEffect(() => {
-        setRowId(query.id?.toString());
+        // rowId should be passed as prop in App Router
 
         const setdata = async () => {
-            let _model = getEntityModel('vouchertemplates');
+            const _model = getEntityModel('vouchertemplates');
             setModel(_model);
         };
 
@@ -100,7 +97,7 @@ const Edit = () => {
                     <div>
                         <Tooltip label={t('back')}>
                             <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => router.back()}>
-                                <FontAwesomeIcon icon={faArrowRight} size="lg" className="ml-2" />
+                                <i className="fa-duotone fa-solid fa-arrow-right text-xl ml-2" />
                             </ActionIcon>
                         </Tooltip>
                     </div>

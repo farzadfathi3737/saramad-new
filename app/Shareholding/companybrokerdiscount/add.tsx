@@ -93,8 +93,8 @@ const Add = ({ id, brokerName }: { id: string, brokerName: string }) => {
                                 <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-1">
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3">
                                         {/* <div>
-                                            <label className="text-white-dark">{t('companyBroker')}</label>
-                                            <div className="form-input bg-white-light pt-3 text-white-dark">{data2.broker}</div>
+                                            <label className="!text-gray-600">{t('companyBroker')}</label>
+                                            <div className="form-input bg-white-light pt-3 !text-gray-600">{data2.broker}</div>
                                         </div> */}
                                         <div>
                                             <Field id="percentage" name="percentage" label={t('percentage')} component={FTextField} />

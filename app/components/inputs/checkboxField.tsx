@@ -26,14 +26,14 @@ const FCheckboxField: React.FC<CustomInputProps> = ({ label, field, value = null
     return (
         <div className="w-full">
             <fieldset>
-                <label htmlFor={field.name} className="text-white-dark">
+                <label htmlFor={field.name} className="!text-gray-600">
                     {label}
                 </label>
                 <div className={`flex items-center border ${disabled && 'bg-gray-50'} rounded border-gray-200 dark:border-gray-700`}>
                     <label
                         htmlFor={field.name}
                         onClick={() => !disabled && handlerClick()}
-                        className={`m-0 flex w-full items-center p-3 text-sm font-medium  ${active ? 'text-dark' : 'text-white-dark'} dark:text-gray-300`}
+                        className={`m-0 flex w-full items-center p-3 text-sm font-medium  ${active ? 'text-dark' : '!text-gray-600'} dark:text-gray-300`}
                     >
                         <div className={`flex h-4 w-4 items-center pl-3 ${disabled || !active ? 'text-gray-400' : 'text-blue-400'}`}>
                             {active == null ? (

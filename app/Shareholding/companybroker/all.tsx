@@ -3,11 +3,9 @@ import { useEffect, useState } from 'react';
 import Demo from '../../components/Datatable/MRT';
 //import 'tippy.js/dist/tippy.css';
 import { IDataModel } from '@/interface/dataModel';
-import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { IRootState } from '@/store';
-import { ActionIcon, Tooltip } from '@mantine/core';
-import { useRouter } from 'next/navigation';
+import { Tooltip } from '@mantine/core';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
 

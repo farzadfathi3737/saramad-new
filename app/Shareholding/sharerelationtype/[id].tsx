@@ -133,8 +133,8 @@ const Edit = ({ id }: { id: string }) => {
 
                                             <div>
                                                 <fieldset>
-                                                    <label className="text-white-dark">{t('creationDate')}</label>
-                                                    <div className="form-input bg-white-light pt-3 text-white-dark">{data.creationDate}</div>
+                                                    <label className="!text-gray-600">{t('creationDate')}</label>
+                                                    <div className="form-input bg-white-light pt-3 !text-gray-600">{data.creationDate}</div>
                                                 </fieldset>
                                             </div>
                                         </div>

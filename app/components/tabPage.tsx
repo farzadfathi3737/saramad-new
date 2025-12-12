@@ -68,6 +68,23 @@ import Shareinitialbalance from "../Shareholding/shareinitialbalance";
 import ShareinitialbalanceAdd from "../Shareholding/shareinitialbalance/add";
 import ShareinitialbalanceEdit from "../Shareholding/shareinitialbalance/[id]";
 
+import TransactionImportSession from "../Shareholding/transactionImportsession";
+import TransactionImportSessionDetail from "../Shareholding/transactionImportsession/[id]";
+
+import ShareTransactionBatch from "../Shareholding/sharetransactionbatch";
+
+import ShareMeeting from "../Shareholding/shareMeeting";
+
+import BrokerContradictions from "../Shareholding/brokercontradictions";
+
+import OptionContract from "../Shareholding/optioncontract";
+
+import TransactionCommission from "../Shareholding/transactioncommission";
+
+import TransactionCommissionDiscount from "../Shareholding/transactioncommissiondiscount";
+import TransactionCommissionDiscountapply from "../Shareholding/transactioncommissiondiscount/apply";
+import TransactionCommissionDiscountremove from "../Shareholding/transactioncommissiondiscount/remove";
+
 import ArticleElements from "../Shareholding/accountings/articleelements";
 import ArticleElementsAdd from "../Shareholding/accountings/articleelements/add";
 import ArticleElementsEdit from "../Shareholding/accountings/articleelements/[id]";
@@ -236,6 +253,9 @@ export default function TabsWithRouting() {
                 if (active.key == "companybrokerdiscount/edit") return <CompanybrokerdiscountEdit key={active.id} id={getParamData('tradingCodeId')} brokerName={getParamData('brokerName')} />;
                 return <CompanyBroker key={active.id} />;
 
+            case "companybrokerall":
+                return <CompanyBrokerAll key={active.id} />;
+
             case "accountingArticleElements":
                 if (active.key == "add") return <ArticleElementsAdd key={active.id} />;
                 if (active.key == "edit") return <ArticleElementsEdit key={active.id} />;
@@ -289,6 +309,34 @@ export default function TabsWithRouting() {
 
             case "consolidation":
                 return <Consolidation key={active.id} />;
+
+            case "transactionimportsession":
+                if (active.key == "view") return <TransactionImportSessionDetail key={active.id} id={getParamData('id')} />;
+                return <TransactionImportSession key={active.id} />;
+
+            case "sharetransactionbatch":
+                return <ShareTransactionBatch key={active.id} />;
+
+            case "sharemeeting":
+                return <ShareMeeting key={active.id} />;
+
+            case "brokercontradictions":
+                return <BrokerContradictions key={active.id} />;
+
+            case "optioncontract":
+                return <OptionContract key={active.id} />;
+
+            case "transactioncommission":
+                return <TransactionCommission key={active.id} />;
+
+            case "transactioncommissiondiscount":
+                return <TransactionCommissionDiscount key={active.id} />;
+
+            case "transactioncommissiondiscountapply":
+                return <TransactionCommissionDiscountapply key={active.id} />;
+
+            case "transactioncommissiondiscountremove":
+                return <TransactionCommissionDiscountremove key={active.id} />;
 
             default:
                 return <></>;
@@ -438,6 +486,24 @@ export default function TabsWithRouting() {
                             {tab.id === "marketnotice" && <MarketNotice />}
                             {tab.id === "comprehensive" && <Comprehensive />}
                             {tab.id === "consolidation" && <Consolidation />}
+                            {tab.id === "transactionimportsession" && (
+                                <>
+                                    {tab.key === "view" && <TransactionImportSessionDetail id={getParamData('id', tab)} />}
+                                    {tab.key === "transactionimportsession" && <TransactionImportSession />}
+                                </>
+                            )}
+
+                            {tab.id === "sharetransactionbatch" && <ShareTransactionBatch />}
+
+                            {tab.id === "sharemeeting" && <ShareMeeting />}
+
+                            {tab.id === "brokercontradictions" && <BrokerContradictions />}
+
+                            {tab.id === "optioncontract" && <OptionContract />}
+
+                            {tab.id === "transactioncommission" && <TransactionCommission />}
+
+                            {tab.id === "transactioncommissiondiscount" && <TransactionCommissionDiscount />}
                         </div>
                     ))}
                 </div>

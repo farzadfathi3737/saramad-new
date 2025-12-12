@@ -1,7 +1,6 @@
 'use client'
 import { Field, Form, Formik } from 'formik'
 import { useState } from 'react'
-import FTextField from '../components/inputs/textField'
 import * as Yup from 'yup';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { IAuth } from '@/interface/dataModel';
@@ -12,7 +11,6 @@ export default function LoginPage() {
     const { t } = useLanguage();
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
-    const [showPassword, setShowPassword] = useState(false)
 
     const LoginSchema = Yup.object().shape({
         username: Yup.string().required('ورود نام کاربری اجباری است'),
@@ -38,8 +36,8 @@ export default function LoginPage() {
 
             const data = await res.json()
             setError(data?.error || 'خطایی رخ داد')
-        } catch (err: any) {
-            setError(err.message || 'خطا در ارتباط')
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'خطا در ارتباط')
         } finally {
             setLoading(false);
         }
@@ -54,7 +52,7 @@ export default function LoginPage() {
                     handleLoginClick(values);
                 }}
             >
-                {({ errors, touched }) => (
+                {() => (
                     <Form className="space-y-4">
                         {/* نام کاربری */}
                         <div className="group animate-in fade-in slide-in-from-bottom-3 duration-500 animation-delay-200">
@@ -99,7 +97,7 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3 mt-6 relative group animate-in fade-in slide-in-from-bottom-3 duration-500 animation-delay-400 overflow-hidden rounded-xl font-semibold text-white transition-all duration-300"
+                            className="w-full py-3 mt-6 relative group animate-in fade-in slide-in-from-bottom-3 animation-delay-400 overflow-hidden rounded-xl font-semibold text-white transition-all duration-300"
                             style={{ background: 'linear-gradient(to bottom right, #fff, #fff8' }}
                         >
                             {/* افکت براق */}

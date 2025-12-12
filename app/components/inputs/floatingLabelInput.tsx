@@ -99,7 +99,7 @@ const FloatingLabelInput: React.FC<InputProps> = ({
 
       <label
         className={`text-lable pointer-events-none absolute -translate-y-2/4 transform text-xs text-gray-400 transition-all duration-200 ${field.value || hasValue || isFocused || value
-          ? "top-[0px] right-[15px] bg-inherit px-2"
+          ? "top-[0px] right-[15px] bg-white/10 backdrop-blur-xl px-2"
           : "top-[50%] text-base"
           } ${icon ? "right-12" : "right-5"}`}
       >

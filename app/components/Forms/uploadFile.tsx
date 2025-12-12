@@ -17,7 +17,7 @@ const optionData: IOptionType[] = [
 const FileUploadModal: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState();
+    const [errorMessage, setErrorMessage] = useState<string | undefined>();
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
     const [selectedValue, setSelectedValue] = useState<SingleValue<IOptionType>>(optionData[0]);
     const [companyId, setCompanyId] = useState('');
@@ -44,7 +44,7 @@ const FileUploadModal: React.FC = () => {
         const formData = new FormData();
         formData.append('File', uploadedFiles[0]);
 
-        const res = await apiFetch(`/cloud/api/shareholding/TransactionImportSession?CompanyId=${companyId}&FileType=${selectedValue?.value}`, {
+        const res = await fetch(`cloud/api/shareholding/TransactionImportSession?CompanyId=${companyId}&FileType=${selectedValue?.value}`, {
             method: 'POST',
             body: formData,
         });
@@ -62,6 +62,8 @@ const FileUploadModal: React.FC = () => {
             //setAddModal(false);
             //fetchData();
         } else {
+            setIsLoading(false);
+            setErrorMessage('خطا در بارگزاری فایل رخ داده است');
             //setInitialRecords({ pageNumber: 1, pageSize: 10, totalPages: 1, totalCount: 10, items: [] });
         }
 
@@ -81,7 +83,7 @@ const FileUploadModal: React.FC = () => {
 
     return (
         <div className="flex w-full">
-            <button type="button" onClick={() => openModal()} className="btn btn-primary w-52">
+            <button type="button" onClick={() => openModal()} className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]">
                 انتخاب فایل
             </button>
             {errorMessage && <p className="mr-5 flex w-full items-center justify-center rounded-md bg-red-100 text-red-900">{errorMessage}</p>}
@@ -98,8 +100,8 @@ const FileUploadModal: React.FC = () => {
                     >
                         <div className="fixed inset-0" />
                     </Transition.Child>
-                    <div className="fixed inset-0 z-[999] overflow-y-auto bg-[black]/60">
-                        <div className="flex min-h-screen items-start justify-center px-4">
+                    <div className="fixed inset-0 flex items-center justify-center bg-black/70 z-40">
+                        <div className="w-full max-w-lg">
                             <Transition.Child
                                 as={Fragment}
                                 enter="ease-out duration-300"
@@ -109,9 +111,9 @@ const FileUploadModal: React.FC = () => {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="panel relative my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
+                                <Dialog.Panel className="rounded-lg bg-white p-6 shadow-lg relative">
                                     {isLoading && (
-                                        <div className="absolute z-50 flex h-full w-full items-center justify-center bg-[#00000042]">
+                                        <div className="absolute left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-[#00000042]">
                                             <div role="status">
                                                 <svg
                                                     aria-hidden="true"
@@ -134,17 +136,16 @@ const FileUploadModal: React.FC = () => {
                                         </div>
                                     )}
 
-                                    <div className="flex items-center justify-between bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
-                                        <div className="text-lg font-bold">آپلود فایل‌</div>
-                                        <button type="button" onClick={() => closeModal()} className="text-white-dark hover:text-dark">
-                                            {/* <FontAwesomeIcon icon={faClose} size="xl" className="m-1 text-gray-500" /> */}
-                                            <i className={`fa-duotone fa-solid fa-close text-xl m-1 text-gray-500`} />
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h2 className="text-xl font-semibold">آپلود فایل‌</h2>
+                                        <button type="button" onClick={() => closeModal()} className="text-gray-500 hover:text-gray-700">
+                                            <i className="fa-duotone fa-solid fa-xmark text-xl" />
                                         </button>
                                     </div>
 
-                                    <div className="p-5">
+                                    <div>
                                         <div>
-                                            <label className="text-white-dark">نوع فایل</label>
+                                            <label className="!text-gray-600">نوع فایل</label>
                                             <Select
                                                 //menuPosition="fixed"
                                                 className="z-auto mb-5"
@@ -177,11 +178,11 @@ const FileUploadModal: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        <div className="mt-8 flex items-center justify-end">
-                                            <button type="button" onClick={() => closeModal()} className="btn btn-outline-danger">
+                                        <div className="mt-8 flex justify-end">
+                                            <button type="button" onClick={() => closeModal()} className="ml-2 rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600">
                                                 انصراف
                                             </button>
-                                            <button type="button" onClick={() => saveFile()} className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={fileList?.length > 0 ? false : true}>
+                                            <button type="button" onClick={() => saveFile()} className="rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-green-700" disabled={fileList?.length > 0 ? false : true}>
                                                 شروع بارگزاری
                                             </button>
                                         </div>
@@ -192,7 +193,7 @@ const FileUploadModal: React.FC = () => {
                     </div>
                 </Dialog>
             </Transition>
-        </div>
+        </div >
 
     );
 };

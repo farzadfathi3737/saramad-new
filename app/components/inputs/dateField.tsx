@@ -36,7 +36,7 @@ const FDateField: React.FC<CustomInputProps> = ({ label, field, type, form, ...o
                 locale={persian_fa}
             />
             {field.value && (
-                <div className="absolute bottom-0 left-0 p-3 text-white-dark" onClick={clear}>
+                <div className="absolute bottom-0 left-0 p-3 !text-gray-600" onClick={clear}>
                     {/* <FontAwesomeIcon icon={faXmark} size="lg" className="ml-2" /> */}
                     <i className={`fa-duotone fa-solid fa-xmark text-lg ml-2`} />
                 </div>

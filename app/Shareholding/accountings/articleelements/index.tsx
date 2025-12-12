@@ -211,11 +211,11 @@ const ArticleElements = () => {
                                     leaveFrom="opacity-100 scale-100"
                                     leaveTo="opacity-0 scale-95"
                                 >
-                                    <Dialog.Panel className="panel relative my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
+                                    <Dialog.Panel className="panel relative my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:!text-gray-600">
                                         <div className="flex items-center justify-between border-b-2 bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                                             <div className="flex text-lg font-bold">تعریف مقدار ثابت</div>
 
-                                            <button type="button" onClick={() => setIsModalOpen(false)} className="text-white-dark hover:text-dark">
+                                            <button type="button" onClick={() => setIsModalOpen(false)} className="!text-gray-600 hover:text-dark">
                                                 <i className={`fa-duotone fa-solid fa-xmark text-2xl text-gray-500`} />
                                             </button>
                                         </div>
@@ -282,14 +282,14 @@ const ArticleElements = () => {
                                     leaveFrom="opacity-100 scale-100"
                                     leaveTo="opacity-0 scale-95"
                                 >
-                                    <Dialog.Panel className="panel relative my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
+                                    <Dialog.Panel className="panel relative my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:!text-gray-600">
                                         <div className="flex items-center justify-between border-b-2 bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                                             <div className="flex text-lg font-bold">
                                                 <div className="flex w-40 pl-2 text-info">
                                                     ایجاد مقدار مشابه
                                                 </div>
                                             </div>
-                                            <button type="button" onClick={() => setIsDublicateModalOpen(false)} className="text-white-dark hover:text-dark">
+                                            <button type="button" onClick={() => setIsDublicateModalOpen(false)} className="!text-gray-600 hover:text-dark">
                                                 <i className={`fa-duotone fa-solid fa-xmark text-2xl text-gray-500`} />
                                             </button>
                                         </div>

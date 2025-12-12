@@ -119,8 +119,8 @@ const Edit = ({ id }: { id: string }) => {
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                         <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                             <div>
-                                                <label className="text-white-dark">{t('StockBroker')}</label>
-                                                <div className="form-input bg-white-light pt-3 text-white-dark">{data.broker}</div>
+                                                <label className="!text-gray-600">{t('StockBroker')}</label>
+                                                <div className="form-input bg-white-light pt-3 !text-gray-600">{data.broker}</div>
                                             </div>
                                             <div>
                                                 <Field id="accountingCode" name="accountingCode" label={t('accountingCode')} component={FTextField} />

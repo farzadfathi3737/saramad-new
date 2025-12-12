@@ -117,7 +117,9 @@ const Edit = ({ id }: { id: string }) => {
                                 <Form>
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                         <div className="w-full disabled">
-                                            <Field id="accountingCode" name="tradingCode" label={t('tradingCode')} component={FTextField} disabled={true} />
+                                            <Field id="accountingCode" name="tradingCode" label={t('tradingCode')} component={FTextField}
+                                            //disabled={true} 
+                                            />
                                         </div>
                                         <div className="w-full"></div>
                                         <div className="w-full">
@@ -126,7 +128,7 @@ const Edit = ({ id }: { id: string }) => {
                                                     id="type"
                                                     name="type"
                                                     label={"نوع سبد"}
-                                                    disabled={true}
+                                                    //disabled={true}
                                                     options={model?.register?.requestBody
                                                         .find((x) => x.name == 'type')
                                                         ?.enums.map((item: string) => {

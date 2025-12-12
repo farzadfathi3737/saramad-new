@@ -116,8 +116,8 @@ const Add = () => {
                                         </div>
                                         <div>
                                             <fieldset>
-                                                <label className="text-white-dark">گروه</label>
-                                                <div className="form-input bg-white-light pt-3 text-white-dark">غیر بورسی</div>
+                                                <label className="!text-gray-600">گروه</label>
+                                                <div className="form-input bg-white-light pt-3 !text-gray-600">غیر بورسی</div>
                                             </fieldset>
                                         </div>
                                     </div>
@@ -128,8 +128,8 @@ const Add = () => {
                                         </div>
                                         <div>
                                             <fieldset>
-                                                <label className="text-white-dark">صنعت</label>
-                                                <div className="form-input bg-white-light pt-3 text-white-dark">سایر سرمایه گذاری غیر بورسی</div>
+                                                <label className="!text-gray-600">صنعت</label>
+                                                <div className="form-input bg-white-light pt-3 !text-gray-600">سایر سرمایه گذاری غیر بورسی</div>
                                             </fieldset>
                                         </div>
                                     </div>

@@ -34,7 +34,7 @@ const FColorField: React.FC<CustomInputProps> = ({ label, field, type, form, ...
     return (
         <div className="mb-5 w-full">
             <fieldset>
-                <label htmlFor={field.name} className="text-white-dark">
+                <label htmlFor={field.name} className="!text-gray-600">
                     {label}
                 </label>
                 {/* <input type={type} id={field.name} {...field} className={`form-input bg-[#36030a] bg-[${selectedColor}]`} onClick={ handleClick }/> */}

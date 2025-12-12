@@ -2,16 +2,13 @@ import FTextField from '@/app/components/inputs/textField';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { Field, Form, Formik } from 'formik';
-import { useRouter } from 'next/navigation';
-import { useRouter as Router } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { IRootState } from '@/store';
 import FSelectField from '@/app/components/inputs/selectField';
 import FSelectModelField from '@/app/components/inputs/selectModelField';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { Tooltip } from '@mantine/core';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { apiFetch } from '@/lib/apiFetch';
@@ -28,7 +25,6 @@ const Edit = ({ id }: { id: string }) => {
     const [model, setModel] = useState<IDataModel>();
     const [data, setData] = useState<ICompany>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [rowId, setRowId] = useState<string>();
     const appConfig = useSelector((state: IRootState) => state.appConfig);
 
     useEffect(() => {
@@ -70,7 +66,7 @@ const Edit = ({ id }: { id: string }) => {
     const handlEditClick = async (data: ICompany) => {
         setIsLoading(true);
         console.log(data);
-        const res = await fetch(`${model?.update?.url.replace('{id}', rowId ? rowId : '')}`, {
+        const res = await apiFetch(`${model?.update?.url.replace('{id}', id)}`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',
@@ -131,8 +127,8 @@ const Edit = ({ id }: { id: string }) => {
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                         <div className="w-full">
                                             <fieldset>
-                                                <label className="text-white-dark">{t('stock')}</label>
-                                                <div className="form-input bg-white-light pt-3 text-white-dark">{data.stockName}</div>
+                                                <label className="!text-gray-600">{t('stock')}</label>
+                                                <div className="form-input bg-white-light pt-3 !text-gray-600">{data.stockName}</div>
                                             </fieldset>
                                         </div>
                                         <div className="w-full"></div>

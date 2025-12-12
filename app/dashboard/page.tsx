@@ -850,7 +850,7 @@ export default function Dashboard() {
                                                 <a href={item.link} className="flex">
                                                     <div className="flex-1 px-3">
                                                         <div>{item.symbol}</div>
-                                                        <div className="text-xs text-white-dark dark:text-gray-500">{item.des}</div>
+                                                        <div className="text-xs !text-gray-600 dark:text-gray-500">{item.des}</div>
                                                     </div>
                                                     <span className="whitespace-pre px-1 text-base text-secondary ltr:ml-auto rtl:mr-auto">{item.date}</span>
                                                 </a>

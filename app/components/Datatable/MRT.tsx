@@ -47,6 +47,7 @@ interface CostomMRT extends DatatableProps {
     groupColumn?: GroupColumn[] | undefined;
     manualPagination?: boolean;
     editAction?: any;
+    formInitialValues?: any;
 }
 
 const MRT_DataTable: React.FC<CostomMRT> = ({
@@ -731,7 +732,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="panel relative z-50 my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark bg-white">
+                                <Dialog.Panel className="panel relative z-50 my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:!text-gray-600 bg-white">
                                     <div className="flex items-center justify-between border-b-2 border-gray-300 bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
                                         <div className="flex text-lg font-bold ">
                                             <div className="w-40 pl-2 text-red-500 flex items-center">

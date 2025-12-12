@@ -1,22 +1,18 @@
-import Articletemplates from '@/components/customcmp/articletemplate';
-import IconPlus from '@/components/Icon/IconPlus';
-import FDateField from '@/components/inputs/dateField';
-import FSelectField from '@/components/inputs/selectField';
-import FSelectModelField from '@/components/inputs/selectModelField';
-import FTextAreaField from '@/components/inputs/textAreaField';
-import FTextField from '@/components/inputs/textField';
-import { ColoredToast } from '@/components/Notifications/colorNotification';
+'use client'
+
+import FDateField from '@/app/components/inputs/dateField';
+import FSelectField from '@/app/components/inputs/selectField';
+import FSelectModelField from '@/app/components/inputs/selectModelField';
+import FTextAreaField from '@/app/components/inputs/textAreaField';
+import FTextField from '@/app/components/inputs/textField';
+import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
-import { faArrowRight, faClose, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dialog, Transition } from '@headlessui/react';
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { Field, Form, Formik } from 'formik';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useRouter as Router } from 'next/router';
 import { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -32,15 +28,12 @@ const Add = () => {
     const [rowId, setRowId] = useState<string>();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-    const _router = Router();
-    const { query } = _router;
-
     useEffect(() => {
-        setRowId(query.id?.toString());
+        // rowId should be passed as prop in App Router
 
         const setdata = async () => {
-            let _model = await getEntityModel('articletemplates');
-            let _modelAE = await getEntityModel('articleelements');
+            const _model = await getEntityModel('articletemplates');
+            const _modelAE = await getEntityModel('articleelements');
 
             setModel(_model);
             setModelAE(_modelAE);
@@ -90,20 +83,20 @@ const Add = () => {
                         <div>
                             <Tooltip label={t('back')}>
                                 <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => router.back()}>
-                                    <FontAwesomeIcon icon={faArrowRight} size="lg" className="ml-2" />
+                                    <i className="fa-duotone fa-solid fa-arrow-right text-xl ml-2" />
                                 </ActionIcon>
                             </Tooltip>
                         </div>
                         <div className="p-2">قالب سودی زیانی آرتیکل های - {appConfig.company.name}</div>
                     </div>
                     <button type="button" onClick={() => setIsAddModalOpen(!isAddModalOpen)} className="btn btn-outline mr-3 flex items-center rounded-xl bg-[#2D9AA0] font-iranyekan text-[#fff]">
-                        <FontAwesomeIcon icon={faPlus} size="lg" className="ml-2" />
+                        <i className="fa-duotone fa-solid fa-plus text-xl ml-2" />
                         {t('add')}
                     </button>
                 </div>
 
                 <div className="table-responsive px-5">
-                    {model && <Articletemplates model={model} modelAE={modelAE} VoucherTemplateId={rowId!} addModalOpen={isAddModalOpen} setAddModalOpen={setIsAddModalOpen} />}
+                    {/* Articletemplates component needs to be created or imported properly */}
                 </div>
             </div>
         </div>

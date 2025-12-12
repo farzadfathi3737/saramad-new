@@ -3,15 +3,16 @@ import { getEntityModel } from '@/models/entity';
 import { useEffect, useState } from 'react';
 import Demo from '../../components/Datatable/MRT';
 // import 'tippy.js/dist/tippy.css';
-import { IDataModel } from '@/interface/dataModel';
+import { IDataModel, ITabData } from '@/interface/dataModel';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '@/store';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { ActionIcon, Tooltip } from '@mantine/core';
-
+import { ColoredToast } from '@/app/components/Notifications/colorNotification';
+import { setActiveTab, setTabs } from '@/store/appConfigSlice';
 const Company = () => {
     const { t } = useLanguage();
     const subPage = useSubPage();
@@ -20,6 +21,7 @@ const Company = () => {
     const appConfig = useSelector((state: IRootState) => state.appConfig);
     const [companyId, setCompanyId] = useState('');
     const router = useRouter();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const setdata = async () => {
@@ -32,6 +34,45 @@ const Company = () => {
     useEffect(() => {
         setCompanyId(appConfig.company.id);
     }, [appConfig.company]);
+
+    const AddTab = (param: ITabData) => {
+
+        //console.log(param.key, param.name)
+
+        // بررسی: اگر تب قبلاً وجود دارد، فقط آن را فعال کن
+        const _existingTab = appConfig.tabs.find((x) => x.id == param.id);
+
+        if (_existingTab) {
+            // تب قبلاً وجود دارد - فقط فعال کن
+            dispatch(setActiveTab(param.id));
+            router.replace(`?tab=${param.id}`);
+            return;
+        }
+
+        // اگر تب جدید است و تعداد < 6، اضافه کن
+        if (appConfig.tabs.length >= 7) {
+            ColoredToast('warning', 'حداکثر 7 تب مجاز است!');
+            return;
+        }
+
+        // اضافه کردن تب جدید
+        const newTab: ITabData = {
+            id: param.id,
+            key: param.key,
+            name: param.name,
+            title: param.title,
+            orther: param.key == 'dashboard' ? 0 : appConfig.tabs.length,
+            filters: [],
+            params: [],
+        };
+
+        const updatedTabs = [...appConfig.tabs, newTab];
+        dispatch(setTabs(updatedTabs));
+
+        // فعال کردن تب جدید
+        dispatch(setActiveTab(param.id));
+        router.replace(`?tab=${param.id}`);
+    };
 
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
@@ -61,7 +102,15 @@ const Company = () => {
                         {t('list')} {t('companybroker')}
                         {/* : {appConfig.company.name} */}
                         <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
-                            onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '', 'all')}>
+                            onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '', 'all')}
+                        // onClick={() => AddTab({
+                        //     id: modelData?.name?.toLocaleLowerCase() + 'all',
+                        //     key: modelData?.name?.toLocaleLowerCase() + 'all',
+                        //     name: modelData?.name?.toLocaleLowerCase() + 'all',
+                        //     title: "فهرست تمامی کارگزاران",
+                        //     orther: 0
+                        // })}
+                        >
                             فهرست تمامی کارگزاران
                         </button>
                     </div>

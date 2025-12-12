@@ -15,7 +15,7 @@ const FTextField: React.FC<CustomInputProps> = ({ label, field, type = 'text', f
     return (
         <div className="mb-5 w-full">
             <fieldset>
-                <label htmlFor={field.name} className={`text-white-dark ${classNameLabel}`}>
+                <label htmlFor={field.name} className={`!text-gray-600 ${classNameLabel}`}>
                     {label}
                 </label>
                 {!disabled ? (
@@ -26,7 +26,7 @@ const FTextField: React.FC<CustomInputProps> = ({ label, field, type = 'text', f
                         {...other}
                         className={`form-input ${classNameValue}`} />
                 ) : (
-                    <div className={`form-input bg-white-light text-white-dark pt-3 ${classNameValue}`} >{field.value}</div>
+                    <div className={`form-input bg-gray-300 text-gray-500 pt-3 flex items-center ${classNameValue}`} >{field.value}</div>
                 )}
 
                 {form.touched[field.name] && form.errors[field.name] ? <div className="text-red-500">{form.errors[field.name]?.toString()}</div> : null}

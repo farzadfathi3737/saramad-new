@@ -94,6 +94,8 @@ export interface InitialState {
     fiscalYear: {
         id: string;
         name: string;
+        beginDate?: string;
+        endDate?: string;
     };
     tabs: ITabData[];
     activeTab?: string;

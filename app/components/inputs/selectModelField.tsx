@@ -101,7 +101,6 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
 
     useEffect(() => {
         //console.log(listRef, staticParams);
-        setSelectedValue([]);
         const getData = async () => {
             await fetchData();
 
@@ -120,35 +119,32 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
     useEffect(() => {
         if (options.length > 0) {
             if (value || field.value) {
-                setSelectedValue(options[options.findIndex((x: IOptionType) => x.value == field.value)]);
+                const foundOption = options.find((x: IOptionType) => x.value == field.value);
+                setSelectedValue(foundOption);
             } else {
                 //setSelectedValue(options[0]);
             }
         } else {
-            setSelectedValue([]);
+            setSelectedValue(undefined);
         }
-    }, [options]);
+    }, [options, field.value]);
 
     const handleChange = (selectedOption: any) => {
         //console.log(selectedOption);
-        onChange && onChange(selectedOption);
         const value = isMulti ? selectedOption.map((option: IOptionType) => option.value) : selectedOption?.value;
         form.setFieldValue(field.name, value);
-        field.value = value;
-        setSelectedValue(isMulti ? options.filter((option) => (field.value || []).includes(option.value)) : options.find((option) => option.value === field.value));
+        onChange && onChange(selectedOption);
     };
 
     const clear = () => {
         form.setFieldValue(field.name, undefined);
-        setSelectedValue([]);
-        field.value = undefined;
         onChange && onChange(undefined);
     };
     //setSelectedValue(isMulti ? options.filter((option) => (field.value || []).includes(option.value)) : options.find((option) => option.value === field.value));
 
     return (
         <div className="relative">
-            {label && <label className="text-white-dark">{label}</label>}
+            {label && <label className="!text-gray-600">{label}</label>}
             {loading && options.length < 1 ? (
                 <div className="form-input w-full"></div>
             ) : (
@@ -171,9 +167,10 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
                         noOptionsMessage={() => t('noOptions')}
                     />
                     {field.value && (
-                        <div className="absolute bottom-0 left-8 p-3 text-white-dark" onClick={clear}>
-                            {/* <FontAwesomeIcon icon={faXmark} className="ml-2" /> */}
+                        <div className="absolute bottom-0 left-8 p-3 !text-gray-600 flex items-center h-[48px]" onClick={clear}>
+
                             <i className="fa-duotone fa-solid fa-xmark text-gray-700 text-lg"></i>
+
                         </div>
                     )}
                 </>

@@ -11,11 +11,11 @@ interface CustomInputProps extends FieldProps {
     placeholder?: string;
 }
 
-const FTextAreaField: React.FC<CustomInputProps> = ({ label, field, type, form, disabled = false, rows=4, placeholder="", ...other }) => {
+const FTextAreaField: React.FC<CustomInputProps> = ({ label, field, type, form, disabled = false, rows = 4, placeholder = "", ...other }) => {
     return (
         <div className="mb-5 w-full">
             <fieldset>
-                <label htmlFor={field.name} className="text-white-dark">
+                <label htmlFor={field.name} className="!text-gray-600">
                     {label}
                 </label>
                 {!disabled ? (
@@ -27,7 +27,7 @@ const FTextAreaField: React.FC<CustomInputProps> = ({ label, field, type, form, 
                         placeholder={placeholder}
                     ></textarea>
                 ) : (
-                    <div className="form-input bg-white-light pt-3 text-white-dark">{field.value}</div>
+                    <div className="form-input bg-white-light pt-3 !text-gray-600">{field.value}</div>
                 )}
 
                 {form.touched[field.name] && form.errors[field.name] ? <div className="text-warning">{form.errors[field.name]?.toString()}</div> : null}

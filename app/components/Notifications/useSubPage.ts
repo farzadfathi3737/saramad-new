@@ -10,7 +10,7 @@ export function useSubPage() {
     const dispatch = useDispatch();
 
     const load = (tabName: string, subName?: string, filters?: IKeyValue[], params?: IKeyValue[]) => {
-
+        console.log(tabName, subName)
         const _newTabs: ITabData[] = appConf.tabs.filter((x) => x.id !== tabName)!;
         const _newTab: ITabData = appConf.tabs.find((x) => x.id == tabName)!;
 

@@ -5,6 +5,7 @@ import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { IDataModel } from '@/interface/dataModel';
+import { apiFetch } from '@/lib/apiFetch';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
 import { Tooltip } from '@mantine/core';
@@ -63,7 +64,7 @@ const Add = () => {
 
         data.companyId = appConfig.company.id;
 
-        const res = await fetch(`${model?.register?.url}`, {
+        const res = await apiFetch(`${model?.register?.url}`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +89,7 @@ const Add = () => {
     const handleChange = async (id: string) => {
         setLoading(true);
 
-        const res = await fetch(`${modelStock?.read?.url.replace('{id}', id)}`);
+        const res = await apiFetch(`${modelStock?.read?.url.replace('{id}', id)}`);
 
         if (res.ok) {
             const result = res && (await res?.json());
@@ -124,9 +125,8 @@ const Add = () => {
                             initialValues={{}}
                             validationSchema={SignupSchema}
                             onSubmit={(values) => {
-                                //console.log('ok', values);
+                                console.log('ok', values);
                                 handleAddClick(values);
-                                //alert(JSON.stringify(values, null, 2));
                             }}
                         >
                             <Form>
@@ -139,7 +139,7 @@ const Add = () => {
                                             listRefName="stock"
                                             component={FSelectModelField}
                                             onChange={(item: any) => {
-                                                console.log(item);
+                                                // console.log(item);
                                                 handleChange(item.value);
                                             }}
                                             placeholder="لطفا یک مورد را انتخاب کنید"
@@ -147,142 +147,19 @@ const Add = () => {
                                     </div>
                                     <div className="w-full"></div>
                                 </div>
-                            </Form>
-                        </Formik>
-                        <hr />
-                        <Formik
-                            initialValues={{}}
-                            validationSchema={SignupSchema}
-                            onSubmit={(values) => {
-                                //console.log('ok', values);
-                                handleAddClick(values);
-                                //alert(JSON.stringify(values, null, 2));
-                            }}
-                        >
-                            <Form>
-                                {/* <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                    <div className="w-full">
-                                        <Field id="stockId" name="stockId" label={t('stock')} listRefName="stock" component={FSelectModelField} />
-                                    </div>
-                                    <div className="w-full"></div>
-                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                        <div>
-                                            <Field
-                                                id="investmentType"
-                                                name="investmentType"
-                                                label={t('investmentType')}
-                                                options={model?.register?.requestBody
-                                                    .find((x) => x.name == 'investmentType')
-                                                    ?.enums.map((item: string) => {
-                                                        return { value: item, label: t(item.toLowerCase()) };
-                                                    })}
-                                                component={FSelectField}
-                                            />
-                                        </div>
-                                        <div>
-                                            <Field
-                                                id="relationTypeId"
-                                                name="relationTypeId"
-                                                label={t('ShareRelationType')}
-                                                listRefName="sharerelationtype"
-                                                staticParams={[{ name: 'CompanyId', value: appConfig.company?.id }]}
-                                                component={FSelectModelField}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="w-full"></div>
-                                    {/* {data.optionDetails && (
-                                        <div className="flex w-full">
-                                            <div className="w-full">
-                                                <div className="space-y-2 font-iranyekan">
-                                                    <div className="border-y border-[#d3d3d3] dark:border-[#1b2e4b]">
-                                                        <button
-                                                            type="button"
-                                                            className={`flex w-full items-center p-4 font-iranyekan text-[#089bab] dark:bg-[#1b2e4b] ${active2 === '1' ? '!#089bab' : '#089bab'}`}
-                                                            onClick={() => togglePara2('1')}
-                                                        >
-                                                            مشخصات اوراق اختیار معامله
-                                                            <div className={`text-[#089bab] ltr:ml-auto rtl:mr-auto ${active2 === '1' ? 'rotate-180' : ''}`}>
-                                                                <IconCaretDown />
-                                                            </div>
-                                                        </button>
-                                                        <div>
-                                                            <AnimateHeight duration={300} height={active2 === '1' ? 'auto' : 0}>
-                                                                <div className="p-5">
-                                                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                                                        <div>
-                                                                            <Field
-                                                                                id="optionDetails.expirationDate"
-                                                                                name="optionDetails.expirationDate"
-                                                                                label={t('expirationDate')}
-                                                                                component={FTextField}
-                                                                                disabled
-                                                                            />
-                                                                        </div>
-                                                                        <div>
-                                                                            <Field id="optionDetails.typeName" name="optionDetails.typeName" label={t('typeName')} component={FTextField} disabled />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                                                        <div>
-                                                                            <Field
-                                                                                id="optionDetails.strikePrice"
-                                                                                name="optionDetails.strikePrice"
-                                                                                label={t('strikePrice')}
-                                                                                component={FTextField}
-                                                                                disabled
-                                                                            />
-                                                                        </div>
-                                                                        <div>
-                                                                            <Field
-                                                                                id="optionDetails.contractSize"
-                                                                                name="optionDetails.contractSize"
-                                                                                label={t('contractSize')}
-                                                                                component={FTextField}
-                                                                                disabled
-                                                                            />
-                                                                        </div>
-                                                                        <div>
-                                                                            <Link
-                                                                                className="btn btn-outline mr-3 flex items-center rounded-xl bg-[#2D9AA0] font-iranyekan text-[#fff]"
-                                                                                href={`/Shareholding/stock/${data.optionDetails?.contractStockId}`}
-                                                                                onClick={() => setRowId(data.optionDetails?.contractStockId)}
-                                                                            >
-                                                                                نماد سهم اصلی اختیار
-                                                                            </Link>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </AnimateHeight>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )} /}
-
-                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                        <div>
-                                            <Field id="accountingMainCode" name="accountingMainCode" label={t('accountingMainCode')} component={FTextField} />
-                                        </div>
-                                        <div>
-                                            <Field id="accountingSubCode" name="accountingSubCode" label={t('accountingSubCode')} component={FTextField} />
-                                        </div>
-                                    </div>
-                                </div> */}
-
+                                <hr />
                                 <div className="grid w-full grid-cols-1 gap-2 px-10 pt-5 sm:grid-cols-2">
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                         <div>
                                             <fieldset>
-                                                <label className="text-white-dark">{t('symbol')}</label>
-                                                <div className="form-input bg-white-light pt-3 text-white-dark">{dataStock?.symbol}</div>
+                                                <label className="!text-gray-600">{t('symbol')}</label>
+                                                <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.symbol}</div>
                                             </fieldset>
                                         </div>
                                         <div>
                                             <fieldset>
-                                                <label className="text-white-dark">نوع سهام</label>
-                                                <div className="form-input bg-white-light pt-3 text-white-dark">{dataStock?.stockTypeName}</div>
+                                                <label className="!text-gray-600">نوع سهام</label>
+                                                <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.stockTypeName}</div>
                                             </fieldset>
                                         </div>
                                     </div>
@@ -290,8 +167,8 @@ const Add = () => {
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                         <div>
                                             <fieldset>
-                                                <label className="text-white-dark">نام سهام</label>
-                                                <div className="form-input bg-white-light pt-3 text-white-dark">{dataStock?.name}</div>
+                                                <label className="!text-gray-600">نام سهام</label>
+                                                <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.name}</div>
                                             </fieldset>
                                         </div>
                                         <div>
@@ -312,8 +189,8 @@ const Add = () => {
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                         <div>
                                             <fieldset>
-                                                <label className="text-white-dark">گروه</label>
-                                                <div className="form-input bg-white-light pt-3 text-white-dark">{dataStock?.categoryName}</div>
+                                                <label className="!text-gray-600">گروه</label>
+                                                <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.categoryName}</div>
                                             </fieldset>
                                         </div>
                                         <div>
@@ -331,8 +208,8 @@ const Add = () => {
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                         <div>
                                             <fieldset>
-                                                <label className="text-white-dark">صنعت</label>
-                                                <div className="form-input bg-white-light pt-3 text-white-dark">{dataStock?.industryName}</div>
+                                                <label className="!text-gray-600">صنعت</label>
+                                                <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.industryName}</div>
                                             </fieldset>
                                         </div>
                                         <div></div>
@@ -362,29 +239,14 @@ const Add = () => {
                                                                 <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                                                     <div>
                                                                         <fieldset>
-                                                                            <label className="text-white-dark">{t('expirationDate')}</label>
-                                                                            <div className="form-input bg-white-light pt-3 text-white-dark">{dataStock?.optionDetails.expirationDate}</div>
+                                                                            <label className="!text-gray-600">{t('expirationDate')}</label>
+                                                                            <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.optionDetails.expirationDate}</div>
                                                                         </fieldset>
                                                                     </div>
                                                                     <div>
                                                                         <fieldset>
-                                                                            <label className="text-white-dark">{'نوع اختیار'}</label>
-                                                                            <div className="form-input bg-white-light pt-3 text-white-dark">{dataStock?.optionDetails.typeName}</div>
-                                                                        </fieldset>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="grid w-full"></div>
-                                                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                                                    <div>
-                                                                        <fieldset>
-                                                                            <label className="text-white-dark">{t('strikePrice')}</label>
-                                                                            <div className="form-input bg-white-light pt-3 text-white-dark">{dataStock?.optionDetails.strikePrice}</div>
-                                                                        </fieldset>
-                                                                    </div>
-                                                                    <div>
-                                                                        <fieldset>
-                                                                            <label className="text-white-dark">{t('contractSize')}</label>
-                                                                            <div className="form-input bg-white-light pt-3 text-white-dark">{dataStock?.optionDetails.contractSize}</div>
+                                                                            <label className="!text-gray-600">{'نوع اختیار'}</label>
+                                                                            <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.optionDetails.typeName}</div>
                                                                         </fieldset>
                                                                     </div>
                                                                 </div>
@@ -392,8 +254,23 @@ const Add = () => {
                                                                 <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                                                     <div>
                                                                         <fieldset>
-                                                                            <label className="text-white-dark">{'نماد سهم اصلی اختیار'}</label>
-                                                                            <div className="form-input bg-white-light pt-3 text-white-dark">{dataStock?.optionDetails.contractStockName}</div>
+                                                                            <label className="!text-gray-600">{t('strikePrice')}</label>
+                                                                            <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.optionDetails.strikePrice}</div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                    <div>
+                                                                        <fieldset>
+                                                                            <label className="!text-gray-600">{t('contractSize')}</label>
+                                                                            <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.optionDetails.contractSize}</div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="grid w-full"></div>
+                                                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+                                                                    <div>
+                                                                        <fieldset>
+                                                                            <label className="!text-gray-600">{'نماد سهم اصلی اختیار'}</label>
+                                                                            <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.optionDetails.contractStockName}</div>
                                                                         </fieldset>
                                                                     </div>
                                                                     <div></div>
@@ -456,7 +333,7 @@ const Add = () => {
                                         {t('cancel')}
                                     </button>
 
-                                    <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                                    <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-white">
                                         {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
                                         {t('save')}
                                     </button>

@@ -26,8 +26,6 @@ const Add = () => {
     const [rowId, setRowId] = useState<string>();
     const appConfig = useSelector((state: IRootState) => state.appConfig);
     const router = useRouter();
-    const _router = Router();
-    const { query } = _router;
 
     useEffect(() => {
         const setdata = async () => {

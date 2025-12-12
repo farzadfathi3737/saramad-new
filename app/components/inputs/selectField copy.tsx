@@ -39,7 +39,7 @@ const FSelectField1: React.FC<CustomInputProps> = ({ label, options, field, form
     return (
         <div className="mb-5 w-full">
             <fieldset>
-                <label htmlFor={field.name} className="text-white-dark">
+                <label htmlFor={field.name} className="!text-gray-600">
                     {label}
                 </label>
                 <Select

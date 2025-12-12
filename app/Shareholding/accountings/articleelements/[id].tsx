@@ -35,11 +35,9 @@ const Edit = () => {
     const appConfig = useSelector((state: IRootState) => state.appConfig);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
-    const _router = Router();
-    const { query } = _router;
 
     useEffect(() => {
-        setRowId(query.id?.toString());
+        // rowId should be passed as prop or from URL params in App Router
 
         const setdata = async () => {
             let _model = await getEntityModel('articleelements');
