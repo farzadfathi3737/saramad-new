@@ -68,8 +68,24 @@
   }
 }
 
+.btn-outline {
+  @apply bg-[#2691bf] text-white transition-colors duration-200 hover:bg-[#1e7aa0];
+}
+
+.btn-primary {
+  @apply border-[#2691bf] bg-[#2691bf] text-white shadow-[#2691bf]/60;
+}
+
 .btn-success {
   @apply border-green-500 bg-green-500 text-white shadow-green-700;
+}
+
+.btn-danger {
+  @apply border-red-500 bg-red-500 text-white shadow-red-700;
+}
+
+.btn-warning {
+  @apply border-orange-500 bg-orange-500 text-white shadow-orange-700;
 }
 
 /* Form */
@@ -78,4 +94,23 @@
 .form-select,
 .form-multiselect {
   @apply h-12 w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm text-black;
+}
+
+div#load_screen {
+  background: #fff;
+  opacity: 1;
+  position: fixed;
+  z-index: 999999;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+div#load_screen .loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }

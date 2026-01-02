@@ -16,6 +16,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import DForms from '@/app/components/Forms';
 import { IconCaretDown } from '@tabler/icons-react';
 import { apiFetch } from '@/lib/apiFetch';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
+import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 //import { useMantineReactTable } from 'mantine-react-table';
 
 interface ICompany {
@@ -25,6 +27,7 @@ interface ICompany {
     fileSize: number;
     fileType: string;
     fileTypeName: string;
+    sourceTypeName: string;
     hasException: boolean;
     id: string;
     importedFileId: string;
@@ -46,6 +49,7 @@ interface AddProps {
 
 const Add = ({ id }: AddProps) => {
     const { t } = useLanguage();
+    const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [editModel, setEditModel] = useState<IDataModel>();
     const [data, setData] = useState<ICompany | undefined>();
@@ -122,7 +126,7 @@ const Add = ({ id }: AddProps) => {
 
         if (res.ok) {
             setIsLoading(false);
-            router.back();
+            subPage('transactionimportsession');
         } else {
             setData(undefined);
             setIsLoading(false);
@@ -136,7 +140,7 @@ const Add = ({ id }: AddProps) => {
 
         if (res.ok) {
             setIsLoading(false);
-            router.back();
+            subPage('transactionimportsession');
         } else {
             setData(undefined);
             setIsLoading(false);
@@ -150,7 +154,7 @@ const Add = ({ id }: AddProps) => {
 
         if (res.ok) {
             setIsLoading(false);
-            router.back();
+            subPage('transactionimportsession');
         } else {
             setData(undefined);
             setIsLoading(false);
@@ -205,13 +209,58 @@ const Add = ({ id }: AddProps) => {
             //setAddModal(false);
             //fetchData();
             setIsLoading(false);
-            router.back();
+            subPage('transactionimportsession');
         } else {
-            //setInitialRecords({ pageNumber: 1, pageSize: 10, totalPages: 1, totalCount: 10, items: [] });
+            const result = res && (await res?.json());
+            ColoredToast('danger', result);
         }
         setIsLoading(false);
     };
 
+
+    const handleInlineSave = async (rowId: string, values: any): Promise<boolean> => {
+        try {
+            if (!editModel) {
+                const _model = await getEntityModel('rawtransaction');
+                setEditModel(_model);
+
+                const res = await apiFetch(`${_model?.update?.url.replace('{id}', rowId ? rowId : '')}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(values),
+                });
+
+                if (res.ok) {
+                    return true;
+                } else {
+                    const result = await res?.json();
+                    ColoredToast('danger', result?.message || 'خطا در ویرایش');
+                    return false;
+                }
+            } else {
+                const res = await apiFetch(`${editModel?.update?.url.replace('{id}', rowId ? rowId : '')}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(values),
+                });
+
+                if (res.ok) {
+                    return true;
+                } else {
+                    const result = await res?.json();
+                    ColoredToast('danger', result?.message || 'خطا در ویرایش');
+                    return false;
+                }
+            }
+        } catch (error) {
+            ColoredToast('danger', error?.toString() ?? 'خطا در ذخیره‌سازی');
+            return false;
+        }
+    };
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
@@ -219,8 +268,9 @@ const Add = ({ id }: AddProps) => {
                     <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
                             <div
-                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50 cursor-pointer"
-                                onClick={() => router.back()}>
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50 cursor-pointer"
+                                //onClick={() => router.back()}>
+                                onClick={() => subPage('transactionimportsession', undefined, undefined, [{ key: 'id', value: id.toString() }])}>
                                 <i className="fa-duotone fa-solid fa-chevron-right text-xl ml-2" />
                             </div>
                         </Tooltip>
@@ -258,7 +308,7 @@ const Add = ({ id }: AddProps) => {
                                     <div>
                                         <fieldset>
                                             <label className="!text-gray-600">نوع فایل</label>
-                                            <div className="form-input pt-3 !text-gray-600">{data.fileTypeName}</div>
+                                            <div className="form-input pt-3 !text-gray-600">{data.sourceTypeName}</div>
                                         </fieldset>
                                     </div>
                                 </div>
@@ -335,7 +385,11 @@ const Add = ({ id }: AddProps) => {
                                                                 {data.exceptionMessages && (
                                                                     <div className="flex w-full py-2">
                                                                         <div className="text-lg text-red-950">خطا :</div>
-                                                                        <div className="pr-5 text-red-800">{data.exceptionMessages}</div>
+                                                                        <div className="pr-5 text-red-800 max-h-80 overflow-y-scroll w-full">{
+                                                                            data.exceptionMessages.split("|").map((item, index) => (
+                                                                                <div key={index}>{item}</div>
+                                                                            ))
+                                                                        }</div>
                                                                     </div>
                                                                 )}
                                                             </div>
@@ -598,7 +652,7 @@ const Add = ({ id }: AddProps) => {
                                                     <AnimateHeight duration={300} height={active2 === '1' ? 'auto' : 0}>
                                                         <div className="table-responsive px-5">
                                                             {modelData && rowId && (
-                                                                <Demo
+                                                                < Demo
                                                                     isShowSearchForm={false}
                                                                     model={modelData}
                                                                     isShowHideCol={true}
@@ -611,21 +665,27 @@ const Add = ({ id }: AddProps) => {
                                                                         { label: 'type', value: 'نوع عملیات' },
                                                                     ]}
                                                                     staticParams={[{ name: 'SessionId', value: rowId! }]}
-                                                                    isEditable={false}
-                                                                    action={(row: any) => (
-                                                                        <>
-                                                                            {data.status != 'Completed' && data.status != 'CompletedWithErrors' && (
-                                                                                <Tooltip label="ویرایش">
-                                                                                    <ActionIcon
-                                                                                        onClick={() => ShowEditForm(row.id)}
-                                                                                        variant="transparent"
-                                                                                        className="mr-3 flex items-center rounded-xl w-9 h-9 p-0">
-                                                                                        <i className="fa-duotone fa-solid fa-pen-to-square text-xl text-gray-400 hover:text-blue-500" />
-                                                                                    </ActionIcon>
-                                                                                </Tooltip>
-                                                                            )}
-                                                                        </>
-                                                                    )}
+                                                                    //isEditable={false}
+                                                                    isEditable={true}
+                                                                    isDeleteable={false}
+                                                                    enableInlineEditing={true}
+                                                                    editableColumns={['name', 'description', 'price', 'quantity']}
+                                                                    onInlineSave={handleInlineSave}
+
+                                                                    // action={(row: any) => (
+                                                                    //     <>
+                                                                    //         {data.status != 'Completed' && data.status != 'CompletedWithErrors' && (
+                                                                    //             <Tooltip label="ویرایش">
+                                                                    //                 <ActionIcon
+                                                                    //                     onClick={() => ShowEditForm(row.id)}
+                                                                    //                     variant="transparent"
+                                                                    //                     className="mr-3 flex items-center rounded-xl w-9 h-9 p-0">
+                                                                    //                     <i className="fa-duotone fa-solid fa-pen-to-square text-xl text-gray-400 hover:text-blue-500" />
+                                                                    //                 </ActionIcon>
+                                                                    //             </Tooltip>
+                                                                    //         )}
+                                                                    //     </>
+                                                                    // )}
                                                                     mantineTableBodyRowBackgroundColor={'#fdba74'}
                                                                     mantineTableBodyRowBackgroundColorChangeByField={'isEdited'}
                                                                     headerAction={

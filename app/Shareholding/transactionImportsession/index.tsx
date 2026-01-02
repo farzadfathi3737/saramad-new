@@ -72,13 +72,16 @@ const Company = () => {
                                         <Demo
                                             model={model}
                                             isShowHideCol={true}
-                                            hideColList={['id', 'companyId', 'date', 'status', 'fileType', 'progress', 'importedFileId', 'includeInProgress']}
+                                            hideColList={['id', 'companyId', 'date', 'status', 'fileType', 'progress', 'importedFileId', 'includeInProgress', 'sourceType']}
                                             addSepratorFildes={['transactionsCount']}
                                             addFooterSumFildes={['transactionsCount']}
                                             labaleNameList={[
                                                 { label: 'Keyword', value: 'نام سهام' },
                                                 { label: 'name', value: 'نام سهام' },
                                                 { label: 'industryName', value: 'زیرصنعت' },
+                                                { label: 'stockBrokerId', value: 'زیرصنعت' },
+                                                { label: 'sourceTypeName', value: 'نوع داده ورودی' },
+                                                { label: 'stockBrokerName', value: 'کارگزاری' },
                                             ]}
                                             staticParams={[{ name: 'CompanyId', value: companyId }]}
                                             isEditable={false}
@@ -95,7 +98,7 @@ const Company = () => {
                                                     </Tooltip>
                                                     <Tooltip label="نمایش تراکنش ها">
                                                         <ActionIcon
-                                                            onClick={() => router.push(`transactionImportsession/${item.id}/transaction`)}
+                                                            onClick={() => subPage('transactionimportsession', 'transaction', undefined, [{ key: 'id', value: item.id.toString() }])}
                                                             variant="transparent"
                                                             className="mr-3 flex items-center rounded-xl w-9 h-9 p-0">
                                                             <i className="fa-duotone fa-solid fa-list-check text-xl text-gray-400 hover:text-green-500" />

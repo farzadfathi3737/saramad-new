@@ -17,7 +17,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                 {/* کارت لاگین */}
                 <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-700">
                     {/* کارت شیشه‌ای */}
-                    <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 hover:shadow-2xl hover:bg-white/15 transition-all duration-300">
+                    <div className="bg-white backdrop-blur-xl border border-[#15456c]/20 rounded-3xl shadow-2xl p-8 transition-all duration-300">
                         {/* لوگو */}
                         <div className="flex justify-center mb-8 animate-in fade-in slide-in-from-top-8 duration-700 animation-delay-200">
                             <img
@@ -29,10 +29,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
                         {/* عنوان */}
                         <div className="text-center mb-8 animate-in fade-in slide-in-from-top-6 duration-700 animation-delay-300">
-                            <h1 className="text-3xl font-bold text-white mb-2">
+                            <h1 className="text-3xl font-bold text-[#15456c] mb-2">
                                 خوش آمدید
                             </h1>
-                            <p className="text-white/70 text-sm">
+                            <p className="text-[#15456c]/70 text-sm">
                                 برای ادامه لطفاً وارد شوید
                             </p>
                         </div>
@@ -43,7 +43,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                         </div>
 
                         {/* فوتر */}
-                        <div className="mt-8 pt-6 border-t border-white/10 text-center text-xs text-white/50">
+                        <div className="mt-8 pt-6 border-t border-white/10 text-center text-xs text-gray-500">
                             <p>تمام حقوق برای سرآمد محفوظ است © 2024</p>
                         </div>
                     </div>

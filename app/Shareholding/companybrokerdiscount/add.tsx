@@ -75,7 +75,7 @@ const Add = ({ id, brokerName }: { id: string, brokerName: string }) => {
                     </div>
                     <div className='px-2 h-full flex flex-col justify-center align-middle'>
                         <div className="p-2">
-                            ثبت تخفیف جدید - {brokerName} - {appConfig.company.name}
+                            ثبت تخفیف جدید - {brokerName}
                         </div>
                     </div>
                 </div>

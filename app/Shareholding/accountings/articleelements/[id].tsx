@@ -6,6 +6,7 @@ import FSelectModelField from '@/app/components/inputs/selectModelField';
 import FTextAreaField from '@/app/components/inputs/textAreaField';
 import FTextField from '@/app/components/inputs/textField';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
@@ -27,6 +28,7 @@ interface IData {
 
 const Edit = () => {
     const { t } = useLanguage();
+    const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [data, setData] = useState<IData>();
     const [loading, setLoading] = useState<boolean>(false);
@@ -98,7 +100,7 @@ const Edit = () => {
             //setAddModal(false);
             //fetchData();
             setLoading(false);
-            router.back();
+            subPage(model?.name.toLocaleLowerCase() ?? '');
         } else {
             const result = res && (await res?.json());
             ColoredToast('danger', result);
@@ -112,13 +114,13 @@ const Edit = () => {
                 <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
                     <div>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => router.back()}>
+                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
                                 <i className={`fa-duotone fa-solid fa-arrow-right text-xl ml-2`} />
                             </ActionIcon>
                         </Tooltip>
                     </div>
                     <div className="p-2">
-                        ویرایش المان {data?.title} - {appConfig.company.name}
+                        ویرایش المان {data?.title}
                     </div>
                 </div>
                 {data && (
@@ -183,7 +185,7 @@ const Edit = () => {
                                     </div>
 
                                     <div className="mt-8 flex items-center justify-end">
-                                        <button type="button" onClick={() => router.back()} className="btn btn-outline-[#2D9AA0] font-iranyekan">
+                                        <button type="button" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')} className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                             {t('cancel')}
                                         </button>
 

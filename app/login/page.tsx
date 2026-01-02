@@ -6,6 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { IAuth } from '@/interface/dataModel';
 import PasswordInput from '../components/inputs/passwordInput';
 import FloatingLabelInput from '../components/inputs/floatingLabelInput';
+import FTextField from '../components/inputs/textField';
 
 export default function LoginPage() {
     const { t } = useLanguage();
@@ -97,14 +98,15 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3 mt-6 relative group animate-in fade-in slide-in-from-bottom-3 animation-delay-400 overflow-hidden rounded-xl font-semibold text-white transition-all duration-300"
-                            style={{ background: 'linear-gradient(to bottom right, #fff, #fff8' }}
+                            className="w-full py-3 mt-6 relative group animate-in fade-in slide-in-from-bottom-3 animation-delay-400 overflow-hidden rounded-xl font-semibold text-white transition-all duration-300 bg-[#2691bf]"
+                        // style={{ background: 'linear-gradient(to top right, #2691bf, #15456c)' }}
+                        // style={{ background: 'linear-gradient(to bottom right, #fff, #fff8' }}
                         >
                             {/* افکت براق */}
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 -translate-x-full group-hover:translate-x-full transition-all duration-700"></div>
 
                             {/* متن */}
-                            <span className="relative flex items-center justify-center gap-2 text-[#0f337a]">
+                            <span className="relative flex items-center justify-center gap-2 text-white">
                                 {loading ? (
                                     <>
                                         <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

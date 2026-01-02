@@ -80,7 +80,7 @@ const Company = () => {
 
                 {/* <div className="mb-5 flex h-[3rem] items-center justify-between border-b-2 px-5 pb-3">
                     <div className="flex items-center">
-                        {t('list')} {t('companybroker')} : {appConfig.company.name}
+                        {t('list')} {t('companybroker')}
                         <Link className="btn btn-outline mr-3 flex items-center rounded-xl bg-[#2D9AA0] font-iranyekan text-[#fff]" 
                         href={modelData?.name.toLocaleLowerCase() + '/all'}>
                             {/* <FontAwesomeIcon icon={faPlus} size="lg" className="ml-2" /> */}
@@ -158,7 +158,7 @@ const Company = () => {
                                     </button> */}
                                     <Tooltip label="کارگزارفرعی">
                                         <ActionIcon
-                                            onClick={() => subPage('companybroker', 'code', undefined, [{ key: 'id', value: row.id.toString() }, { key: 'brokerName', value: row.broker }, { key: 'master', value: '' }])}
+                                            onClick={() => subPage('companybroker', 'code', undefined, [{ key: 'id', value: row.brokerId.toString() }, { key: 'brokerName', value: row.broker }, { key: 'master', value: '' }])}
                                             variant="transparent"
                                             className="mr-3 hover:bg-red-100 w-9 h-9"
                                         >

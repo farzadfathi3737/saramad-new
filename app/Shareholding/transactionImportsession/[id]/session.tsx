@@ -59,10 +59,11 @@ interface IShareTransaction {
 }
 
 type Props = {
+    id: string;
     sessionid?: string;
 };
 
-const Session = ({ sessionid }: Props) => {
+const Session = ({ id, sessionid }: Props) => {
     const { t } = useTranslation();
     const [model, setModel] = useState<IDataModel>();
     const [modelS, setModelS] = useState<IDataModel>();
@@ -95,10 +96,6 @@ const Session = ({ sessionid }: Props) => {
     const [isSubTypeModalOpen, setIsSubTypeModalOpen] = useState(false);
 
     const [selectedRow, setSelectedRow] = useState<IShareTransaction>();
-
-    const router = useRouter();
-    const _router = Router();
-    const { query } = _router;
 
     // // set the drawer menu element
     // const $targetEl: HTMLElement = document.getElementById('drawer-js-example')!;
@@ -143,15 +140,15 @@ const Session = ({ sessionid }: Props) => {
     }, [appConfig.company]);
 
     useEffect(() => {
-        setRowId(query.id?.toString());
+        setRowId(id?.toString());
         const _setdata = async () => {
-            let _modelS = await getEntityModel('sharetransactionbatchsession');
+            const _modelS = await getEntityModel('sharetransactionbatchsession');
             setModelS(_modelS);
 
-            let _modelSD = await getEntityModel('sharetransactionbatch');
+            const _modelSD = await getEntityModel('sharetransactionbatch');
             setModelSD(_modelSD);
 
-            let _model = await getEntityModel('sharetransaction');
+            const _model = await getEntityModel('sharetransaction');
             setModel(_model);
         };
 

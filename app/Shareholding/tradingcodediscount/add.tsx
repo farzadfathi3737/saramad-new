@@ -82,7 +82,7 @@ const Add = ({ tradingCodeId, tradingCode }: { tradingCodeId: string, tradingCod
                     <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
                             <div
-                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
                                 onClick={() => subPage('companytradingcode', 'tradingcodediscount', [{ key: 'tradingCodeId', value: tradingCodeId }, { key: 'tradingCode', value: tradingCode }], undefined)}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>

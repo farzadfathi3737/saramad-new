@@ -70,7 +70,7 @@ const BaseInput: React.FC<InputProps> = ({
     <>
       <div className="relative w-full h-[48px]">
         {icon && (
-          <div className="flex items-center justify-center absolute right-3 top-2/4 transform -translate-y-2/4 text-lable-light border-l h-7 border-gray-300 pl-2 w-8">
+          <div className="flex items-center justify-center absolute right-3 top-2/4 transform -translate-y-2/4 text-gray-500 border-l h-7 border-gray-300 pl-2 w-8">
             {icon}
           </div>
         )}
@@ -92,7 +92,7 @@ const BaseInput: React.FC<InputProps> = ({
               : "w-full h-full px-4 pt-3 pb-3 text-right rounded-md border focus:outline-1/2 focus:outline-secondary focus:ring-0"
             }
           ${form.touched[field.name] && form.errors[field.name]
-              ? "border-danger focus:ring-danger-light"
+              ? "border-red-500 focus:ring-red-300"
               : "border-gray-300 focus:ring-blue-300"
             }
           ${icon ? "pr-14" : ""}
@@ -123,14 +123,14 @@ const BaseInput: React.FC<InputProps> = ({
         />
 
         {iconEnd && (
-          <div className="flex items-center justify-center absolute left-3 top-2/4 transform -translate-y-2/4 text-lable-light border-r h-7 border-gray-300 pr-2 w-8">
+          <div className="flex justify-items-center items-center absolute left-3 top-2/4 transform -translate-y-2/4 text-gray-500 border-r h-7 border-gray-300 pr-2 w-8">
             {iconEnd}
           </div>
         )}
       </div>
       {form.touched[field.name] && (
         <label
-          className={`w-full text-xs text-danger mt-3 ${!form.values[field.name] ? " block " : " none "
+          className={`w-full text-xs text-red-500 mt-3 ${!form.values[field.name] ? " block " : " none "
             }`}
         >
           {form.errors[field.name]?.toString()}

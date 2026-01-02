@@ -14,6 +14,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 import * as Yup from 'yup';
 import FSelectField from '@/app/components/inputs/selectField';
+import { Drawer, DrawerItems } from 'flowbite-react';
 
 interface ICompany {
     date: string;
@@ -462,7 +463,7 @@ const Session = ({ sessionid }: Props) => {
                                 <div className="grid w-full grid-cols-9 px-5 pt-5">
                                     <div className="col-span-12">
                                         <div className="table-responsive relative">
-                                            <div
+                                            {/* <div
                                                 className={`absolute z-30 h-full w-full backdrop-blur-sm ${open ? '' : 'hidden'} rounded-xl`}
                                                 onClick={() => {
                                                     setOpen(false);
@@ -533,7 +534,7 @@ const Session = ({ sessionid }: Props) => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> */}
 
                                             {model && selectedItem && (
                                                 <Demo
@@ -583,6 +584,8 @@ const Session = ({ sessionid }: Props) => {
                                                         { name: 'CompanyId', value: companyId },
                                                     ]}
                                                     isEditable={false}
+                                                    mantineTableBodyRowBackgroundColor={'#fdba74'}
+                                                    mantineTableBodyRowBackgroundColorChangeByField={'commissionsModified'}
                                                     headerAction={
                                                         <>
                                                             <Tooltip label="نمایش دسته تراکنش ها ">
@@ -1355,6 +1358,75 @@ const Session = ({ sessionid }: Props) => {
                                                     </div>
                                                 </Dialog>
                                             </Transition>
+
+
+                                            <Drawer open={open} onClose={() => setOpen(false)} position="right" size="sm" className='flex flex-col overflow-y-hidden py-0'>
+                                                <DrawerItems className='flex flex-col h-full overflow-hidden'>
+                                                    <div className="flex justify-between p-4 border-b flex-shrink-0">
+                                                        <div>لیست دسته بندی ها</div>
+                                                        <div onClick={() => setOpen(false)} className="cursor-pointer">
+                                                            <i className={`fa-duotone fa-solid fa-xmark text-sm text-gray-700 hover:text-gray-900`} />
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex-1 overflow-y-auto bg-gray-50 p-3" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                                                        <div className="flex flex-col gap-3">
+                                                            {items &&
+                                                                items?.map((item: ISession, index) => {
+                                                                    return (
+                                                                        <div
+                                                                            key={index}
+                                                                            className={`rounded-lg shadow-md transition-all duration-200 ${index == selected
+                                                                                ? 'bg-gradient-to-r from-[#2691bf] to-[#2691bf] text-white shadow-lg scale-[1.02]'
+                                                                                : 'bg-white hover:shadow-lg hover:scale-[1.01]'
+                                                                                }`}
+                                                                        >
+                                                                            <div className="p-4">
+                                                                                <div
+                                                                                    onClick={() => {
+                                                                                        setSelected(index);
+                                                                                        setSelectedItem(item);
+                                                                                        setOpen(false);
+                                                                                    }}
+                                                                                    className="cursor-pointer"
+                                                                                >
+                                                                                    <div className="flex items-center justify-between">
+                                                                                        <div className="flex flex-col gap-2">
+                                                                                            <div className={`flex items-center gap-2 ${index == selected ? '' : 'text-gray-800'}`}>
+                                                                                                <i className="fa-duotone fa-solid fa-calendar text-base" />
+                                                                                                <span className="font-bold text-lg tracking-wide">{item.date}</span>
+                                                                                            </div>
+                                                                                            <div className={`flex items-center gap-1.5 text-xs ${index == selected ? 'opacity-80' : 'text-gray-500'}`}>
+                                                                                                <i className="fa-duotone fa-solid fa-folder text-xs" />
+                                                                                                <span className="font-medium">دسته {item.number}</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        {item.isDeletable && (
+                                                                                            <Tooltip label="حذف">
+                                                                                                <ActionIcon
+                                                                                                    className={`transition-colors ${index == selected
+                                                                                                        ? 'text-white hover:text-red-200'
+                                                                                                        : 'text-red-500 hover:text-red-700'
+                                                                                                        }`}
+                                                                                                    variant="transparent"
+                                                                                                    onClick={(e) => {
+                                                                                                        e.stopPropagation();
+                                                                                                        handlerShowDeleteModal(item.id);
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <i className={`fa-duotone fa-solid fa-trash text-xl text-gray-400 hover:text-red-500`} />
+                                                                                                </ActionIcon>
+                                                                                            </Tooltip>
+                                                                                        )}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    );
+                                                                })}
+                                                        </div>
+                                                    </div>
+                                                </DrawerItems>
+                                            </Drawer>
                                         </>
                                     </div>
                                 </div>

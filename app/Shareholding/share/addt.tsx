@@ -68,7 +68,7 @@ const Add = () => {
             //setAddModal(false);
             //fetchData();
             setLoading(false);
-            router.back();
+            subPage(model?.name.toLocaleLowerCase() ?? '');
         } else {
             const result = res && (await res?.json());
             ColoredToast('danger', result);
@@ -83,14 +83,14 @@ const Add = () => {
                     <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
                             <div
-                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
                                 onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
                         </Tooltip>
                     </div>
                     <div className='px-2 h-full flex flex-col justify-center align-middle'>
-                        تعریف شرکت غیر بورسی : {appConfig.company.name}
+                        تعریف شرکت غیر بورسی
                     </div>
                 </div>
 
@@ -180,10 +180,10 @@ const Add = () => {
                                                 <div className="grid w-full grid-cols-1 gap-2 px-10 sm:grid-cols-2">
                                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                                         <div>
-                                                            <Field id="accountingMainCode" name="accountingMainCode" label={t('accountingMainCode')} component={FTextField} />
+                                                            <Field id="accountingCode" name="accountingCode" label={t('accountingCode')} component={FTextField} />
                                                         </div>
                                                         <div>
-                                                            <Field id="accountingSubCode" name="accountingSubCode" label={t('accountingSubCode')} component={FTextField} />
+                                                            <Field id="accountingCode2" name="accountingCode2" label={t('accountingCode2')} component={FTextField} />
                                                         </div>
                                                     </div>
                                                     <div className="flex w-full"></div>

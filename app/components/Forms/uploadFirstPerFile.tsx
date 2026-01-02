@@ -6,6 +6,7 @@ import { IOptionType } from '@/interface/dataModel';
 import { useSelector } from 'react-redux';
 import { IRootState } from '@/store';
 import { apiFetch } from '@/lib/apiFetch';
+import { ColoredToast } from '../Notifications/colorNotification';
 
 type UploadedFile = File;
 
@@ -24,6 +25,10 @@ const FileUploadModal: React.FC = () => {
     const [selectedValue, setSelectedValue] = useState<SingleValue<IOptionType>>(optionData[0]);
     const [companyId, setCompanyId] = useState('');
     const appConfig = useSelector((state: IRootState) => state.appConfig);
+
+    useEffect(() => {
+        ColoredToast('danger', errorMessage ?? 'خطا در بارگزاری فایل رخ داده است');
+    }, [errorMessage]);
 
     const onDrop = (acceptedFiles: UploadedFile[]) => {
         setUploadedFiles(acceptedFiles);
@@ -46,7 +51,7 @@ const FileUploadModal: React.FC = () => {
         const formData = new FormData();
         formData.append('File', uploadedFiles[0]);
 
-        const res = await fetch(`cloud/api/shareholding/TransactionImportSession?CompanyId=${companyId}&FileType=${selectedValue?.value}`, {
+        const res = await fetch(`cloud/api/shareholding/share/import?CompanyId=${companyId}&FileType=${selectedValue?.value}`, {
             method: 'POST',
             body: formData,
         });
@@ -86,9 +91,9 @@ const FileUploadModal: React.FC = () => {
     return (
         <div className="flex w-full">
             <button type="button" onClick={() => openModal()} className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]">
-                انتخاب فایل
+                بارگزاری مانده ابتدای دوره
             </button>
-            {errorMessage && <p className="mr-5 flex w-full items-center justify-center rounded-md bg-red-100 text-red-900">{errorMessage}</p>}
+            {/* {errorMessage && <p className="mr-5 flex w-full items-center justify-center rounded-md bg-red-100 text-red-900">{errorMessage}</p>} */}
             <Transition appear show={isModalOpen} as={Fragment}>
                 <Dialog as="div" open={isModalOpen} onClose={() => openModal()}>
                     <Transition.Child
@@ -146,23 +151,6 @@ const FileUploadModal: React.FC = () => {
                                     </div>
 
                                     <div>
-                                        <div>
-                                            <label className="!text-gray-600">نوع فایل</label>
-                                            <Select
-                                                //menuPosition="fixed"
-                                                className="z-auto mb-5"
-                                                id={'FileType'}
-                                                name={'FileType'}
-                                                value={selectedValue}
-                                                onChange={(item: SingleValue<IOptionType>) => {
-                                                    setSelectedValue(item);
-                                                }}
-                                                options={optionData}
-                                                isMulti={false}
-                                                placeholder={'نوع فایل را مشخص کنید'}
-                                            />
-                                            {/* {form.touched[field.name] && form.errors[field.name] ? <div className="text-warning">{form.errors[field.name]?.toString()}</div> : null} */}
-                                        </div>
                                         <div {...getRootProps()} className="cursor-pointer rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
                                             <input {...getInputProps()} />
                                             <p className="text-gray-500">فایل‌ها را اینجا بکشید یا کلیک کنید تا فایل‌ها را انتخاب کنید</p>

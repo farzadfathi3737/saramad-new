@@ -1,6 +1,7 @@
 'use client'
 
 import { getEntityModel } from '@/models/entity';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Demo from '@/app/components/Datatable/MRT';
@@ -14,6 +15,7 @@ import AnimateHeight from 'react-animate-height';
 
 const Capitalraise = () => {
     const { t } = useLanguage();
+    const subPage = useSubPage();
     const [modelData, setModelData] = useState<IDataModel>();
     const [modelData2, setModelData2] = useState<IDataModel>();
     const [data, setData] = useState<any>();
@@ -77,7 +79,7 @@ const Capitalraise = () => {
                 <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
                     <div>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => router.back()}>
+                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '')}>
                                 <i className="fa-duotone fa-solid fa-arrow-right text-lg ml-2" />
                             </ActionIcon>
                         </Tooltip>

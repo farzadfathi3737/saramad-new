@@ -4,6 +4,7 @@ import FDateField from '@/app/components/inputs/dateField';
 import FSelectField from '@/app/components/inputs/selectField';
 import FTextField from '@/app/components/inputs/textField';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
@@ -17,6 +18,7 @@ import * as Yup from 'yup';
 
 const Settlement = () => {
     const { t } = useLanguage();
+    const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
@@ -56,7 +58,7 @@ const Settlement = () => {
             //setAddModal(false);
             //fetchData();
             setLoading(false);
-            router.back();
+            subPage(model?.name.toLocaleLowerCase() ?? '');
         } else {
             const result = res && (await res?.json());
             ColoredToast('danger', result);
@@ -70,12 +72,12 @@ const Settlement = () => {
                 <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
                     <div>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => router.back()}>
+                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
                                 <i className="fa-duotone fa-solid fa-arrow-right text-lg ml-2" />
                             </ActionIcon>
                         </Tooltip>
                     </div>
-                    <div className="p-2">افزودن سبد معاملاتی - {appConfig.company.name}</div>
+                    <div className="p-2">افزودن سبد معاملاتی</div>
                 </div>
 
                 <div className="px-5">
@@ -118,7 +120,7 @@ const Settlement = () => {
                                 </div>
 
                                 <div className="mt-8 flex items-center justify-end">
-                                    <button type="button" onClick={() => router.back()} className="btn btn-outline-[#2D9AA0] font-iranyekan">
+                                    <button type="button" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')} className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                         {t('cancel')}
                                     </button>
 

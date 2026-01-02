@@ -20,7 +20,7 @@ const Edit = ({ id, brokerName }: { id: string, brokerName: string }) => {
     const [data, setData] = useState<any>();
     const appConfig = useSelector((state: IRootState) => state.appConfig);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    console.log("id------------------", id);
+
     useEffect(() => {
         const setdata = async () => {
             const _model = await getEntityModel('companybrokerdiscount');
@@ -40,7 +40,7 @@ const Edit = ({ id, brokerName }: { id: string, brokerName: string }) => {
         setIsLoading(true);
 
         const res = await apiFetch(`${model?.read?.url.replace('{id}', tradingCodeId)}`);
-
+        console.log(res)
         if (res.ok) {
             const result = await res?.json();
             setData(result);
@@ -88,7 +88,7 @@ const Edit = ({ id, brokerName }: { id: string, brokerName: string }) => {
                     <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
                             <div
-                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
                                 onClick={() => subPage('companybroker', 'companybrokerdiscount', undefined, [{ key: 'id', value: id }, { key: 'brokerName', value: brokerName }])}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
@@ -101,50 +101,52 @@ const Edit = ({ id, brokerName }: { id: string, brokerName: string }) => {
                     </div>
                 </div>
 
-                <div className="table-responsive px-5">
-                    <div className="p-5">
-                        <Formik
-                            initialValues={data}
-                            validationSchema={SignupSchema}
-                            onSubmit={(values) => {
-                                handlEditClick(values);
-                            }}
-                        >
-                            <Form>
-                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-1">
-                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3">
-                                        {/* <div>
+                {data &&
+                    <div className="table-responsive px-5">
+                        <div className="p-5">
+                            <Formik
+                                initialValues={data}
+                                validationSchema={SignupSchema}
+                                onSubmit={(values) => {
+                                    handlEditClick(values);
+                                }}
+                            >
+                                <Form>
+                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-1">
+                                        <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3">
+                                            {/* <div>
                                             <label className="!text-gray-600">{t('companyBroker')}</label>
                                             <div className="form-input bg-white-light pt-3 !text-gray-600">{data2.broker}</div>
                                         </div> */}
-                                        <div>
-                                            <Field id="percentage" name="percentage" label={t('percentage')} component={FTextField} />
-                                        </div>
-                                        <div>
-                                            <Field id="validFrom" name="validFrom" label={t('validFrom')} component={FDateField} />
-                                        </div>
-                                        <div>
-                                            <Field id="validTo" name="validTo" label={t('validTo')} component={FDateField} />
+                                            <div>
+                                                <Field id="percentage" name="percentage" label={t('percentage')} component={FTextField} />
+                                            </div>
+                                            <div>
+                                                <Field id="validFrom" name="validFrom" label={t('validFrom')} component={FDateField} />
+                                            </div>
+                                            <div>
+                                                <Field id="validTo" name="validTo" label={t('validTo')} component={FDateField} />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="mt-8 flex items-center justify-end">
-                                    <button type="button"
-                                        onClick={() => subPage('companybroker', 'companybrokerdiscount', undefined, [{ key: 'id', value: id }, { key: 'brokerName', value: brokerName }])}
-                                        className="btn btn-outline-[#2D9AA0] font-iranyekan">
-                                        {t('cancel')}
-                                    </button>
+                                    <div className="mt-8 flex items-center justify-end">
+                                        <button type="button"
+                                            onClick={() => subPage('companybroker', 'companybrokerdiscount', undefined, [{ key: 'id', value: id }, { key: 'brokerName', value: brokerName }])}
+                                            className="btn btn-outline-[#2D9AA0] font-iranyekan">
+                                            {t('cancel')}
+                                        </button>
 
-                                    <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
-                                        {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
-                                        {t('save')}
-                                    </button>
-                                </div>
-                            </Form>
-                        </Formik>
+                                        <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                                            {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
+                                            {t('save')}
+                                        </button>
+                                    </div>
+                                </Form>
+                            </Formik>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
     );

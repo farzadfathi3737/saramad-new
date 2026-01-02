@@ -77,7 +77,7 @@ const Optioncontract = () => {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
                 <div className="mb-5 flex h-[3rem] items-center justify-between border-b-2 px-5 pb-3">
-                    {t('list')} {t('optioncontract')} : {appConfig.company.name}
+                    {t('list')} {t('optioncontract')}
                     {/* <Link className="btn btn-outline mr-3 flex items-center rounded-xl bg-[#2D9AA0] font-iranyekan text-[#fff]" href={modelData?.name.toLocaleLowerCase() + '/add'}>
                         <i className="fa-duotone fa-solid fa-plus text-lg ml-2" />
                         {t('add')}
@@ -199,7 +199,7 @@ const Optioncontract = () => {
                                 return (
                                     <button
                                         type="button"
-                                        className="btn btn-outline mr-3 flex items-center rounded-xl bg-[#2D9AA0] font-iranyekan text-[#fff]"
+                                        className="btn btn-outline mr-3 flex items-center rounded-xl font-iranyekan text-[#fff]"
                                         onClick={() => {
                                             setSelectedRow(row);
                                             setIsModalOpen(true);

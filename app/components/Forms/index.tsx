@@ -8,6 +8,7 @@ import FSelectField from '../inputs/selectField';
 import FDateField from '../inputs/dateField';
 import FSelectModelField from '../inputs/selectModelField';
 import FCheckboxField from '../inputs/checkboxField';
+import FswitchField from '../inputs/switchField';
 
 interface DFormsProps {
     model: IDataModel | undefined;
@@ -120,7 +121,7 @@ const DForms: React.FC<DFormsProps> = ({
                                     case 'boolean':
                                         return (
                                             <div className="w-full" key={item.name.toString()}>
-                                                <Field id={item.name} name={item.name} label={t(_header ? _header : item.name.toLowerCase().toString())} component={FCheckboxField} />
+                                                <Field id={item.name} name={item.name} label={t(_header ? _header : item.name.toLowerCase().toString())} component={FswitchField} />
                                             </div>
                                         );
                                 }

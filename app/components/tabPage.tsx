@@ -70,6 +70,7 @@ import ShareinitialbalanceEdit from "../Shareholding/shareinitialbalance/[id]";
 
 import TransactionImportSession from "../Shareholding/transactionImportsession";
 import TransactionImportSessionDetail from "../Shareholding/transactionImportsession/[id]";
+import TransactionImportSessionTransaction from "../Shareholding/transactionImportsession/[id]/transaction";
 
 import ShareTransactionBatch from "../Shareholding/sharetransactionbatch";
 
@@ -451,6 +452,7 @@ export default function TabsWithRouting() {
                                     {tab.key === "code" && <CompanyBrokerCode id={getParamData('id', tab)} brokerName={getParamData('brokerName', tab)} master={getParamData('master', tab)} />}
                                     {tab.key === "companybrokerdiscount" && <Companybrokerdiscount id={getParamData('id', tab)} brokerName={getParamData('brokerName', tab)} />}
                                     {tab.key === "companybrokerdiscount/add" && <CompanybrokerdiscountAdd id={getParamData('id', tab)} brokerName={getParamData('brokerName', tab)} />}
+                                    {tab.key === "companybrokerdiscount/edit" && <CompanybrokerdiscountEdit id={getParamData('id', tab)} brokerName={getParamData('brokerName', tab)} />}
                                     {tab.key === "companybroker" && <CompanyBroker />}
                                 </>
                             )}
@@ -489,6 +491,7 @@ export default function TabsWithRouting() {
                             {tab.id === "transactionimportsession" && (
                                 <>
                                     {tab.key === "view" && <TransactionImportSessionDetail id={getParamData('id', tab)} />}
+                                    {tab.key === "transaction" && <TransactionImportSessionTransaction id={getParamData('id', tab)} />}
                                     {tab.key === "transactionimportsession" && <TransactionImportSession />}
                                 </>
                             )}

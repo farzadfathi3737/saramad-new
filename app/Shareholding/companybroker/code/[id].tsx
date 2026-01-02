@@ -31,14 +31,14 @@ const Company = ({ id, brokerName, master }: { id: string, brokerName: string, m
                     <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
                             <div
-                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
-                                onClick={() => subPage('companybroker', master)}>
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                onClick={() => subPage('companybroker')}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
                         </Tooltip>
                     </div>
                     <div className='px-2 h-full flex flex-col justify-center align-middle'>
-                        <div className="p-2">لیست کارگزاران - {brokerName} - ({appConfig.company.name})</div>
+                        <div className="p-2">لیست کارگزاران - {brokerName}</div>
                     </div>
                 </div>
 

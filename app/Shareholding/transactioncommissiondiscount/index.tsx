@@ -3,6 +3,7 @@
 import FDateField from '@/app/components/inputs/dateField';
 import FSelectModelField from '@/app/components/inputs/selectModelField';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
@@ -16,6 +17,7 @@ import * as Yup from 'yup';
 
 const Reapply = () => {
     const { t } = useLanguage();
+    const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
@@ -61,7 +63,7 @@ const Reapply = () => {
             //const result = res && (await res?.json());
             ColoredToast('success', t("message.success_save_message"));
             setLoading(false);
-            router.back();
+            subPage('transactioncommissiondiscount');
         } else {
             const result = res && (await res?.json());
             ColoredToast('danger', result);
@@ -75,7 +77,7 @@ const Reapply = () => {
                 <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
                     <div>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => router.back()}>
+                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage('transactioncommissiondiscount')}>
                                 <i className="fa-duotone fa-solid fa-arrow-right text-lg ml-2" />
                             </ActionIcon>
                         </Tooltip>
@@ -118,7 +120,7 @@ const Reapply = () => {
 
 
                                 <div className="mt-8 flex items-center justify-end px-5">
-                                    <button type="button" onClick={() => router.back()} className="btn btn-outline-[#2D9AA0] font-iranyekan">
+                                    <button type="button" onClick={() => subPage('transactioncommissiondiscount')} className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                         {t('cancel')}
                                     </button>
 

@@ -31,7 +31,7 @@ const Company = ({ id, brokerName }: { id: string, brokerName: string }) => {
                     <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
                             <div
-                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                className="btn  pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
                                 onClick={() => subPage('companybroker')}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
@@ -60,18 +60,18 @@ const Company = ({ id, brokerName }: { id: string, brokerName: string }) => {
                                 // { name: 'CompanyId', value: companyId },
                             ]}
                             labaleNameList={[{ label: 'companybrokerid', value: 'نام کارگذار' }]}
-                            action={(row) => (
-                                <div className="flex">
-                                    {/* <ActionIcon onClick={() => router.push(`companybroker/code/${item}`)}>
-                                        <IconEye />
-                                    </ActionIcon> 
-                                    <Link href={`/Shareholding/companybroker/code/${item.id}`} className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
-                                        کارگزارفرعی
-                                    </Link>*/}
-                                </div>
-                            )}
+                            // action={(row) => (
+                            //     <div className="flex">
+                            //         <ActionIcon onClick={() => router.push(`companybroker/code/${item}`)}>
+                            //             <IconEye />
+                            //         </ActionIcon> 
+                            //         <Link href={`/Shareholding/companybroker/code/${item.id}`} className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                            //             کارگزارفرعی
+                            //         </Link>
+                            //     </div>
+                            // )}
                             hideColList={['id', 'companyId', 'company']}
-                            editAction={() => subPage('companybroker', 'companybrokerdiscount/edit', undefined, [{ key: 'id', value: id }, { key: 'brokerName', value: brokerName }])}
+                            editAction={(id: string) => subPage('companybroker', 'companybrokerdiscount/edit', undefined, [{ key: 'id', value: id }, { key: 'brokerName', value: brokerName }])}
                         />
                     )}
                 </div>

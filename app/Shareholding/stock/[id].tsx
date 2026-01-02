@@ -109,7 +109,7 @@ const Add = ({ id, master }: { id: string, master: string }) => {
                         <Tooltip label={t('back')}>
                             <div
                                 //className="flex items-center justify-center rounded-full p-5 !hover:bg-[#2D9AA0] hover:text-blue-900" 
-                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
                                 onClick={() => subPage(master)}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
@@ -243,13 +243,19 @@ const Add = ({ id, master }: { id: string, master: string }) => {
                                                                     <div className="grid w-full"></div>
                                                                     <div className="grid w-full">
                                                                         <div>
-                                                                            <Link
+                                                                            {/* <Link
                                                                                 className="btn btn-outline flex items-center rounded-xl bg-[#2D9AA0] font-iranyekan text-[#fff]"
                                                                                 href={`/Shareholding/stock/${data.optionDetails?.contractStockId}`}
                                                                                 onClick={() => setRowId(data.optionDetails?.contractStockId)}
                                                                             >
                                                                                 نماد سهم اصلی اختیار
-                                                                            </Link>
+                                                                            </Link> */}
+                                                                            <button type='button'
+                                                                                className="btn btn-outline flex items-center rounded-xl !bg-[#2D9AA0]  text-[#fff]"
+                                                                                onClick={() => subPage('stock', 'view', undefined, [{ key: 'id', value: data.optionDetails?.contractStockId?.toString() ?? '' }, { key: 'master', value: 'stock' }])}
+                                                                            >
+                                                                                نماد سهم اصلی اختیار
+                                                                            </button>
                                                                         </div>
                                                                     </div>
                                                                     <div className="grid w-full"></div>
@@ -264,10 +270,10 @@ const Add = ({ id, master }: { id: string, master: string }) => {
                                 </Form>
                             </Formik>
                         </div>
-                    </div>
+                    </div >
                 )}
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 

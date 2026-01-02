@@ -23,7 +23,7 @@ const Edit = ({ id, tradingCodeId, tradingCode }: { id: string, tradingCodeId: s
     const appConfig = useSelector((state: IRootState) => state.appConfig);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    console.log("id------------------>>>>", id);
+    // console.log("id------------------>>>>", id);
     useEffect(() => {
         const setdata = async () => {
             const _model = await getEntityModel('tradingcodediscount');
@@ -47,6 +47,7 @@ const Edit = ({ id, tradingCodeId, tradingCode }: { id: string, tradingCodeId: s
         if (res.ok) {
             const result = await res?.json();
             setData(result);
+            console.log(result);
             setIsLoading(false);
         } else {
             setData(undefined);
@@ -65,8 +66,9 @@ const Edit = ({ id, tradingCodeId, tradingCode }: { id: string, tradingCodeId: s
 
         data.tradingCodeId = tradingCodeId;
 
-        const res = await fetch(`${model?.register?.url}`, {
-            method: 'post',
+        //const res = await fetch(`${model?.update?.url}`, {
+        const res = await fetch(`${model?.update?.url.replace('{id}', id)}`, {
+            method: 'put',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -105,7 +107,7 @@ const Edit = ({ id, tradingCodeId, tradingCode }: { id: string, tradingCodeId: s
                     <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
                             <div
-                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                className="pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
                                 onClick={() => subPage('companytradingcode', 'tradingcodediscount', [{ key: 'tradingCodeId', value: tradingCodeId }, { key: 'tradingCode', value: tradingCode }], undefined)}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
@@ -115,61 +117,62 @@ const Edit = ({ id, tradingCodeId, tradingCode }: { id: string, tradingCodeId: s
                         <div className="p-2">ویرایش تخفیف کارگزاری - {tradingCode}</div>
                     </div>
                 </div>
-
-                <div className="table-responsive px-5">
-                    <div className="p-5">
-                        <Formik
-                            initialValues={data}
-                            //validationSchema={SignupSchema}
-                            onSubmit={(values) => {
-                                handleAddClick(values);
-                            }}
-                        >
-                            <Form>
-                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+                {data &&
+                    <div className="table-responsive px-5">
+                        <div className="p-5">
+                            <Formik
+                                initialValues={data}
+                                //validationSchema={SignupSchema}
+                                onSubmit={(values) => {
+                                    handleAddClick(values);
+                                }}
+                            >
+                                <Form>
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                        <div className="w-full">
-                                            <Field
-                                                id="brokerId"
-                                                name="brokerId"
-                                                label={'نام کارگزار'}
-                                                listRefName="stockbroker"
-                                                staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
-                                                component={FSelectModelField}
-                                            />
+                                        <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+                                            <div className="w-full">
+                                                <Field
+                                                    id="brokerId"
+                                                    name="brokerId"
+                                                    label={'نام کارگزار'}
+                                                    listRefName="stockbroker"
+                                                    staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
+                                                    component={FSelectModelField}
+                                                />
+                                            </div>
+                                            <div className="w-full">
+                                                <Field id="percentage" name="percentage" label={t('percentage')} component={FTextField} />
+                                            </div>
                                         </div>
-                                        <div className="w-full">
-                                            <Field id="percentage" name="percentage" label={t('percentage')} component={FTextField} />
+                                        <div className="w-full"></div>
+                                        <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+                                            <div className="w-full">
+                                                <Field id="validFrom" name="validFrom" label={t('validFrom')} component={FDateField} />
+                                            </div>
+                                            <div className="w-full">
+                                                <Field id="validTo" name="validTo" label={t('validTo')} component={FDateField} />
+                                            </div>
                                         </div>
+                                        <div className="w-full"></div>
                                     </div>
-                                    <div className="w-full"></div>
-                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                        <div className="w-full">
-                                            <Field id="validFrom" name="validFrom" label={t('validFrom')} component={FDateField} />
-                                        </div>
-                                        <div className="w-full">
-                                            <Field id="validTo" name="validTo" label={t('validTo')} component={FDateField} />
-                                        </div>
+
+                                    <div className="mt-8 flex items-center justify-end">
+                                        <button type="button"
+                                            onClick={() => subPage('companytradingcode', 'tradingcodediscount', [{ key: 'tradingCodeId', value: tradingCodeId }, { key: 'tradingCode', value: tradingCode }], undefined)}
+                                            className="btn btn-outline-[#2D9AA0] font-iranyekan">
+                                            {t('cancel')}
+                                        </button>
+
+                                        <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                                            {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
+                                            {t('save')}
+                                        </button>
                                     </div>
-                                    <div className="w-full"></div>
-                                </div>
-
-                                <div className="mt-8 flex items-center justify-end">
-                                    <button type="button"
-                                        onClick={() => subPage('companytradingcode', 'tradingcodediscount', [{ key: 'tradingCodeId', value: tradingCodeId }, { key: 'tradingCode', value: tradingCode }], undefined)}
-                                        className="btn btn-outline-[#2D9AA0] font-iranyekan">
-                                        {t('cancel')}
-                                    </button>
-
-                                    <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
-                                        {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
-                                        {t('save')}
-                                    </button>
-                                </div>
-                            </Form>
-                        </Formik>
+                                </Form>
+                            </Formik>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
     );

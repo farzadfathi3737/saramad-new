@@ -48,6 +48,9 @@ interface CostomMRT extends DatatableProps {
     manualPagination?: boolean;
     editAction?: any;
     formInitialValues?: any;
+    enableInlineEditing?: boolean;
+    editableColumns?: string[];
+    onInlineSave?: (rowId: string, values: any) => Promise<boolean>;
 }
 
 const MRT_DataTable: React.FC<CostomMRT> = ({
@@ -75,6 +78,9 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     mantineTableBodyRowBackgroundColor,
     mantineTableBodyRowBackgroundColorChangeByField,
     editAction = null,
+    enableInlineEditing = false,
+    editableColumns = [],
+    onInlineSave = undefined,
 }) => {
     const { t } = useLanguage();
     const subPage = useSubPage();
@@ -103,6 +109,8 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     });
 
     const [changeGrouping, setChangeGrouping] = useState<string[]>([]);
+    const [editingRows, setEditingRows] = useState<Record<string, boolean>>({});
+    const [validationErrors, setValidationErrors] = useState<Record<string, Record<string, string | undefined>>>({});
 
 
 
@@ -114,7 +122,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     const [, setFilterModal] = useState(false);
 
     const handleClick = (data: IstaticParam) => {
-        console.log(data);
+        setPagination({ pageIndex: 0, pageSize: pagination.pageSize });
         setFilterdata(data);
     };
 
@@ -137,8 +145,13 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
             setIsDeleteModalOpen(false);
         } else {
             const responce = await res.json();
-            //console.log(responce);
-            ColoredToast('danger', responce.title);
+            // console.log(responce, res.status);
+            if (res.status == 500) {
+                ColoredToast('danger', responce);
+            } else {
+                ColoredToast('danger', responce.title);
+            }
+
             setIsDeleting(false);
         }
     };
@@ -147,6 +160,27 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         setCurrentRowId(id);
         setModalMessage(message);
         setIsDeleteModalOpen(true);
+    };
+
+    const handleInlineSave = async (rowId: string, values: any) => {
+        if (onInlineSave) {
+            setIsLoading(true);
+            try {
+                const success = await onInlineSave(rowId, values);
+                if (success) {
+                    ColoredToast('success', 'تغییرات با موفقیت ذخیره شد');
+                    FetchData();
+                    setEditingRows({});
+                    setValidationErrors({});
+                } else {
+                    ColoredToast('danger', 'خطا در ذخیره تغییرات');
+                }
+            } catch (error) {
+                ColoredToast('danger', 'خطا در ذخیره تغییرات');
+            } finally {
+                setIsLoading(false);
+            }
+        }
     };
 
     // let columns = useMemo(
@@ -246,6 +280,67 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         //console.log('2222222222', result);
     };
 
+    const ExportData = async () => {
+        let filteData: string = '';
+
+        if (manualPagination) {
+            filteData = `pageSize=${pagination.pageSize}&pageNumber=${pagination.pageIndex + 1}`;
+        }
+
+        if (staticParams && model.list?.parameters) {
+            model.list?.parameters?.map((item) => {
+                const val = staticParams.find((x) => x.name === item.name)?.value;
+                if (val) {
+                    filteData = filteData + `${filteData != '' ? '&' : ''}${item.name}=${val}`;
+                }
+            });
+        }
+
+        if (filterdata) {
+            Object.keys(filterdata).map((keyName) => {
+                filteData = filteData + `${filteData != '' ? '&' : ''}${keyName}=${filterdata[keyName]}`;
+            });
+        }
+
+        setIsLoading(true);
+
+        const fetchUrl = `${model.list?.url}/export/excel${filteData != '' ? `?${filteData}` : ''}`;
+
+        try {
+            const res = await apiFetch(fetchUrl);
+
+            // استخراج نام فایل از header
+            const contentDisposition = res.headers.get('content-disposition');
+            let fileName = 'export.xlsx';
+            if (contentDisposition && contentDisposition.includes('filename')) {
+                const matches = contentDisposition.match(/filename\*=UTF-8''(.+)|filename="?(.+?)"?($|;)/i);
+                fileName = matches?.[1]
+                    ? decodeURIComponent(matches[1])
+                    : matches?.[2]
+                        ? matches[2]
+                        : fileName;
+            }
+
+            // دریافت blob و دانلود فایل
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            ColoredToast('success', 'فایل با موفقیت دانلود شد');
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Export error:', error);
+            ColoredToast('error', error instanceof Error ? error.message : 'خطا در دریافت فایل');
+            setIsLoading(false);
+        }
+    };
+
     useImperativeHandle(
         myRef,
         () => ({
@@ -294,8 +389,16 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                 const _format = addSepratorFildes.find((x) => x == item.accessorKey);
                 const _isLink = addLinkFildes.find((x) => x == item.accessorKey);
                 const _Footersum = addFooterSumFildes.find((x) => x == item.accessorKey);
+                const _isEditable = enableInlineEditing && editableColumns.includes(item.accessorKey as string);
 
                 item.header = t(_header ? _header : item.header);
+
+                if (_isEditable) {
+                    columns[i] = {
+                        ...columns[i],
+                        enableEditing: true,
+                    };
+                }
 
                 if (_format) {
                     columns[i] = {
@@ -407,7 +510,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     }, [filterdata]);
 
     useEffect(() => {
-        if (manualPagination && pagination.pageIndex > 0) {
+        if (manualPagination) {
             FetchData();
         }
     }, [pagination]);
@@ -442,6 +545,15 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         enablePagination: true,
         manualPagination: manualPagination,
         onPaginationChange: setPagination,
+        enableEditing: enableInlineEditing,
+        editDisplayMode: enableInlineEditing ? 'row' : undefined,
+        onEditingRowSave: async ({ row, values, table }) => {
+            await handleInlineSave(row.original.id, values);
+            table.setEditingRow(null);
+        },
+        onEditingRowCancel: () => {
+            setValidationErrors({});
+        },
         renderTopToolbarCustomActions: () => (
             <div
                 className="flex w-full"
@@ -483,7 +595,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                     <ActionIcon
                         color="inheritans"
                         style={{ '--ai-hover': 'rgba(134, 142, 150, 0.12)' }}
-                    //</Tooltip>onClick={() => fetchData()}
+                        onClick={() => ExportData()}
                     >
                         {/* <IconExcel className="text-gray-400" /> */}
                         <i className={`fa-duotone fa-solid fa-file-excel text-gray-500 hover:text-green-600 text-xl`} />
@@ -564,9 +676,19 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         },
 
         renderDetailPanel: detailPanel,
-        renderRowActions: ({ row }) => (
+        renderRowActions: ({ row, table }) => (
             <Box className="flex">
-                {isEditable && (
+                {enableInlineEditing && (
+                    <Tooltip label="ویرایش">
+                        <ActionIcon
+                            onClick={() => table.setEditingRow(row)}
+                            variant="transparent"
+                            className="mr-3 w-9 h-9">
+                            <i className={`fa-duotone fa-solid fa-pen-to-square text-xl text-gray-400 hover:text-orange-500`} />
+                        </ActionIcon>
+                    </Tooltip>
+                )}
+                {isEditable && !enableInlineEditing && (
                     <Tooltip label="ویرایش">
                         <ActionIcon
                             //onClick={() => router.push(`${model.name.toString().toLowerCase()}/${row.original.id}`)}

@@ -106,7 +106,7 @@ const Edit = ({ id }: { id: string }) => {
                         <Tooltip label={t('back')}>
                             <div
                                 //className="flex items-center justify-center rounded-full p-5 !hover:bg-[#2D9AA0] hover:text-blue-900" 
-                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
                                 onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
@@ -114,7 +114,7 @@ const Edit = ({ id }: { id: string }) => {
                     </div>
                     <div className='px-2 h-full flex flex-col justify-center align-middle'>
                         <div className="p-2">
-                            {t('edit')} {t('fiscalyear')} - {appConfig.company.name}
+                            {t('edit')} {t('fiscalyear')} - {data?.name}
                         </div>
                     </div>
                 </div>
@@ -179,7 +179,7 @@ const Edit = ({ id }: { id: string }) => {
                                     </div>
 
                                     <div className="mt-8 flex items-center justify-end">
-                                        <button type="button" onClick={() => router.back()} className="btn btn-outline-[#2D9AA0] font-iranyekan">
+                                        <button type="button" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')} className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                             {t('cancel')}
                                         </button>
 

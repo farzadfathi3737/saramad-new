@@ -36,18 +36,18 @@ const Company = ({ tradingCodeId, tradingCode }: { tradingCodeId: string, tradin
                     <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
                             <div
-                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
                                 onClick={() => subPage('companytradingcode')}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
                         </Tooltip>
                     </div>
                     <div className='px-2 h-full w-full flex flex-col justify-center align-middle'>
-                        <div className="p-2"> تعریف تخفیف سبد : {tradingCode} - {appConfig.company.name}</div>
+                        <div className="p-2"> تعریف تخفیف سبد : {tradingCode}</div>
                     </div>
 
                     <div className='p-2 h-full flex flex-col justify-center align-middle pl-2'>
-                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]"
+                        <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 font-iranyekan text-[#fff]"
                             //onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '', 'add',  )}>
                             onClick={() => subPage('companytradingcode', 'tradingcodediscount/add', [{ key: 'tradingCodeId', value: tradingCodeId }, { key: 'tradingCode', value: tradingCode }], undefined)}>
                             <i className={`fa-duotone fa-solid fa-plus text-lg ml-2`} />

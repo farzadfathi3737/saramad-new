@@ -93,14 +93,14 @@ const Add = () => {
                         <Tooltip label={t('back')}>
                             <div
                                 //className="flex items-center justify-center rounded-full p-5 !hover:bg-[#2D9AA0] hover:text-blue-900" 
-                                className="btn btn-outline pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
                                 onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
                         </Tooltip>
                     </div>
                     <div className='px-2 h-full flex flex-col justify-center align-middle'>
-                        <div className="p-2">تعریف سال مالی - {appConfig.company.name}</div>
+                        <div className="p-2">تعریف سال مالی</div>
                     </div>
                 </div>
 
@@ -248,11 +248,11 @@ const Add = () => {
                                 </div> */}
 
                                 <div className="mt-8 flex items-center justify-end">
-                                    <button type="button" onClick={() => router.back()} className="btn btn-outline-[#2D9AA0] font-iranyekan">
+                                    <button type="button" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')} className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                         {t('cancel')}
                                     </button>
 
-                                    <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                                    <button type="submit" className="btn btn-outline mr-3 flex items-center font-iranyekan text-[#fff]">
                                         {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
                                         {t('save')}
                                     </button>

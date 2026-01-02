@@ -3,6 +3,7 @@
 import FTextField from '@/app/components/inputs/textField';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/navigation';
 import { useRouter as Router } from 'next/router';
@@ -23,6 +24,7 @@ import FormatBytes from '@/app/components/inputs/fileSize';
 import { IconHttpDelete } from '@tabler/icons-react';
 
 import Session from './session';
+import { apiFetch } from '@/lib/apiFetch';
 
 interface ICompany {
     date: string;
@@ -62,7 +64,12 @@ interface ISessionlist {
     totalPages: number;
 }
 
-const Add = () => {
+interface AddProps {
+    id: string;
+}
+
+const Add = ({ id }: AddProps) => {
+    const subPage = useSubPage();
     const { t } = useTranslation();
     const [model, setModel] = useState<IDataModel>();
     const [modelS, setModelS] = useState<IDataModel>();
@@ -75,9 +82,6 @@ const Add = () => {
     const appConfig = useSelector((state: IRootState) => state.appConfig);
     const [modelData, setModelData] = useState<any>();
 
-    const router = useRouter();
-    const _router = Router();
-    const { query } = _router;
 
     const [active1, setActive1] = useState<string>('1');
     const [active2, setActive2] = useState<string>('1');
@@ -95,24 +99,21 @@ const Add = () => {
     };
 
     useEffect(() => {
-        setRowId(query.id?.toString());
+        // setRowId(id?.toString());
 
         const _setdata = async () => {
-            let _model = await getEntityModel('transactionimportsession');
+            const _model = await getEntityModel('transactionimportsession');
             setModel(_model);
 
-            let _modelS = await getEntityModel('sharetransactionbatchsession');
+            const _modelS = await getEntityModel('sharetransactionbatchsession');
             setModelS(_modelS);
 
             //fetchData();
+            setRowId(id?.toString());
         };
 
         _setdata();
     }, []);
-
-    useEffect(() => {
-        setRowId(query.id?.toString());
-    }, [query]);
 
     useEffect(() => {
         setData(undefined);
@@ -150,7 +151,7 @@ const Add = () => {
     const fetchSessionData = async (id: string) => {
         setIsLoading(true);
 
-        const res = await fetch(`${modelS?.list?.url}?SessionId=${id}`);
+        const res = await apiFetch(`${modelS?.list?.url}?SessionId=${id}`);
 
         if (res.ok) {
             const result: ISessionlist = await res?.json();
@@ -164,7 +165,7 @@ const Add = () => {
 
     const handlGetData = () => {
         const setdata = async () => {
-            let _model = getEntityModel('rawtransaction'); //pagination is neded
+            const _model = getEntityModel('rawtransaction'); //pagination is neded
             // console.log(_model);
             setModelData(_model);
         };
@@ -188,7 +189,7 @@ const Add = () => {
             //setAddModal(false);
             //fetchData();
             setIsLoading(false);
-            router.back();
+            subPage('transactionimportsession');
         } else {
             //setInitialRecords({ pageNumber: 1, pageSize: 10, totalPages: 1, totalCount: 10, items: [] });
         }
@@ -201,7 +202,8 @@ const Add = () => {
                 <div className="mb-2 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
                     <div>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => router.back()}>
+                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900"
+                                onClick={() => subPage('transactionimportsession')}>
                                 <i className="fa-duotone fa-solid fa-arrow-right text-lg ml-2" />
                             </ActionIcon>
                         </Tooltip>
@@ -211,47 +213,6 @@ const Add = () => {
                 {data && (
                     <div className="flex px-0 py-0 w-full">
                         <div className="flex flex-col px-0 w-full">
-                            {/* <div className="grid w-full grid-cols-1 gap-2 px-10 sm:grid-cols-2">
-                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                    <div>
-                                        <fieldset>
-                                            <label className="text-white-dark">شماره جلسه</label>
-                                            <div className="form-input pt-3 text-white-dark">{data.number}</div>
-                                        </fieldset>
-                                    </div>
-                                    <div>
-                                        <fieldset>
-                                            <label className="text-white-dark">نام فایل</label>
-                                            <div className="form-input pt-3 text-white-dark">{`${data.fileName} - ( ${FormatBytes(10737418, 1)} )`}</div>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                                <div className="grid w-full"></div>
-                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                    <div>
-                                        <fieldset>
-                                            <label className="text-white-dark">تاریخ جلسه</label>
-                                            <div className="form-input pt-3 text-white-dark">{data.date}</div>
-                                        </fieldset>
-                                    </div>
-                                    <div>
-                                        <fieldset>
-                                            <label className="text-white-dark">نوع فایل</label>
-                                            <div className="form-input pt-3 text-white-dark">{data.fileTypeName}</div>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                                <div className="grid w-full"></div>
-                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                    <div>
-                                        <fieldset>
-                                            <label className="text-white-dark">وضعیت</label>
-                                            <div className="form-input pt-3 text-white-dark">{data.statusName}</div>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                                <div className="grid w-full"></div>
-                            </div> */}
                             <div className="flex px-5 pt-3 w-full">
                                 <div className="flex w-full rounded-xl border-2 border-solid border-gray-200 bg-gray-100 px-5">
                                     <div className="flex w-full flex-row p-3">
@@ -286,63 +247,6 @@ const Add = () => {
                                 </div>
                             </div>
                             {sessionId && <Session sessionid={sessionId} />}
-
-                            {/* <div className="grid w-full grid-cols-1 gap-2 p-5 px-10">
-                                {!data.isInProgress && (
-                                    <button type="button" onClick={handlGetData} className="btn btn-primary w-52">
-                                        انتخاب فایل
-                                    </button>
-                                )}
-                            </div> */}
-
-                            {/* {!data.isInProgress && modelData && (
-                                <div className="flex w-full">
-                                    <div className="w-full">
-                                        <div className="space-y-2 font-iranyekan">
-                                            <div className="border-y border-[#d3d3d3] dark:border-[#1b2e4b]">
-                                                <button
-                                                    type="button"
-                                                    className={`space-y-cc flex w-full items-center p-4 font-iranyekan text-[#089bab] dark:bg-[#1b2e4b] ${active2 === '1' ? '!#089bab' : '#089bab'}`}
-                                                    onClick={() => togglePara2('1')}
-                                                >
-                                                    اطلاعات بارگزاری شده (پردازش نشده){' '}
-                                                    <div className={`text-[#089bab] ltr:ml-auto rtl:mr-auto ${active2 === '1' ? 'rotate-180' : ''}`}>
-                                                        <IconCaretDown />
-                                                    </div>
-                                                </button>
-                                                <div>
-                                                    <AnimateHeight duration={300} height={active2 === '1' ? 'auto' : 0}>
-                                                        <div className="table-responsive px-5">
-                                                            {modelData && rowId && (
-                                                                <Demo
-                                                                    isShowSearchForm={false}
-                                                                    model={modelData}
-                                                                    isShowHideCol={true}
-                                                                    hideColList={['id', 'companyId', 'date', 'status', 'fileType', 'progress', 'importedFileId']}
-                                                                    labaleNameList={[
-                                                                        { label: 'Keyword', value: 'نام سهام' },
-                                                                        { label: 'name', value: 'نام سهام' },
-                                                                        { label: 'industryName', value: 'زیرصنعت' },
-                                                                    ]}
-                                                                    staticParams={[{ name: 'SessionId', value: rowId! }]}
-                                                                    //isEditable={false}
-                                                                    // action={(item: any) => (
-                                                                    //     <Tooltip label="اطلاعات نماد">
-                                                                    //         <ActionIcon onClick={() => router.push(`${modelData.name.toString().toLowerCase()}/${item.id}`)}>
-                                                                    //             <IconEye />
-                                                                    //         </ActionIcon>
-                                                                    //     </Tooltip>
-                                                                    // )}
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    </AnimateHeight>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )} */}
                         </div>
                     </div>
                 )}

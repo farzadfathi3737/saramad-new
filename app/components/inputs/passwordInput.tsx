@@ -41,10 +41,10 @@ const PasswordInput: React.FC<InputProps> = ({
       minLength={Length ? Length : minLength}
       //onChange={onChange}
       hasError={hasError}
-      icon={<i className={`fa-duotone fa-solid fa-lock text-lg ml-2`} />}
+      icon={<i className={`fa-duotone fa-solid fa-lock text-lg`} />}
       iconEnd={
-        <div onClick={handlerShow}>
-          <i className={`fa-duotone fa-solid ${!isShow ? "fa-eye" : "fa-eye-slash"} text-lg ml-2`} />
+        <div onClick={handlerShow} className="flex h-full justify-items-center items-center">
+          <i className={`fa-duotone fa-solid ${!isShow ? "fa-eye" : "fa-eye-slash"} text-lg`} />
         </div>
       }
     />

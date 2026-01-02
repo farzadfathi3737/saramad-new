@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { ActionIcon, Tooltip } from '@mantine/core';
+import FileUploadModal from '@/app/components/Forms/uploadFirstPerFile';
 
 const Company = () => {
     const { t } = useLanguage();
@@ -36,8 +37,11 @@ const Company = () => {
             <div className="panel h-full w-full px-0">
 
                 <div className="flex h-[3.5rem] items-center justify-between border-b border-gray-300">
-                    <div className='p-2 h-full flex flex-col justify-center align-middle pr-5'>
+                    <div className='px-2 h-full flex justify-items-center items-center pr-5'>
                         فهرست دارایی ها
+                        <div className="flex h-12 items-center justify-between">
+                            <FileUploadModal />
+                        </div>
                     </div>
 
                     <div className='h-full flex justify-center align-middle p-2'>

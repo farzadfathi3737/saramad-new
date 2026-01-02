@@ -1,4 +1,5 @@
 import { getEntityModel } from '@/models/entity';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Demo from '@/app/components/Datatable/MRT';
@@ -13,6 +14,7 @@ import { useRouter as Router } from 'next/router';
 
 const Sharecashdividend = () => {
     const { t } = useTranslation();
+    const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [modelData, setModelData] = useState<IDataModel>();
     const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +43,7 @@ const Sharecashdividend = () => {
                 <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
                     <div>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => router.back()}>
+                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
                                 <i className="fa-duotone fa-solid fa-arrow-right text-lg ml-2" />
                             </ActionIcon>
                         </Tooltip>

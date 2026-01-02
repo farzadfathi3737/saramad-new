@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { IDataModel } from '@/interface/dataModel';
 import { useSelector } from 'react-redux';
 import { IRootState } from '@/store';
-import { Box, Tooltip } from '@mantine/core';
+import { ActionIcon, Box, Tooltip } from '@mantine/core';
 import { useRouter } from 'next/navigation';
 import FileUploadModal from '@/app/components/Forms/uploadFile';
 
@@ -73,43 +73,43 @@ const Inprogress = () => {
                     {initialRecords?.items?.length < 1 ? (
                         <div className="flex w-full items-center justify-center rounded-md border-2 border-solid border-gray-200 bg-gray-50 p-5">فایلی در حال پردازش نمی باشد ...</div>
                     ) : (
-                        <table className="border-collapse border border-gray-400">
+                        <table className="border-collapse border border-gray-400 w-full">
                             <thead>
-                                <tr>
-                                    <th className="border border-gray-300">شماره</th>
-                                    <th className="border border-gray-300">زمان شروع</th>
-                                    <th className="border border-gray-300">نوع فایل</th>
-                                    <th className="border border-gray-300">تعداد تراکنش</th>
-                                    <th className="border border-gray-300">وضعیت</th>
-                                    <th className="border border-gray-300">درصد پیشرفت</th>
-                                    <th className="border border-gray-300">عملیات</th>
+                                <tr className='bg-gray-200'>
+                                    <th className="border border-gray-300 p-2">شماره</th>
+                                    <th className="border border-gray-300 p-2">زمان شروع</th>
+                                    <th className="border border-gray-300 p-2">نوع فایل</th>
+                                    <th className="border border-gray-300 p-2">تعداد تراکنش</th>
+                                    <th className="border border-gray-300 p-2">وضعیت</th>
+                                    <th className="border border-gray-300 p-2">درصد پیشرفت</th>
+                                    <th className="border border-gray-300 p-2">عملیات</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {initialRecords?.items?.map((item, index) => {
                                     return (
                                         <tr key={index}>
-                                            <td className="border border-gray-300">{item['number']}</td>
-                                            <td className="border border-gray-300">{item['dateAndTime']}</td>
-                                            <td className="border border-gray-300">{item['fileTypeName']}</td>
-                                            <td className="border border-gray-300">{item['transactionsCount']}</td>
-                                            <td className="border border-gray-300">{item['statusName']}</td>
-                                            <td className="border border-gray-300">
+                                            <td className="border border-gray-300 p-2">{item['number']}</td>
+                                            <td className="border border-gray-300 p-2">{item['dateAndTime']}</td>
+                                            <td className="border border-gray-300 p-2">{item['fileTypeName']}</td>
+                                            <td className="border border-gray-300 p-2">{item['transactionsCount']}</td>
+                                            <td className="border border-gray-300 p-2">{item['statusName']}</td>
+                                            <td className="border border-gray-300 p-2">
                                                 <div className="mb-4 h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
                                                     <div className="h-2.5 rounded-full bg-green-500" style={{ width: `${item['progress']}%` }}></div>
                                                     <div className="flex w-full items-center justify-center">{`${item['progress']}%`}</div>
                                                 </div>
                                             </td>
-                                            <td className="border border-gray-300">
+                                            <td className="border border-gray-300 p-2">
                                                 <Box className="flex">
                                                     <Tooltip label="نمایش اطلاعات">
-                                                        <button
-                                                            type="button"
+                                                        <ActionIcon
                                                             onClick={() => router.push(`transactionImportsession/${item['id']}`)}
-                                                            className="btn btn-outline mr-3 flex items-center rounded-xl bg-blue-50 px-2 font-iranyekan text-blue-600 hover:bg-blue-100"
-                                                        >
+                                                            variant="transparent"
+                                                            //className="btn btn-outline mr-3 flex items-center rounded-xl bg-blue-50 px-2 font-iranyekan text-blue-600 hover:bg-blue-100">
+                                                            className="mr-3 flex items-center rounded-xl w-9 h-9 p-0">
                                                             <i className="fa-duotone fa-solid fa-eye text-lg" />
-                                                        </button>
+                                                        </ActionIcon>
                                                     </Tooltip>
                                                 </Box>
                                             </td>

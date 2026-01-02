@@ -5,6 +5,7 @@ import FSelectField from '@/app/components/inputs/selectField';
 import FSelectModelField from '@/app/components/inputs/selectModelField';
 import FTextField from '@/app/components/inputs/textField';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
@@ -21,6 +22,7 @@ import * as Yup from 'yup';
 
 const ReApply = () => {
     const { t } = useTranslation();
+    const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
@@ -104,7 +106,7 @@ const ReApply = () => {
                                 </div>
 
                                 <div className="mt-8 flex items-center justify-end px-5">
-                                    <button type="button" onClick={() => router.back()} className="btn btn-outline-[#2D9AA0] font-iranyekan">
+                                    <button type="button" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')} className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                         {t('cancel')}
                                     </button>
 

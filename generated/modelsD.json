@@ -4176,10 +4176,10 @@
           "hidden": false
         },
         {
-          "accessorKey": "company",
-          "header": "company",
-          "accessor": "company",
-          "title": "شرکت",
+          "accessorKey": "brokerId",
+          "header": "brokerId",
+          "accessor": "brokerId",
+          "title": "کارگزار",
           "sortable": true,
           "hidden": false
         },
@@ -4277,10 +4277,10 @@
           "hidden": false
         },
         {
-          "accessorKey": "company",
-          "header": "company",
-          "accessor": "company",
-          "title": "شرکت",
+          "accessorKey": "brokerId",
+          "header": "brokerId",
+          "accessor": "brokerId",
+          "title": "کارگزار",
           "sortable": true,
           "hidden": false
         },
@@ -4331,10 +4331,10 @@
           "hidden": false
         },
         {
-          "accessorKey": "company",
-          "header": "company",
-          "accessor": "company",
-          "title": "شرکت",
+          "accessorKey": "brokerId",
+          "header": "brokerId",
+          "accessor": "brokerId",
+          "title": "کارگزار",
           "sortable": true,
           "hidden": false
         },
@@ -4403,10 +4403,10 @@
           "hidden": false
         },
         {
-          "accessorKey": "company",
-          "header": "company",
-          "accessor": "company",
-          "title": "شرکت",
+          "accessorKey": "brokerId",
+          "header": "brokerId",
+          "accessor": "brokerId",
+          "title": "کارگزار",
           "sortable": true,
           "hidden": false
         },
@@ -5302,13 +5302,13 @@
       ]
     }
   },
-  "depositorysyncstatus": {
-    "name": "DepositorySyncStatus",
+  "depositorysessionstatus": {
+    "name": "DepositorySessionStatus",
     "uniqueCols": null,
     "haveAction": false,
-    "list": {
-      "metod": "get",
-      "url": "/cloud/api/shareholding/DepositorySync/Status",
+    "register": {
+      "metod": "post",
+      "url": "/cloud/api/shareholding/DepositorySession/Status",
       "responses": [
         {
           "accessorKey": "tokenExpiration",
@@ -5323,22 +5323,6 @@
           "header": "isTokenValid",
           "accessor": "isTokenValid",
           "title": "isTokenValid",
-          "sortable": true,
-          "hidden": false
-        },
-        {
-          "accessorKey": "creationDate",
-          "header": "creationDate",
-          "accessor": "creationDate",
-          "title": "creationDate",
-          "sortable": true,
-          "hidden": false
-        },
-        {
-          "accessorKey": "lastUpdateDate",
-          "header": "lastUpdateDate",
-          "accessor": "lastUpdateDate",
-          "title": "lastUpdateDate",
           "sortable": true,
           "hidden": false
         }
@@ -5354,70 +5338,760 @@
       ]
     }
   },
-  "depositorysynctoken": {
-    "name": "DepositorySyncToken",
+  "depositorysessionlogin": {
+    "name": "DepositorySessionLogin",
     "uniqueCols": null,
     "haveAction": false,
-    "update": {
-      "metod": "put",
-      "url": "/cloud/api/shareholding/DepositorySync/Token/{companyId}",
-      "requestBody": [
-        {
-          "name": "jwtToken",
-          "title": "jwtToken",
-          "required": true,
-          "type": "string",
-          "format": "----"
-        },
-        {
-          "name": "cookie",
-          "title": "cookie",
-          "type": "string",
-          "format": "----"
-        }
-      ],
+    "register": {
+      "metod": "post",
+      "url": "/cloud/api/shareholding/DepositorySession/Login",
       "responses": [
         {
-          "accessorKey": "tokenExpiration",
-          "header": "tokenExpiration",
-          "accessor": "tokenExpiration",
-          "title": "tokenExpiration",
+          "accessorKey": "id",
+          "header": "id",
+          "accessor": "id",
+          "title": "id",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "isTokenValid",
-          "header": "isTokenValid",
-          "accessor": "isTokenValid",
-          "title": "isTokenValid",
+          "accessorKey": "number",
+          "header": "number",
+          "accessor": "number",
+          "title": "number",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "creationDate",
-          "header": "creationDate",
-          "accessor": "creationDate",
-          "title": "creationDate",
+          "accessorKey": "date",
+          "header": "date",
+          "accessor": "date",
+          "title": "date",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "lastUpdateDate",
-          "header": "lastUpdateDate",
-          "accessor": "lastUpdateDate",
-          "title": "lastUpdateDate",
+          "accessorKey": "dateAndTime",
+          "header": "dateAndTime",
+          "accessor": "dateAndTime",
+          "title": "dateAndTime",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "syncDateFrom",
+          "header": "syncDateFrom",
+          "accessor": "syncDateFrom",
+          "title": "syncDateFrom",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "syncDateTo",
+          "header": "syncDateTo",
+          "accessor": "syncDateTo",
+          "title": "syncDateTo",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "userId",
+          "header": "userId",
+          "accessor": "userId",
+          "title": "userId",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "userDisplayName",
+          "header": "userDisplayName",
+          "accessor": "userDisplayName",
+          "title": "userDisplayName",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "statusName",
+          "header": "statusName",
+          "accessor": "statusName",
+          "title": "statusName",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "progress",
+          "header": "progress",
+          "accessor": "progress",
+          "title": "progress",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "exceptionMessages",
+          "header": "exceptionMessages",
+          "accessor": "exceptionMessages",
+          "title": "exceptionMessages",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "hasException",
+          "header": "hasException",
+          "accessor": "hasException",
+          "title": "hasException",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "transactionImportSessionId",
+          "header": "transactionImportSessionId",
+          "accessor": "transactionImportSessionId",
+          "title": "transactionImportSessionId",
           "sortable": true,
           "hidden": false
         }
       ],
       "parameters": [
         {
+          "name": "CompanyId",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "format": "uuid"
+        }
+      ]
+    }
+  },
+  "depositorysessionlogin/abort": {
+    "name": "DepositorySessionLogin/Abort",
+    "uniqueCols": null,
+    "haveAction": false,
+    "register": {
+      "metod": "post",
+      "url": "/cloud/api/shareholding/DepositorySession/Login/Abort",
+      "responses": [
+        {
+          "accessorKey": "id",
+          "header": "id",
+          "accessor": "id",
+          "title": "id",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "number",
+          "header": "number",
+          "accessor": "number",
+          "title": "number",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "date",
+          "header": "date",
+          "accessor": "date",
+          "title": "date",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "dateAndTime",
+          "header": "dateAndTime",
+          "accessor": "dateAndTime",
+          "title": "dateAndTime",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "syncDateFrom",
+          "header": "syncDateFrom",
+          "accessor": "syncDateFrom",
+          "title": "syncDateFrom",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "syncDateTo",
+          "header": "syncDateTo",
+          "accessor": "syncDateTo",
+          "title": "syncDateTo",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "userId",
+          "header": "userId",
+          "accessor": "userId",
+          "title": "userId",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "userDisplayName",
+          "header": "userDisplayName",
+          "accessor": "userDisplayName",
+          "title": "userDisplayName",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "statusName",
+          "header": "statusName",
+          "accessor": "statusName",
+          "title": "statusName",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "progress",
+          "header": "progress",
+          "accessor": "progress",
+          "title": "progress",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "exceptionMessages",
+          "header": "exceptionMessages",
+          "accessor": "exceptionMessages",
+          "title": "exceptionMessages",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "hasException",
+          "header": "hasException",
+          "accessor": "hasException",
+          "title": "hasException",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "transactionImportSessionId",
+          "header": "transactionImportSessionId",
+          "accessor": "transactionImportSessionId",
+          "title": "transactionImportSessionId",
+          "sortable": true,
+          "hidden": false
+        }
+      ],
+      "parameters": [
+        {
+          "name": "SessionId",
+          "in": "query",
+          "type": "string",
+          "format": "uuid"
+        }
+      ]
+    }
+  },
+  "depositorysessionlogin/submit": {
+    "name": "DepositorySessionlogin/Submit",
+    "uniqueCols": null,
+    "haveAction": false,
+    "register": {
+      "metod": "post",
+      "url": "/cloud/api/shareholding/DepositorySession/login/Submit",
+      "requestBody": [
+        {
+          "name": "sessionId",
+          "title": "sessionId",
+          "required": true,
+          "type": "string",
+          "format": "----"
+        },
+        {
+          "name": "encryptedPayload",
+          "title": "encryptedPayload",
+          "required": true
+        }
+      ]
+    }
+  },
+  "depositorysessiontrades-sync": {
+    "name": "DepositorySessionTrades-Sync",
+    "uniqueCols": null,
+    "haveAction": false,
+    "register": {
+      "metod": "post",
+      "url": "/cloud/api/shareholding/DepositorySession/Trades-Sync",
+      "requestBody": [
+        {
           "name": "companyId",
+          "title": "companyId",
+          "required": true,
+          "type": "string",
+          "format": "----"
+        },
+        {
+          "name": "fromDate",
+          "title": "fromDate",
+          "required": true,
+          "type": "string",
+          "format": "----"
+        },
+        {
+          "name": "toDate",
+          "title": "toDate",
+          "required": true,
+          "type": "string",
+          "format": "----"
+        }
+      ]
+    }
+  },
+  "depositorysessiontrades-review": {
+    "name": "DepositorySessionTrades-Review",
+    "uniqueCols": null,
+    "haveAction": false,
+    "register": {
+      "metod": "post",
+      "url": "/cloud/api/shareholding/DepositorySession/Trades-Review",
+      "requestBody": [
+        {
+          "name": "sessionId",
+          "title": "sessionId",
+          "required": true,
+          "type": "string",
+          "format": "----"
+        }
+      ]
+    }
+  },
+  "depositorysession": {
+    "name": "DepositorySession",
+    "uniqueCols": null,
+    "haveAction": false,
+    "list": {
+      "metod": "get",
+      "url": "/cloud/api/shareholding/DepositorySession",
+      "responses": [
+        {
+          "accessorKey": "id",
+          "header": "id",
+          "accessor": "id",
+          "title": "id",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "number",
+          "header": "number",
+          "accessor": "number",
+          "title": "number",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "date",
+          "header": "date",
+          "accessor": "date",
+          "title": "date",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "dateAndTime",
+          "header": "dateAndTime",
+          "accessor": "dateAndTime",
+          "title": "dateAndTime",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "syncDateFrom",
+          "header": "syncDateFrom",
+          "accessor": "syncDateFrom",
+          "title": "syncDateFrom",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "syncDateTo",
+          "header": "syncDateTo",
+          "accessor": "syncDateTo",
+          "title": "syncDateTo",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "userId",
+          "header": "userId",
+          "accessor": "userId",
+          "title": "userId",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "userDisplayName",
+          "header": "userDisplayName",
+          "accessor": "userDisplayName",
+          "title": "userDisplayName",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "statusName",
+          "header": "statusName",
+          "accessor": "statusName",
+          "title": "statusName",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "progress",
+          "header": "progress",
+          "accessor": "progress",
+          "title": "progress",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "exceptionMessages",
+          "header": "exceptionMessages",
+          "accessor": "exceptionMessages",
+          "title": "exceptionMessages",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "hasException",
+          "header": "hasException",
+          "accessor": "hasException",
+          "title": "hasException",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "transactionImportSessionId",
+          "header": "transactionImportSessionId",
+          "accessor": "transactionImportSessionId",
+          "title": "transactionImportSessionId",
+          "sortable": true,
+          "hidden": false
+        }
+      ],
+      "parameters": [
+        {
+          "name": "CompanyId",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "name": "SessionDateFrom",
+          "in": "query",
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "name": "SessionDateTo",
+          "in": "query",
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "name": "SyncDateFrom",
+          "in": "query",
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "name": "SyncDateTo",
+          "in": "query",
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "name": "Status",
+          "in": "query",
+          "type": "string",
+          "format": "enum",
+          "enums": [
+            "PendingLogin",
+            "LoginSuccess",
+            "LoginFailed",
+            "LoginAborted",
+            "DataSyncInProgress",
+            "DataSyncSuccess",
+            "DataSyncFailed",
+            "PendingTradesReview",
+            "TradesReviewed"
+          ]
+        },
+        { "name": "IncludeInProgress", "in": "query", "type": "boolean" },
+        {
+          "name": "PageSize",
+          "in": "query",
+          "type": "integer",
+          "format": "int32"
+        },
+        {
+          "name": "PageNumber",
+          "in": "query",
+          "type": "integer",
+          "format": "int32"
+        },
+        { "name": "IsDescending", "in": "query", "type": "boolean" },
+        { "name": "SortBy", "in": "query", "type": "string" }
+      ]
+    },
+    "read": {
+      "metod": "get",
+      "url": "/cloud/api/shareholding/DepositorySession/{id}",
+      "responses": [
+        {
+          "accessorKey": "id",
+          "header": "id",
+          "accessor": "id",
+          "title": "id",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "number",
+          "header": "number",
+          "accessor": "number",
+          "title": "number",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "date",
+          "header": "date",
+          "accessor": "date",
+          "title": "date",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "dateAndTime",
+          "header": "dateAndTime",
+          "accessor": "dateAndTime",
+          "title": "dateAndTime",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "syncDateFrom",
+          "header": "syncDateFrom",
+          "accessor": "syncDateFrom",
+          "title": "syncDateFrom",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "syncDateTo",
+          "header": "syncDateTo",
+          "accessor": "syncDateTo",
+          "title": "syncDateTo",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "userId",
+          "header": "userId",
+          "accessor": "userId",
+          "title": "userId",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "userDisplayName",
+          "header": "userDisplayName",
+          "accessor": "userDisplayName",
+          "title": "userDisplayName",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "statusName",
+          "header": "statusName",
+          "accessor": "statusName",
+          "title": "statusName",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "progress",
+          "header": "progress",
+          "accessor": "progress",
+          "title": "progress",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "exceptionMessages",
+          "header": "exceptionMessages",
+          "accessor": "exceptionMessages",
+          "title": "exceptionMessages",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "hasException",
+          "header": "hasException",
+          "accessor": "hasException",
+          "title": "hasException",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "transactionImportSessionId",
+          "header": "transactionImportSessionId",
+          "accessor": "transactionImportSessionId",
+          "title": "transactionImportSessionId",
+          "sortable": true,
+          "hidden": false
+        }
+      ],
+      "parameters": [
+        {
+          "name": "id",
           "in": "path",
           "required": true,
           "type": "string",
           "format": "uuid"
         }
+      ]
+    }
+  },
+  "depositorysessioninprogress": {
+    "name": "DepositorySessionInProgress",
+    "uniqueCols": null,
+    "haveAction": false,
+    "list": {
+      "metod": "get",
+      "url": "/cloud/api/shareholding/DepositorySession/InProgress",
+      "responses": [
+        {
+          "accessorKey": "id",
+          "header": "id",
+          "accessor": "id",
+          "title": "id",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "number",
+          "header": "number",
+          "accessor": "number",
+          "title": "number",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "date",
+          "header": "date",
+          "accessor": "date",
+          "title": "date",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "dateAndTime",
+          "header": "dateAndTime",
+          "accessor": "dateAndTime",
+          "title": "dateAndTime",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "syncDateFrom",
+          "header": "syncDateFrom",
+          "accessor": "syncDateFrom",
+          "title": "syncDateFrom",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "syncDateTo",
+          "header": "syncDateTo",
+          "accessor": "syncDateTo",
+          "title": "syncDateTo",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "userId",
+          "header": "userId",
+          "accessor": "userId",
+          "title": "userId",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "userDisplayName",
+          "header": "userDisplayName",
+          "accessor": "userDisplayName",
+          "title": "userDisplayName",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "statusName",
+          "header": "statusName",
+          "accessor": "statusName",
+          "title": "statusName",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "progress",
+          "header": "progress",
+          "accessor": "progress",
+          "title": "progress",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "exceptionMessages",
+          "header": "exceptionMessages",
+          "accessor": "exceptionMessages",
+          "title": "exceptionMessages",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "hasException",
+          "header": "hasException",
+          "accessor": "hasException",
+          "title": "hasException",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "transactionImportSessionId",
+          "header": "transactionImportSessionId",
+          "accessor": "transactionImportSessionId",
+          "title": "transactionImportSessionId",
+          "sortable": true,
+          "hidden": false
+        }
+      ],
+      "parameters": [
+        {
+          "name": "CompanyId",
+          "in": "query",
+          "required": true,
+          "type": "string",
+          "format": "uuid"
+        },
+        {
+          "name": "PageSize",
+          "in": "query",
+          "type": "integer",
+          "format": "int32"
+        },
+        {
+          "name": "PageNumber",
+          "in": "query",
+          "type": "integer",
+          "format": "int32"
+        },
+        { "name": "IsDescending", "in": "query", "type": "boolean" },
+        { "name": "SortBy", "in": "query", "type": "string" }
       ]
     }
   },
@@ -6044,6 +6718,99 @@
         },
         { "name": "IsDescending", "in": "query", "type": "boolean" },
         { "name": "SortBy", "in": "query", "type": "string" }
+      ]
+    }
+  },
+  "health": {
+    "name": "Health",
+    "uniqueCols": null,
+    "haveAction": false,
+    "list": {
+      "metod": "get",
+      "url": "/cloud/api/Health",
+      "responses": [
+        {
+          "accessorKey": "data",
+          "header": "data",
+          "accessor": "data",
+          "title": "data",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "description",
+          "header": "description",
+          "accessor": "description",
+          "title": "description",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "exception",
+          "header": "exception",
+          "accessor": "exception",
+          "title": "exception",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "status",
+          "header": "status",
+          "accessor": "status",
+          "title": "status",
+          "sortable": true,
+          "hidden": false
+        }
+      ]
+    }
+  },
+  "healthencrypted": {
+    "name": "Healthencrypted",
+    "uniqueCols": null,
+    "haveAction": false,
+    "register": {
+      "metod": "post",
+      "url": "/cloud/api/Health/encrypted",
+      "requestBody": [
+        {
+          "name": "encryptedPayload",
+          "title": "encryptedPayload",
+          "required": true
+        }
+      ],
+      "responses": [
+        {
+          "accessorKey": "data",
+          "header": "data",
+          "accessor": "data",
+          "title": "data",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "description",
+          "header": "description",
+          "accessor": "description",
+          "title": "description",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "exception",
+          "header": "exception",
+          "accessor": "exception",
+          "title": "exception",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "status",
+          "header": "status",
+          "accessor": "status",
+          "title": "status",
+          "sortable": true,
+          "hidden": false
+        }
       ]
     }
   },
@@ -7702,14 +8469,14 @@
           "format": "----"
         },
         {
-          "name": "accountingMainCode",
-          "title": "کدینگ حساب کل",
+          "name": "accountingCode",
+          "title": "کدینگ حساب",
           "type": "string",
           "format": "----"
         },
         {
-          "name": "accountingSubCode",
-          "title": "کدینگ حساب معین",
+          "name": "accountingCode2",
+          "title": "کدینگ حساب 2",
           "type": "string",
           "format": "----"
         }
@@ -7886,14 +8653,14 @@
           "format": "----"
         },
         {
-          "name": "accountingMainCode",
-          "title": "کدینگ حساب کل",
+          "name": "accountingCode",
+          "title": "کدینگ حساب",
           "type": "string",
           "format": "----"
         },
         {
-          "name": "accountingSubCode",
-          "title": "کدینگ حساب معین",
+          "name": "accountingCode2",
+          "title": "کدینگ حساب 2",
           "type": "string",
           "format": "----"
         }
@@ -9508,10 +10275,26 @@
           "hidden": false
         },
         {
+          "accessorKey": "instrumentId",
+          "header": "instrumentId",
+          "accessor": "instrumentId",
+          "title": "InstrumentId",
+          "sortable": true,
+          "hidden": false
+        },
+        {
           "accessorKey": "brokerCode",
           "header": "brokerCode",
           "accessor": "brokerCode",
           "title": "کد کارگزاری",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "brokerPamCode",
+          "header": "brokerPamCode",
+          "accessor": "brokerPamCode",
+          "title": "کد Pam کارگزاری",
           "sortable": true,
           "hidden": false
         },
@@ -9576,6 +10359,22 @@
           "header": "isEdited",
           "accessor": "isEdited",
           "title": "ویرایش شده",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "exceptionMessage",
+          "header": "exceptionMessage",
+          "accessor": "exceptionMessage",
+          "title": "پیغام خطا",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "hasException",
+          "header": "hasException",
+          "accessor": "hasException",
+          "title": "hasException",
           "sortable": true,
           "hidden": false
         }
@@ -9628,10 +10427,26 @@
           "hidden": false
         },
         {
+          "accessorKey": "instrumentId",
+          "header": "instrumentId",
+          "accessor": "instrumentId",
+          "title": "InstrumentId",
+          "sortable": true,
+          "hidden": false
+        },
+        {
           "accessorKey": "brokerCode",
           "header": "brokerCode",
           "accessor": "brokerCode",
           "title": "کد کارگزاری",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "brokerPamCode",
+          "header": "brokerPamCode",
+          "accessor": "brokerPamCode",
+          "title": "کد Pam کارگزاری",
           "sortable": true,
           "hidden": false
         },
@@ -9696,6 +10511,22 @@
           "header": "isEdited",
           "accessor": "isEdited",
           "title": "ویرایش شده",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "exceptionMessage",
+          "header": "exceptionMessage",
+          "accessor": "exceptionMessage",
+          "title": "پیغام خطا",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "hasException",
+          "header": "hasException",
+          "accessor": "hasException",
+          "title": "hasException",
           "sortable": true,
           "hidden": false
         }
@@ -9795,10 +10626,26 @@
           "hidden": false
         },
         {
+          "accessorKey": "instrumentId",
+          "header": "instrumentId",
+          "accessor": "instrumentId",
+          "title": "InstrumentId",
+          "sortable": true,
+          "hidden": false
+        },
+        {
           "accessorKey": "brokerCode",
           "header": "brokerCode",
           "accessor": "brokerCode",
           "title": "کد کارگزاری",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "brokerPamCode",
+          "header": "brokerPamCode",
+          "accessor": "brokerPamCode",
+          "title": "کد Pam کارگزاری",
           "sortable": true,
           "hidden": false
         },
@@ -9863,6 +10710,22 @@
           "header": "isEdited",
           "accessor": "isEdited",
           "title": "ویرایش شده",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "exceptionMessage",
+          "header": "exceptionMessage",
+          "accessor": "exceptionMessage",
+          "title": "پیغام خطا",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "hasException",
+          "header": "hasException",
+          "accessor": "hasException",
+          "title": "hasException",
           "sortable": true,
           "hidden": false
         }
@@ -13170,18 +14033,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "accountingMainCode",
-          "header": "accountingMainCode",
-          "accessor": "accountingMainCode",
-          "title": "کدینگ حساب کل",
+          "accessorKey": "accountingCode",
+          "header": "accountingCode",
+          "accessor": "accountingCode",
+          "title": "کدینگ حساب",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "accountingSubCode",
-          "header": "accountingSubCode",
-          "accessor": "accountingSubCode",
-          "title": "کدینگ حساب معین",
+          "accessorKey": "accountingCode2",
+          "header": "accountingCode2",
+          "accessor": "accountingCode2",
+          "title": "کدینگ حساب 2",
           "sortable": true,
           "hidden": false
         },
@@ -13289,14 +14152,14 @@
           "format": "----"
         },
         {
-          "name": "accountingMainCode",
-          "title": "کدینگ حساب کل",
+          "name": "accountingCode",
+          "title": "کدینگ حساب",
           "type": "string",
           "format": "----"
         },
         {
-          "name": "accountingSubCode",
-          "title": "کدینگ حساب معین",
+          "name": "accountingCode2",
+          "title": "کدینگ حساب 2",
           "type": "string",
           "format": "----"
         }
@@ -13407,18 +14270,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "accountingMainCode",
-          "header": "accountingMainCode",
-          "accessor": "accountingMainCode",
-          "title": "کدینگ حساب کل",
+          "accessorKey": "accountingCode",
+          "header": "accountingCode",
+          "accessor": "accountingCode",
+          "title": "کدینگ حساب",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "accountingSubCode",
-          "header": "accountingSubCode",
-          "accessor": "accountingSubCode",
-          "title": "کدینگ حساب معین",
+          "accessorKey": "accountingCode2",
+          "header": "accountingCode2",
+          "accessor": "accountingCode2",
+          "title": "کدینگ حساب 2",
           "sortable": true,
           "hidden": false
         },
@@ -13557,18 +14420,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "accountingMainCode",
-          "header": "accountingMainCode",
-          "accessor": "accountingMainCode",
-          "title": "کدینگ حساب کل",
+          "accessorKey": "accountingCode",
+          "header": "accountingCode",
+          "accessor": "accountingCode",
+          "title": "کدینگ حساب",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "accountingSubCode",
-          "header": "accountingSubCode",
-          "accessor": "accountingSubCode",
-          "title": "کدینگ حساب معین",
+          "accessorKey": "accountingCode2",
+          "header": "accountingCode2",
+          "accessor": "accountingCode2",
+          "title": "کدینگ حساب 2",
           "sortable": true,
           "hidden": false
         },
@@ -13627,14 +14490,14 @@
           "format": "----"
         },
         {
-          "name": "accountingMainCode",
-          "title": "کدینگ حساب کل",
+          "name": "accountingCode",
+          "title": "کدینگ حساب",
           "type": "string",
           "format": "----"
         },
         {
-          "name": "accountingSubCode",
-          "title": "کدینگ حساب معین",
+          "name": "accountingCode2",
+          "title": "کدینگ حساب 2",
           "type": "string",
           "format": "----"
         }
@@ -13745,18 +14608,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "accountingMainCode",
-          "header": "accountingMainCode",
-          "accessor": "accountingMainCode",
-          "title": "کدینگ حساب کل",
+          "accessorKey": "accountingCode",
+          "header": "accountingCode",
+          "accessor": "accountingCode",
+          "title": "کدینگ حساب",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "accountingSubCode",
-          "header": "accountingSubCode",
-          "accessor": "accountingSubCode",
-          "title": "کدینگ حساب معین",
+          "accessorKey": "accountingCode2",
+          "header": "accountingCode2",
+          "accessor": "accountingCode2",
+          "title": "کدینگ حساب 2",
           "sortable": true,
           "hidden": false
         },
@@ -13966,18 +14829,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "accountingMainCode",
-          "header": "accountingMainCode",
-          "accessor": "accountingMainCode",
-          "title": "کدینگ حساب کل",
+          "accessorKey": "accountingCode",
+          "header": "accountingCode",
+          "accessor": "accountingCode",
+          "title": "کدینگ حساب",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "accountingSubCode",
-          "header": "accountingSubCode",
-          "accessor": "accountingSubCode",
-          "title": "کدینگ حساب معین",
+          "accessorKey": "accountingCode2",
+          "header": "accountingCode2",
+          "accessor": "accountingCode2",
+          "title": "کدینگ حساب 2",
           "sortable": true,
           "hidden": false
         },
@@ -19933,9 +20796,9 @@
           "hidden": false
         },
         {
-          "accessorKey": "externalId2",
-          "header": "externalId2",
-          "accessor": "externalId2",
+          "accessorKey": "instrumentId",
+          "header": "instrumentId",
+          "accessor": "instrumentId",
           "title": "کد یکتا",
           "sortable": true,
           "hidden": false
@@ -20114,9 +20977,9 @@
           "hidden": false
         },
         {
-          "accessorKey": "externalId2",
-          "header": "externalId2",
-          "accessor": "externalId2",
+          "accessorKey": "instrumentId",
+          "header": "instrumentId",
+          "accessor": "instrumentId",
           "title": "کد یکتا",
           "sortable": true,
           "hidden": false
@@ -22833,9 +23696,9 @@
           "hidden": false
         },
         {
-          "accessorKey": "externalId2",
-          "header": "externalId2",
-          "accessor": "externalId2",
+          "accessorKey": "instrumentId",
+          "header": "instrumentId",
+          "accessor": "instrumentId",
           "title": "کد یکتا",
           "sortable": true,
           "hidden": false
@@ -26174,18 +27037,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "fileType",
-          "header": "fileType",
-          "accessor": "fileType",
-          "title": "fileType",
+          "accessorKey": "sourceType",
+          "header": "sourceType",
+          "accessor": "sourceType",
+          "title": "sourceType",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "fileTypeName",
-          "header": "fileTypeName",
-          "accessor": "fileTypeName",
-          "title": "fileTypeName",
+          "accessorKey": "sourceTypeName",
+          "header": "sourceTypeName",
+          "accessor": "sourceTypeName",
+          "title": "sourceTypeName",
           "sortable": true,
           "hidden": false
         },
@@ -26277,13 +27140,12 @@
           ]
         },
         {
-          "name": "FileType",
+          "name": "SourceType",
           "in": "query",
           "type": "string",
           "format": "enum",
-          "enums": ["Ddn", "ManualEntry", "Prx"]
+          "enums": ["Ddn", "ManualEntry", "Prx", "DepositoryOnline"]
         },
-        { "name": "IncludeInProgress", "in": "query", "type": "boolean" },
         {
           "name": "TradingCodeId",
           "in": "query",
@@ -26381,18 +27243,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "fileType",
-          "header": "fileType",
-          "accessor": "fileType",
-          "title": "fileType",
+          "accessorKey": "sourceType",
+          "header": "sourceType",
+          "accessor": "sourceType",
+          "title": "sourceType",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "fileTypeName",
-          "header": "fileTypeName",
-          "accessor": "fileTypeName",
-          "title": "fileTypeName",
+          "accessorKey": "sourceTypeName",
+          "header": "sourceTypeName",
+          "accessor": "sourceTypeName",
+          "title": "sourceTypeName",
           "sortable": true,
           "hidden": false
         },
@@ -26494,12 +27356,12 @@
           "format": "uuid"
         },
         {
-          "name": "FileType",
+          "name": "SourceType",
           "in": "query",
           "required": true,
           "type": "string",
           "format": "enum",
-          "enums": ["Ddn", "ManualEntry", "Prx"]
+          "enums": ["Ddn", "ManualEntry", "Prx", "DepositoryOnline"]
         },
         {
           "name": "TradingCodeId",
@@ -26584,18 +27446,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "fileType",
-          "header": "fileType",
-          "accessor": "fileType",
-          "title": "fileType",
+          "accessorKey": "sourceType",
+          "header": "sourceType",
+          "accessor": "sourceType",
+          "title": "sourceType",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "fileTypeName",
-          "header": "fileTypeName",
-          "accessor": "fileTypeName",
-          "title": "fileTypeName",
+          "accessorKey": "sourceTypeName",
+          "header": "sourceTypeName",
+          "accessor": "sourceTypeName",
+          "title": "sourceTypeName",
           "sortable": true,
           "hidden": false
         },
@@ -26764,18 +27626,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "fileType",
-          "header": "fileType",
-          "accessor": "fileType",
-          "title": "fileType",
+          "accessorKey": "sourceType",
+          "header": "sourceType",
+          "accessor": "sourceType",
+          "title": "sourceType",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "fileTypeName",
-          "header": "fileTypeName",
-          "accessor": "fileTypeName",
-          "title": "fileTypeName",
+          "accessorKey": "sourceTypeName",
+          "header": "sourceTypeName",
+          "accessor": "sourceTypeName",
+          "title": "sourceTypeName",
           "sortable": true,
           "hidden": false
         },
@@ -26922,18 +27784,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "fileType",
-          "header": "fileType",
-          "accessor": "fileType",
-          "title": "fileType",
+          "accessorKey": "sourceType",
+          "header": "sourceType",
+          "accessor": "sourceType",
+          "title": "sourceType",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "fileTypeName",
-          "header": "fileTypeName",
-          "accessor": "fileTypeName",
-          "title": "fileTypeName",
+          "accessorKey": "sourceTypeName",
+          "header": "sourceTypeName",
+          "accessor": "sourceTypeName",
+          "title": "sourceTypeName",
           "sortable": true,
           "hidden": false
         },
@@ -27109,18 +27971,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "fileType",
-          "header": "fileType",
-          "accessor": "fileType",
-          "title": "fileType",
+          "accessorKey": "sourceType",
+          "header": "sourceType",
+          "accessor": "sourceType",
+          "title": "sourceType",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "fileTypeName",
-          "header": "fileTypeName",
-          "accessor": "fileTypeName",
-          "title": "fileTypeName",
+          "accessorKey": "sourceTypeName",
+          "header": "sourceTypeName",
+          "accessor": "sourceTypeName",
+          "title": "sourceTypeName",
           "sortable": true,
           "hidden": false
         },
@@ -27296,18 +28158,18 @@
           "hidden": false
         },
         {
-          "accessorKey": "fileType",
-          "header": "fileType",
-          "accessor": "fileType",
-          "title": "fileType",
+          "accessorKey": "sourceType",
+          "header": "sourceType",
+          "accessor": "sourceType",
+          "title": "sourceType",
           "sortable": true,
           "hidden": false
         },
         {
-          "accessorKey": "fileTypeName",
-          "header": "fileTypeName",
-          "accessor": "fileTypeName",
-          "title": "fileTypeName",
+          "accessorKey": "sourceTypeName",
+          "header": "sourceTypeName",
+          "accessor": "sourceTypeName",
+          "title": "sourceTypeName",
           "sortable": true,
           "hidden": false
         },
@@ -27472,13 +28334,12 @@
           ]
         },
         {
-          "name": "FileType",
+          "name": "SourceType",
           "in": "query",
           "type": "string",
           "format": "enum",
-          "enums": ["Ddn", "ManualEntry", "Prx"]
+          "enums": ["Ddn", "ManualEntry", "Prx", "DepositoryOnline"]
         },
-        { "name": "IncludeInProgress", "in": "query", "type": "boolean" },
         {
           "name": "TradingCodeId",
           "in": "query",

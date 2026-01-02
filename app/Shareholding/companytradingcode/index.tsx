@@ -74,7 +74,7 @@ const Company = () => {
 
                                         <Tooltip label="تخفیف کارمزد">
                                             <ActionIcon
-                                                onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '', 'tradingcodediscount', [{ key: '  ', value: row.id.toString() }, { key: 'tradingCode', value: row.tradingCode.toString() }], undefined)}
+                                                onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '', 'tradingcodediscount', [{ key: 'tradingCodeId', value: row.id.toString() }, { key: 'tradingCode', value: row.tradingCode.toString() }], undefined)}
                                                 variant="transparent"
                                                 className="mr-3 hover:bg-red-100 w-9 h-9"
                                             >
