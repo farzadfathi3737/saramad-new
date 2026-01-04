@@ -246,7 +246,7 @@ const Add = ({ id }: AddProps) => {
                                     </div>
                                 </div>
                             </div>
-                            {sessionId && <Session sessionid={sessionId} />}
+                            {sessionId && <Session id={id} sessionid={sessionId} />}
                         </div>
                     </div>
                 )}

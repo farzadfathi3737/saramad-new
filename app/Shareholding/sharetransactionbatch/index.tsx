@@ -1360,7 +1360,7 @@ const Session = ({ sessionid }: Props) => {
                                             </Transition>
 
 
-                                            <Drawer open={open} onClose={() => setOpen(false)} position="right" size="sm" className='flex flex-col overflow-y-hidden py-0'>
+                                            <Drawer open={open} onClose={() => setOpen(false)} position="right" className='flex flex-col overflow-y-hidden py-0'>
                                                 <DrawerItems className='flex flex-col h-full overflow-hidden'>
                                                     <div className="flex justify-between p-4 border-b flex-shrink-0">
                                                         <div>لیست دسته بندی ها</div>
