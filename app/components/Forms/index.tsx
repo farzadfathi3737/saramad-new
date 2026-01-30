@@ -9,6 +9,7 @@ import FDateField from '../inputs/dateField';
 import FSelectModelField from '../inputs/selectModelField';
 import FCheckboxField from '../inputs/checkboxField';
 import FswitchField from '../inputs/switchField';
+import { useState } from 'react';
 
 interface DFormsProps {
     model: IDataModel | undefined;
@@ -36,6 +37,7 @@ const DForms: React.FC<DFormsProps> = ({
     labaleNameList = [],
 }) => {
     const { t } = useLanguage();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     // useEffect(() => {
     // console.log('>>>>>>', labaleNameList);
@@ -51,10 +53,13 @@ const DForms: React.FC<DFormsProps> = ({
             <Formik
                 initialValues={{}}
                 //validationSchema={SignupSchema}
-                onSubmit={(values) => {
-                    //console.log('ok', values);
-                    onClick(values);
-                    //alert(JSON.stringify(values, null, 2));
+                onSubmit={async (values) => {
+                    setIsSubmitting(true);
+                    try {
+                        await onClick(values);
+                    } finally {
+                        setIsSubmitting(false);
+                    }
                 }}
             >
                 <Form>
@@ -155,15 +160,24 @@ const DForms: React.FC<DFormsProps> = ({
                     </div>
                     <div className="mt-8 flex items-center justify-end">
                         {cancelBtnText && (
-                            <button type="button" onClick={() => setModal(false)} className="btn btn-outline-[#2D9AA0] rounded-lg font-iranyekan">
+                            <button type="button" onClick={() => setModal(false)} disabled={isSubmitting} className="btn btn-outline-[#2D9AA0] rounded-lg font-iranyekan disabled:opacity-50 disabled:cursor-not-allowed">
                                 {t(cancelBtnText)}
                             </button>
                         )}
 
                         {sucsesBtnText && (
-                            <button type="submit" className="btn btn-outline px-15 mr-3 flex items-center rounded-lg bg-[#2D9AA0] font-iranyekan text-[#fff]">
-                                {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
-                                {t(sucsesBtnText)}
+                            <button type="submit" disabled={isSubmitting} className="btn btn-outline px-15 mr-3 flex items-center justify-center gap-2 rounded-lg bg-[#2D9AA0] font-iranyekan text-[#fff] disabled:opacity-50 disabled:cursor-not-allowed">
+                                {isSubmitting ? (
+                                    <>
+                                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        {t('loading')}
+                                    </>
+                                ) : (
+                                    t(sucsesBtnText)
+                                )}
                             </button>
                         )}
                     </div>

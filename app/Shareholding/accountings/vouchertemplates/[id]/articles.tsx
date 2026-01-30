@@ -1,9 +1,6 @@
 'use client'
 
-import FDateField from '@/app/components/inputs/dateField';
-import FSelectField from '@/app/components/inputs/selectField';
 import FSelectModelField from '@/app/components/inputs/selectModelField';
-import FTextAreaField from '@/app/components/inputs/textAreaField';
 import FTextField from '@/app/components/inputs/textField';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
@@ -11,31 +8,28 @@ import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
 import { Dialog, Transition } from '@headlessui/react';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { Tooltip } from '@mantine/core';
 import { Field, Form, Formik } from 'formik';
-import { useRouter } from 'next/navigation';
 import { Fragment, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
+import { apiFetch } from '@/lib/apiFetch';
+import Articletemplates from '@/app/components/customcmp/articletemplate';
 
-const Add = () => {
-    const { t } = useTranslation();
+const Edit = ({ id }: { id: string }) => {
+    const { t } = useLanguage();
     const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [modelAE, setModelAE] = useState<IDataModel>();
     const [loading, setLoading] = useState<boolean>(false);
-    const router = useRouter();
     const appConfig = useSelector((state: IRootState) => state.appConfig);
-    const [rowId, setRowId] = useState<string>();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     useEffect(() => {
-        // rowId should be passed as prop in App Router
-
-        const setdata = async () => {
-            const _model = await getEntityModel('articletemplates');
-            const _modelAE = await getEntityModel('articleelements');
+        const setdata = () => {
+            const _model = getEntityModel('articletemplates');
+            const _modelAE = getEntityModel('articleelements');
 
             setModel(_model);
             setModelAE(_modelAE);
@@ -51,11 +45,11 @@ const Add = () => {
 
     const handleAddClick = async (data: any) => {
         setLoading(true);
-        console.log(data);
 
         data.companyId = appConfig.company.id;
+        data.voucherTemplateId = id;
 
-        const res = await fetch(`${model?.register?.url}`, {
+        const res = await apiFetch(`${model?.register?.url}`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
@@ -65,44 +59,45 @@ const Add = () => {
 
         if (res.ok) {
             const result = res && (await res?.json());
-            //setInitialRecords(result);
-            //setAddModal(false);
-            //fetchData();
             setLoading(false);
-            subPage(model?.name.toLocaleLowerCase() ?? '');
+            setIsAddModalOpen(false);
+            ColoredToast('success', t('msgSuccess'));
         } else {
             const result = res && (await res?.json());
             ColoredToast('danger', result);
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-center justify-between border-b-2 px-5 pb-3">
-                    <div className="flex">
-                        <div>
+                <div className="flex h-[3.5rem] items-center justify-between border-b border-gray-300 pl-3 pr-3">
+                    <div className="flex h-full items-center">
+                        <div className='flex border-l h-full border-inherit justify-center items-center'>
                             <Tooltip label={t('back')}>
-                                <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
-                                    <i className="fa-duotone fa-solid fa-arrow-right text-xl ml-2" />
-                                </ActionIcon>
+                                <div
+                                    className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                    onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
+                                    <i className="fa-duotone fa-solid fa-chevron-right text-xl ml-2" />
+                                </div>
                             </Tooltip>
                         </div>
-                        <div className="p-2">قالب سودی زیانی آرتیکل ها</div>
+                        <div className="px-2">قالب سودی زیانی آرتیکل ها</div>
                     </div>
-                    <button type="button" onClick={() => setIsAddModalOpen(!isAddModalOpen)} className="btn btn-outline mr-3 flex items-center rounded-xl bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                    <button type="button" onClick={() => setIsAddModalOpen(!isAddModalOpen)} className="btn btn-outline flex items-center rounded-xl bg-[#2D9AA0] font-iranyekan text-white hover:bg-[#257d82]">
                         <i className="fa-duotone fa-solid fa-plus text-xl ml-2" />
                         {t('add')}
                     </button>
                 </div>
 
-                <div className="table-responsive px-5">
-                    {/* Articletemplates component needs to be created or imported properly */}
+                <div className="table-responsive p-5">
+                    {model && <Articletemplates model={model} modelAE={modelAE} VoucherTemplateId={id!} addModalOpen={isAddModalOpen} setAddModalOpen={setIsAddModalOpen} />}
                 </div>
             </div>
+
         </div>
     );
 };
 
-export default Add;
+export default Edit;

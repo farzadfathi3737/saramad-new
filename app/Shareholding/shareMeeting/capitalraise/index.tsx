@@ -5,7 +5,7 @@ import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Demo from '@/app/components/Datatable/MRT';
-import 'tippy.js/dist/tippy.css';
+//import 'tippy.js/dist/tippy.css';
 import axios from 'axios';
 import { IDataModel, IFieldsTable } from '@/interface/dataModel';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ import { ActionIcon, Tooltip } from '@mantine/core';
 import { useRouter, useSearchParams } from 'next/navigation';
 import AnimateHeight from 'react-animate-height';
 
-const Capitalraise = () => {
+const Capitalraise = ({ meetingId }: { meetingId?: string }) => {
     const { t } = useLanguage();
     const subPage = useSubPage();
     const [modelData, setModelData] = useState<IDataModel>();
@@ -24,8 +24,6 @@ const Capitalraise = () => {
     const [rowId, setRowId] = useState<string>();
 
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const meetingId = searchParams.get('MeetingId');
 
     const [active, setActive] = useState<boolean>(true);
     const togglePara = (value: boolean) => {
@@ -37,16 +35,16 @@ const Capitalraise = () => {
     useEffect(() => {
         const setdata = async () => {
 
-            setRowId(meetingId || undefined);
-
             const _model = await getEntityModel('sharemeetingcapitalraise');
             const _model2 = await getEntityModel('sharemeetingcapitalraisedetails');
 
             setModelData(_model);
             setModelData2(_model2);
+
+            setRowId(meetingId || undefined);
         };
         setdata();
-    }, []);
+    }, [meetingId]);
 
     useEffect(() => {
         const setdata = async () => {
@@ -76,15 +74,17 @@ const Capitalraise = () => {
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div>
+                <div className="flex h-[3rem] items-start justify-start border-b border-gray-300 pl-3">
+                    <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '')}>
-                                <i className="fa-duotone fa-solid fa-arrow-right text-lg ml-2" />
-                            </ActionIcon>
+                            <div
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                onClick={() => subPage('sharemeeting')}>
+                                <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
+                            </div>
                         </Tooltip>
                     </div>
-                    <div className='p-2'>
+                    <div className='px-2 h-full flex flex-col justify-center align-middle'>
                         افزایش سرمایه
                     </div>
                 </div>
@@ -102,57 +102,57 @@ const Capitalraise = () => {
                         </button>
                         <div>
                             <AnimateHeight duration={300} height={active ? 'auto' : 0}>
-                                <div className="table-responsive p-5">
-                                    <div className='grid grid-cols-2 gap-2'>
-                                        <div className='border'>
-                                            <div className='text-center p-3'>
-                                                درصد افزایش سرمایه
+                                <div className="p-5">
+                                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+                                        <div className='rounded-lg border border-gray-200 shadow-sm overflow-hidden bg-white'>
+                                            <div className='bg-gradient-to-r from-blue-500 to-blue-600 text-white text-center py-3 px-4'>
+                                                <h3 className='font-semibold text-base'>درصد افزایش سرمایه</h3>
                                             </div>
-                                            <div>
-                                                <table>
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full">
                                                     <thead>
-                                                        <tr>
-                                                            <th>سرمایه قدیم (میلیون ریال)</th>
-                                                            <th>سرمایه جدید (میلیون ریال)</th>
-                                                            <th>درصد کل</th>
-                                                            <th>درصد آورده نقدی (حق تقدم)</th>
-                                                            <th>درصد اندوخته ها (سهام جایزه)</th>
+                                                        <tr className="bg-gray-50">
+                                                            <th className="px-3 py-3 text-xs font-medium text-gray-700 border-b border-gray-200">سرمایه قدیم<br /><span className="text-[10px] text-gray-500">(میلیون ریال)</span></th>
+                                                            <th className="px-3 py-3 text-xs font-medium text-gray-700 border-b border-gray-200">سرمایه جدید<br /><span className="text-[10px] text-gray-500">(میلیون ریال)</span></th>
+                                                            <th className="px-3 py-3 text-xs font-medium text-gray-700 border-b border-gray-200">درصد کل</th>
+                                                            <th className="px-3 py-3 text-xs font-medium text-gray-700 border-b border-gray-200">آورده نقدی<br /><span className="text-[10px] text-gray-500">(حق تقدم)</span></th>
+                                                            <th className="px-3 py-3 text-xs font-medium text-gray-700 border-b border-gray-200">اندوخته‌ها<br /><span className="text-[10px] text-gray-500">(سهام جایزه)</span></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td className='border'>{data?.previousShares.toLocaleString('fa-IR')}</td>
-                                                            <td className='border'>{data?.newShares.toLocaleString('fa-IR')}</td>
-                                                            <td className='border'>{data?.totalPercentage}</td>
-                                                            <td className='border'>{data?.cashPercentage}</td>
-                                                            <td className='border'>{data?.reservesPercentage}</td>
+                                                        <tr className="hover:bg-blue-50 transition-colors">
+                                                            <td className='px-3 py-3 text-sm text-center border-b border-gray-100 font-medium text-gray-800'>{data?.previousShares?.toLocaleString('fa-IR') || '-'}</td>
+                                                            <td className='px-3 py-3 text-sm text-center border-b border-gray-100 font-medium text-gray-800'>{data?.newShares?.toLocaleString('fa-IR') || '-'}</td>
+                                                            <td className='px-3 py-3 text-sm text-center border-b border-gray-100 font-semibold text-blue-600'>{data?.totalPercentage || '-'}%</td>
+                                                            <td className='px-3 py-3 text-sm text-center border-b border-gray-100 font-semibold text-green-600'>{data?.cashPercentage || '-'}%</td>
+                                                            <td className='px-3 py-3 text-sm text-center border-b border-gray-100 font-semibold text-amber-600'>{data?.reservesPercentage || '-'}%</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
-                                        <div className='border'>
-                                            <div className='text-center p-3'>
-                                                محل تآمین افزایش سرمایه
+                                        <div className='rounded-lg border border-gray-200 shadow-sm overflow-hidden bg-white'>
+                                            <div className='bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-center py-3 px-4'>
+                                                <h3 className='font-semibold text-base'>محل تأمین افزایش سرمایه</h3>
                                             </div>
-                                            <div>
-                                                <table>
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full">
                                                     <thead>
-                                                        <tr>
-                                                            <th>مطالبات و آورده نقدی</th>
-                                                            <th>سود انباشته (میلیون ریال)</th>
-                                                            <th>اندوخته (میلیون ریال)</th>
-                                                            <th>تجدید ارزیابی (میلیون ریال)</th>
-                                                            <th>صرف سهام (میلیون ریال)</th>
+                                                        <tr className="bg-gray-50">
+                                                            <th className="px-3 py-3 text-xs font-medium text-gray-700 border-b border-gray-200">مطالبات و<br />آورده نقدی</th>
+                                                            <th className="px-3 py-3 text-xs font-medium text-gray-700 border-b border-gray-200">سود انباشته<br /><span className="text-[10px] text-gray-500">(میلیون ریال)</span></th>
+                                                            <th className="px-3 py-3 text-xs font-medium text-gray-700 border-b border-gray-200">اندوخته<br /><span className="text-[10px] text-gray-500">(میلیون ریال)</span></th>
+                                                            <th className="px-3 py-3 text-xs font-medium text-gray-700 border-b border-gray-200">تجدید ارزیابی<br /><span className="text-[10px] text-gray-500">(میلیون ریال)</span></th>
+                                                            <th className="px-3 py-3 text-xs font-medium text-gray-700 border-b border-gray-200">صرف سهام<br /><span className="text-[10px] text-gray-500">(میلیون ریال)</span></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td className='border'>{data?.shareholderCash.toLocaleString('fa-IR')}</td>
-                                                            <td className='border'>{data?.retainedEarnings.toLocaleString('fa-IR')}</td>
-                                                            <td className='border'>{data?.expansionReserve.toLocaleString('fa-IR')}</td>
-                                                            <td className='border'>{data?.revaluationSurplus.toLocaleString('fa-IR')}</td>
-                                                            <td className='border'>{data?.capitalSurplus.toLocaleString('fa-IR')}</td>
+                                                        <tr className="hover:bg-emerald-50 transition-colors">
+                                                            <td className='px-3 py-3 text-sm text-center border-b border-gray-100 font-medium text-gray-800'>{data?.shareholderCash?.toLocaleString('fa-IR') || '-'}</td>
+                                                            <td className='px-3 py-3 text-sm text-center border-b border-gray-100 font-medium text-gray-800'>{data?.retainedEarnings?.toLocaleString('fa-IR') || '-'}</td>
+                                                            <td className='px-3 py-3 text-sm text-center border-b border-gray-100 font-medium text-gray-800'>{data?.expansionReserve?.toLocaleString('fa-IR') || '-'}</td>
+                                                            <td className='px-3 py-3 text-sm text-center border-b border-gray-100 font-medium text-gray-800'>{data?.revaluationSurplus?.toLocaleString('fa-IR') || '-'}</td>
+                                                            <td className='px-3 py-3 text-sm text-center border-b border-gray-100 font-medium text-gray-800'>{data?.capitalSurplus?.toLocaleString('fa-IR') || '-'}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

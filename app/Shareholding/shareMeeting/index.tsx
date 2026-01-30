@@ -13,7 +13,7 @@ import { ActionIcon, Tooltip } from '@mantine/core';
 import Demo from '@/app/components/Datatable/MRT';
 import { Dialog, Transition } from '@headlessui/react';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
-import Link from 'next/link';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
 
 interface ICompany {
     date: string;
@@ -64,6 +64,7 @@ type Props = {
 
 const ShareMeeting = ({ sessionid }: Props) => {
     const { t } = useLanguage();
+    const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [modelS, setModelS] = useState<IDataModel>();
     const [modelSD, setModelSD] = useState<IDataModel>();
@@ -71,6 +72,7 @@ const ShareMeeting = ({ sessionid }: Props) => {
     const [data, setData] = useState<ICompany | undefined>();
     const [dataSession, setDataSession] = useState<ISessionlist | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [rowId, setRowId] = useState<string>();
     const [selectedItem, setSelectedItem] = useState<ISession>();
     const [sessionId, setSessionId] = useState<string>(sessionid || '');
@@ -176,7 +178,7 @@ const ShareMeeting = ({ sessionid }: Props) => {
     };
 
     const deleteSharetransactionbatch = async (id: string) => {
-        setIsLoading(true);
+        setIsDeleting(true);
 
         const res = await fetch(modelSD?.delete?.url.replace('{id}', id) as string, {
             method: 'delete',
@@ -193,6 +195,7 @@ const ShareMeeting = ({ sessionid }: Props) => {
             const responce = await res.text();
             ColoredToast('danger', responce);
         }
+        setIsDeleting(false);
     };
 
     const fetchData = async (id: string) => {
@@ -340,7 +343,7 @@ const ShareMeeting = ({ sessionid }: Props) => {
                                             <div className={`h-6 w-6 rounded-full border border-gray-500`} style={{ backgroundColor: "#c4C4C4" }} /><div className='pl-5 pr-2'>: برگشت شده</div>
                                         </div>
                                     }
-                                    //labaleNameList={[{ label: 'Keyword', value: 'نام سهام' }]}
+                                    labaleNameList={[{ label: 'typeName', value: 'نوع مجمع' }, { label: 'meetingDate', value: 'تاریخ مجمع' }]}
                                     // addSepratorFildes={[
                                     //     'price',
                                     //     'volume',
@@ -383,26 +386,82 @@ const ShareMeeting = ({ sessionid }: Props) => {
                                     detailPanel={(row) => {
                                         //console.log(row.original);
                                         return (
-                                            <div className="h-[100px] bg-gray-200">
-                                                <div className="flex p-5 absolute">
-                                                    <div className="ml-5 flex p-2 gap-5">
+                                            <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-3 overflow-x-hidden">
+                                                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => subPage('sharemeeting', 'sharecashdividend', [], [{ key: 'MeetingId', value: row.row.original.id }])}
+                                                        className="group relative overflow-hidden rounded-lg bg-white p-2 shadow-md transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:bg-gradient-to-br hover:from-emerald-50 hover:to-teal-50 cursor-pointer"
+                                                    >
+                                                        <div className="flex flex-row items-center gap-2 justify-start">
+                                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 transition-colors group-hover:bg-emerald-500 group-hover:text-white">
+                                                                <i className="fa-duotone fa-solid fa-money-bill-wave text-sm" />
+                                                            </div>
+                                                            <span className="text-right font-iranyekan text-xs font-semibold text-gray-700 group-hover:text-emerald-700 leading-tight">
+                                                                سود نقدی
+                                                            </span>
+                                                        </div>
+                                                    </button>
 
-                                                        <Link className="btn btn-default ml-2 px-5 font-iranyekan bg-white" href={`/Shareholding/sharecashdividend?MeetingId=${row.row.original.id}`}>
-                                                            سود نقدی
-                                                        </Link>
-                                                        <Link className="btn btn-default ml-2 px-5 font-iranyekan bg-white" href={`/Shareholding/shareMeeting/capitalraise?MeetingId=${row.row.original.id}`}>
-                                                            افزایش سرمایه
-                                                        </Link>
-                                                        <Link className="btn btn-default ml-2 px-5 font-iranyekan bg-white" href={`/Shareholding/shareMeeting/prerightsforpayment?MeetingId=${row.row.original.id}`}>
-                                                            پرداخت ارزش اسمی
-                                                        </Link>
-                                                        <Link className="btn btn-default ml-2 px-5 font-iranyekan bg-white" href={`/Shareholding/shareMeeting/prerightsforwaivedsell?MeetingId=${row.row.original.id}`}>
-                                                            حق تقدم استفاده نشده
-                                                        </Link>
-                                                        <Link className="btn btn-default ml-2 px-5 font-iranyekan bg-white" href={`/Shareholding/shareMeeting/capitalraiseregisterresult?MeetingId=${row.row.original.id}`}>
-                                                            ثبت افزایش سرمایه
-                                                        </Link>
-                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => subPage('sharemeeting', 'capitalraise', [], [{ key: 'MeetingId', value: row.row.original.id }])}
+                                                        className="group relative overflow-hidden rounded-lg bg-white p-2 shadow-md transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:bg-gradient-to-br hover:from-blue-50 hover:to-cyan-50 cursor-pointer"
+                                                    >
+                                                        <div className="flex flex-row items-center gap-2 justify-start">
+                                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600 transition-colors group-hover:bg-blue-500 group-hover:text-white">
+                                                                <i className="fa-duotone fa-solid fa-chart-line-up text-sm" />
+                                                            </div>
+                                                            <span className="text-right font-iranyekan text-xs font-semibold text-gray-700 group-hover:text-blue-700 leading-tight">
+                                                                افزایش سرمایه
+                                                            </span>
+                                                        </div>
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => subPage('sharemeeting', 'prerightsforpayment', [], [{ key: 'MeetingId', value: row.row.original.id }])}
+                                                        className="group relative overflow-hidden rounded-lg bg-white p-2 shadow-md transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:bg-gradient-to-br hover:from-purple-50 hover:to-pink-50 cursor-pointer"
+                                                    >
+                                                        <div className="flex flex-row items-center gap-2 justify-start">
+                                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-100 text-purple-600 transition-colors group-hover:bg-purple-500 group-hover:text-white">
+                                                                <i className="fa-duotone fa-solid fa-hand-holding-dollar text-sm" />
+                                                            </div>
+                                                            <span className="text-right font-iranyekan text-xs font-semibold text-gray-700 group-hover:text-purple-700 leading-tight">
+                                                                پرداخت ارزش اسمی
+                                                            </span>
+                                                        </div>
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => subPage('sharemeeting', 'prerightsforwaivedsell', [], [{ key: 'MeetingId', value: row.row.original.id }])}
+                                                        className="group relative overflow-hidden rounded-lg bg-white p-2 shadow-md transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:bg-gradient-to-br hover:from-amber-50 hover:to-orange-50 cursor-pointer"
+                                                    >
+                                                        <div className="flex flex-row items-center gap-2 justify-start">
+                                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600 transition-colors group-hover:bg-amber-500 group-hover:text-white">
+                                                                <i className="fa-duotone fa-solid fa-badge-percent text-sm" />
+                                                            </div>
+                                                            <span className="text-right font-iranyekan text-xs font-semibold text-gray-700 group-hover:text-amber-700 leading-tight">
+                                                                حق تقدم استفاده نشده
+                                                            </span>
+                                                        </div>
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => subPage('sharemeeting', 'capitalraiseregisterresult', [], [{ key: 'MeetingId', value: row.row.original.id }])}
+                                                        className="group relative overflow-hidden rounded-lg bg-white p-2 shadow-md transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:bg-gradient-to-br hover:from-rose-50 hover:to-red-50 cursor-pointer"
+                                                    >
+                                                        <div className="flex flex-row items-center gap-2 justify-start">
+                                                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-600 transition-colors group-hover:bg-rose-500 group-hover:text-white">
+                                                                <i className="fa-duotone fa-solid fa-file-circle-check text-sm" />
+                                                            </div>
+                                                            <span className="text-right font-iranyekan text-xs font-semibold text-gray-700 group-hover:text-rose-700 leading-tight">
+                                                                ثبت افزایش سرمایه
+                                                            </span>
+                                                        </div>
+                                                    </button>
                                                 </div>
                                             </div>
                                         );
