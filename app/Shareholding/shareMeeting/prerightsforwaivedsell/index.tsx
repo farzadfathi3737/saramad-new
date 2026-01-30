@@ -106,6 +106,7 @@ const Sharecashdividend = ({ meetingId }: { meetingId?: string }) => {
                                                 <i className="fa-duotone fa-solid fa-check text-lg mx-1" />
                                             </Link>
                                         </Tooltip>
+
                                     </>
                                 );
                             }}
