@@ -1,3 +1,5 @@
+'use client'
+
 import { getEntityModel } from '@/models/entity';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
