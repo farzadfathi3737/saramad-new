@@ -89,6 +89,25 @@ const Sharecashdividend = ({ meetingId }: { meetingId?: string }) => {
                             action={(row) => {
                                 return (
                                     <>
+                                        <Tooltip label="پرداخت ها">
+                                            <ActionIcon
+                                                onClick={() => subPage('sharemeeting', 'sharecashdividend/payments', undefined, [{ key: 'CashDividendId', value: row.id }, { key: 'tradingCode', value: row.tradingCode }, { key: 'MeetingId', value: meetingId?.toString() }])}
+                                                variant="transparent"
+                                                className="mr-3 hover:bg-green-100 w-9 h-9"
+                                            >
+                                                <i className="fa-duotone fa-solid fa-money-bill-wave text-xl text-gray-400 hover:text-green-600" />
+                                            </ActionIcon>
+                                        </Tooltip>
+                                        <Tooltip label="ثبت واریز بانکی">
+                                            <ActionIcon
+                                                onClick={() => subPage('sharemeeting', 'sharecashdividend/submitdeposit', undefined, [{ key: 'CashDividendId', value: row.id }, { key: 'tradingCode', value: row.tradingCode }, { key: 'MeetingId', value: meetingId! }])}
+                                                variant="transparent"
+                                                className="mr-3 hover:bg-blue-100 w-9 h-9"
+                                            >
+                                                <i className="fa-duotone fa-solid fa-university text-xl text-gray-400 hover:text-blue-600" />
+                                            </ActionIcon>
+                                        </Tooltip>
+
                                         <Tooltip label="اسناد فروش">
                                             <Link
                                                 href={`/Shareholding/shareMeeting/prerightsforwaivedsell/prerightswaivedsell?CashDividendId=${rowId}&tradingCode=${row.tradingCode}`}
@@ -106,7 +125,14 @@ const Sharecashdividend = ({ meetingId }: { meetingId?: string }) => {
                                                 <i className="fa-duotone fa-solid fa-check text-lg mx-1" />
                                             </Link>
                                         </Tooltip>
-
+                                        <Tooltip label="نمایش تراکنش ها">
+                                            <ActionIcon
+                                                onClick={() => subPage('sharemeeting', 'prerightswaivedselladd', undefined, [{ key: 'cashDividendId', value: rowId!.toString() }, { key: 'tradingCode', value: row.tradingCode!.toString() }])}
+                                                variant="transparent"
+                                                className="mr-3 flex items-center rounded-xl w-9 h-9 p-0">
+                                                <i className="fa-duotone fa-solid fa-list-check text-xl text-gray-400 hover:text-green-500" />
+                                            </ActionIcon>
+                                        </Tooltip>
                                     </>
                                 );
                             }}
