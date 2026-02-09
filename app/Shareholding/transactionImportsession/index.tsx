@@ -72,14 +72,14 @@ const Company = () => {
                                         <Demo
                                             model={model}
                                             isShowHideCol={true}
-                                            hideColList={['id', 'companyId', 'date', 'status', 'fileType', 'progress', 'importedFileId', 'includeInProgress', 'sourceType']}
+                                            hideColList={['id', 'companyId', 'date', 'status', 'fileType', 'progress', 'importedFileId', 'includeInProgress', 'sourceType', 'subType']}
                                             addSepratorFildes={['transactionsCount']}
                                             addFooterSumFildes={['transactionsCount']}
                                             labaleNameList={[
                                                 { label: 'Keyword', value: 'نام سهام' },
                                                 { label: 'name', value: 'نام سهام' },
                                                 { label: 'industryName', value: 'زیرصنعت' },
-                                                { label: 'stockBrokerId', value: 'زیرصنعت' },
+                                                { label: 'StockBrokerId', value: 'زیرصنعت' },
                                                 { label: 'sourceTypeName', value: 'نوع داده ورودی' },
                                                 { label: 'stockBrokerName', value: 'کارگزاری' },
                                             ]}

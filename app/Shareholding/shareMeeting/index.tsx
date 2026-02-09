@@ -253,7 +253,7 @@ const ShareMeeting = ({ sessionid }: Props) => {
             <link rel="stylesheet" href="/assets/css/style2.css" />
 
             <div>
-                <div className="grid w-full grid-cols-9 px-5 pt-5">
+                <div className="grid w-full grid-cols-9 p-5">
                     <div className="col-span-12">
                         <div className="table-responsive relative">
                             <div

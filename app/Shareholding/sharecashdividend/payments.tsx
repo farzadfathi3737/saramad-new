@@ -49,7 +49,7 @@ const Payments = ({ CashDividendId, tradingCode, meetingId }: { CashDividendId?:
                     </div>
                 </div>
 
-                <div className="px-5 mt-5">
+                <div className="px-5 my-5">
                     {modelData && (
                         <Demo
                             model={modelData}

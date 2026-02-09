@@ -17,7 +17,7 @@ const StackedCardex = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            let _model = await getEntityModel('reportstackedcardex');
+            const _model = await getEntityModel('reportstackedcardex');
 
             setModel(_model);
         };
