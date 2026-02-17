@@ -1,3 +1,5 @@
+'use client'
+
 import { getEntityModel } from '@/models/entity';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useEffect, useRef, useState } from 'react';
