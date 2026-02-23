@@ -74,6 +74,15 @@ import TransactionImportSessionTransaction from "../Shareholding/transactionImpo
 
 import ShareTransactionBatch from "../Shareholding/sharetransactionbatch";
 
+import ShareTransactionBatchNoBurs from "../Shareholding/sharetransactionbatchnoburs";
+import ShareTransactionBatchNoBursAdd from "../Shareholding/sharetransactionbatchnoburs/add";
+import ShareTransactionBatchNoBursEdit from "../Shareholding/sharetransactionbatchnoburs/[id]";
+
+import ShareTransactionBatchTadilat from "../Shareholding/sharetransactionbatchtadilat";
+
+import TransferCodeToCode from "../Shareholding/transfercodetocode";
+import TransferCodeToCodeAdd from "../Shareholding/transfercodetocode/add";
+
 import ShareMeeting from "../Shareholding/shareMeeting";
 
 import BrokerContradictions from "../Shareholding/brokercontradictions";
@@ -98,6 +107,9 @@ import VoucherTemplatesAdd from "../Shareholding/accountings/vouchertemplates/ad
 
 import { IKeyValue, ITabData } from "@/interface/dataModel";
 import { title } from "process";
+import Jobs from "../Shareholding/jobs";
+import Running from "../Shareholding/running";
+import Finished from "../Shareholding/finished";
 
 export default function TabsWithRouting() {
     const { t } = useLanguage();
@@ -318,6 +330,18 @@ export default function TabsWithRouting() {
             case "sharetransactionbatch":
                 return <ShareTransactionBatch key={active.id} />;
 
+            case "sharetransactionbatchnoburs":
+                if (active.key == "add") return <ShareTransactionBatchNoBursAdd key={active.id} />;
+                if (active.key == "edit") return <ShareTransactionBatchNoBursEdit key={active.id} id={getParamData('id', active)} />;
+                return <ShareTransactionBatchNoBurs key={active.id} />;
+
+            case "sharetransactionbatchtadilat":
+                return <ShareTransactionBatchTadilat key={active.id} />;
+
+            case "transfercodetocode":
+                if (active.key == "add") return <TransferCodeToCodeAdd key={active.id} shareId={getParamData('shareId', active)} />;
+                return <TransferCodeToCode key={active.id} />;
+
             case "sharemeeting":
                 return <ShareMeeting key={active.id} />;
 
@@ -498,6 +522,23 @@ export default function TabsWithRouting() {
 
                             {tab.id === "sharetransactionbatch" && <ShareTransactionBatch />}
 
+                            {tab.id === "sharetransactionbatchnoburs" && (
+                                <>
+                                    {tab.key === "add" && <ShareTransactionBatchNoBursAdd />}
+                                    {tab.key === "edit" && <ShareTransactionBatchNoBursEdit id={getParamData('id', tab)} />}
+                                    {tab.key === "transfercodetocode" && <ShareTransactionBatchNoBurs />}
+                                </>
+                            )}
+
+                            {tab.id === "sharetransactionbatchtadilat" && <ShareTransactionBatchTadilat />}
+
+                            {tab.id === "transfercodetocode" && (
+                                <>
+                                    {tab.key === "add" && <TransferCodeToCodeAdd shareId={getParamData('shareId', tab)} />}
+                                    {tab.key === "transfercodetocode" && <TransferCodeToCode />}
+                                </>
+                            )}
+
                             {tab.id === "sharemeeting" && <ShareMeeting />}
 
                             {tab.id === "brokercontradictions" && <BrokerContradictions />}
@@ -507,6 +548,12 @@ export default function TabsWithRouting() {
                             {tab.id === "transactioncommission" && <TransactionCommission />}
 
                             {tab.id === "transactioncommissiondiscount" && <TransactionCommissionDiscount />}
+
+                            {tab.id === "jobs" && <Jobs />}
+
+                            {tab.id === "running" && <Running />}
+
+                            {tab.id === "finished" && <Finished />}
                         </div>
                     ))}
                 </div>

@@ -109,9 +109,10 @@ const Sidebar = () => {
             childe: [
                 { id: 'transactionimportsession', name: 'transactionimportsession', title: 'بارگزاری اطلاعات خرید و فروش', link: '/Shareholding/transactionImportsession', icon: 'fa-upload' },
                 { id: 'sharetransactionbatch', name: 'buyingAndSellingListBurs', title: 'فهرست خرید و فروش بورسی', link: '/Shareholding/sharetransactionbatch', icon: 'fa-chart-line' },
-                { id: 'buyingAndSellingListNoBurs', name: 'buyingAndSellingListNoBurs', title: 'فهرست خرید و فروش غیر بورسی', link: '/pages/buyingAndSellingListNoBurs', icon: 'fa-rectangle-list' },
-                { id: 'transferCodeToCode', name: 'transferCodeToCode', title: 'انتقال کد به کد', link: '/', icon: 'fa-shuffle' },
+                { id: 'sharetransactionbatchnoburs', name: 'sharetransactionbatchNoBurs', title: 'فهرست خرید و فروش غیر بورسی', link: '/Shareholding/sharetransactionbatchNoBurs', icon: 'fa-rectangle-list' },
+                { id: 'transfercodetocode', name: 'transferCodeToCode', title: 'انتقال کد به کد', link: 'Shareholding/transferCodeToCode', icon: 'fa-shuffle' },
                 { id: 'sharemeeting', name: 'shareMeeting', title: 'فهرست مجامع دارایی ها', link: '/Shareholding/shareMeeting', icon: 'fa-people-group' },
+                { id: 'sharetransactionbatchtadilat', name: 'tsharetransactionbatchtadilatt', title: 'تعدیلات', link: '/Shareholding/tadilat', icon: 'fa-sliders' },
                 { id: 'brokercontradictions', name: 'brokercontradictions', title: 'مغایرت گیری با کارگزاری', link: '/Shareholding/brokercontradictions', icon: 'fa-triangle-exclamation' },
                 { id: 'discrepancyWithDepositary', name: 'discrepancyWithDepositary', title: 'مغایرت گیری با سپرده گذاری', link: '/', icon: 'fa-scale-balanced' },
             ],
@@ -235,8 +236,19 @@ const Sidebar = () => {
             icon: 'fa-sliders',
             childe: [
                 { id: 'userManagement', name: 'userManagement', title: 'مدیریت کاربران', link: '/', icon: 'fa-user-tie' },
-                { id: 'activityManagement', name: 'activityManagement', title: 'مدیریت فعالیت ها', link: '/', icon: 'fa-tasks' },
-                { id: 'eventManagement', name: 'eventManagement', title: 'مدیریت رخداد ها', link: '/', icon: 'fa-calendar-check' },
+                {
+                    id: 'commissions',
+                    name: 'commissions',
+                    title: 'مدیریت سرویس ها',
+                    link: '/',
+                    icon: 'fa-percent',
+                    childe: [
+                        { id: 'jobs', name: 'jobs', title: 'سرویس ها', link: '/', icon: 'fa-cogs' },
+                        { id: 'running', name: 'running', title: 'سرویس های درحال اجرا', link: '/', icon: 'fa-spinner' },
+                        { id: 'finished', name: 'finished', title: 'تاریخچه سرویس ها', link: '/', icon: 'fa-history' },
+                        { id: 'eventManagement', name: 'eventManagement', title: 'مدیریت رخداد ها', link: '/', icon: 'fa-calendar-check' },
+                    ]
+                }
             ],
         },
     ];
