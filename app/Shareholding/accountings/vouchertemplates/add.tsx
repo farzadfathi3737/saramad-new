@@ -7,9 +7,8 @@ import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { Tooltip } from '@mantine/core';
 import { Field, Form, Formik } from 'formik';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSelector } from 'react-redux';
@@ -27,11 +26,10 @@ const Add = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [rowId, setRowId] = useState<string>();
     const appConfig = useSelector((state: IRootState) => state.appConfig);
-    const router = useRouter();
 
     useEffect(() => {
-        const setdata = async () => {
-            let _model = getEntityModel('vouchertemplates');
+        const setdata = () => {
+            const _model = getEntityModel('vouchertemplates');
             setModel(_model);
         };
 
@@ -71,18 +69,21 @@ const Add = () => {
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div>
+                <div className="flex h-[3rem] items-start justify-start border-b border-gray-300 pl-3">
+                    <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
-                                <i className={`fa-duotone fa-solid fa-arrow-right text-xl ml-2`} />
-                            </ActionIcon>
+                            <div
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
+                                <i className="fa-duotone fa-solid fa-chevron-right text-xl ml-2" />
+                            </div>
                         </Tooltip>
                     </div>
-                    <div className="p-2">
-                        {t('add')} {t('vouchertemplates')}
+                    <div className='px-2 h-full flex flex-col justify-center align-middle'>
+                        تعریف قالب سند جدید
                     </div>
                 </div>
+
                 <div className="table-responsive px-5">
                     <div className="p-5">
                         <Formik
@@ -104,8 +105,8 @@ const Add = () => {
                                         {t('cancel')}
                                     </button>
 
-                                    <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
-                                        {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
+                                    <button type="submit" disabled={isLoading} className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                                        {isLoading && <i className="fa-duotone fa-solid fa-spinner fa-spin ml-2" />}
                                         {t('save')}
                                     </button>
                                 </div>

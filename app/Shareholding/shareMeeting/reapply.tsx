@@ -6,26 +6,21 @@ import FSelectModelField from '@/app/components/inputs/selectModelField';
 import FTextField from '@/app/components/inputs/textField';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
-
-import { ActionIcon, Tooltip } from '@mantine/core';
-import { IconCaretDown } from '@tabler/icons-react';
 import { Field, Form, Formik } from 'formik';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import AnimateHeight from 'react-animate-height';
-import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 const ReApply = () => {
-    const { t } = useTranslation();
+    const { t } = useLanguage();
     const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [loading, setLoading] = useState<boolean>(false);
-    const router = useRouter();
     const appConfig = useSelector((state: IRootState) => state.appConfig);
     const [companyId, setCompanyId] = useState("");
 
@@ -35,7 +30,7 @@ const ReApply = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            let _model = getEntityModel('sharemeetingreapply');
+            const _model = getEntityModel('sharemeetingreapply');
             setModel(_model);
         };
 
@@ -61,9 +56,8 @@ const ReApply = () => {
         });
 
         if (res.ok) {
-            ColoredToast('success', t("message.success_save_message"));
+            ColoredToast('success', t('message.success_save_message'));
             setLoading(false);
-            router.push("/");
         } else {
             const result = res && (await res?.json());
             ColoredToast('danger', result);
@@ -74,8 +68,13 @@ const ReApply = () => {
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div className="p-2">اعمال مجدد مجامع</div>
+                <div className="flex h-[3.5rem] items-center justify-between border-b border-gray-300">
+                    <div className='p-2 h-full flex items-center pr-5'>
+                        <span className="mr-2">اعمال مجدد مجامع</span>
+                    </div>
+
+                    <div className='p-2 h-full flex flex-col justify-center align-middle pl-2'>
+                    </div>
                 </div>
                 <div className="px-0">
                     <div className="py-5">
@@ -110,9 +109,15 @@ const ReApply = () => {
                                         {t('cancel')}
                                     </button>
 
-                                    <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
-                                        {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
-                                        {t('save')}
+                                    <button type="submit" disabled={loading} className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                                        {loading ? (
+                                            <>
+                                                <i className="fa-solid fa-spinner fa-spin ml-2" />
+                                                در حال پردازش...
+                                            </>
+                                        ) : (
+                                            t('save')
+                                        )}
                                     </button>
                                 </div>
                             </Form>

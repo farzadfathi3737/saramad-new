@@ -89,7 +89,8 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     const [initialRecords, setInitialRecords] = useState({ pageNumber: 1, numberOfElements: 10, pageSize: 10, totalPages: 1, totalCount: 10, items: [] });
     const [filedNotShow, setFiledNotShow] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [, setIsDeleting] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isExporting, setIsExporting] = useState(false);
     const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
     const [expandedRow, setExpandedRow] = useState<string | null>(null);
     const [filterdata, setFilterdata] = useState<Record<string, any>>({});
@@ -140,7 +141,6 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
 
         if (res.ok) {
             ColoredToast('success', 'ردیف موردنظر با موفقیت حذف گردید');
-            setIsDeleting(false);
             FetchData();
             setIsDeleteModalOpen(false);
         } else {
@@ -151,9 +151,8 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
             } else {
                 ColoredToast('danger', responce.title);
             }
-
-            setIsDeleting(false);
         }
+        setIsDeleting(false);
     };
 
     const handlerShowDeleteModal = (id: string, message: string) => {
@@ -196,7 +195,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
 
     const FetchData = async () => {
         let filteData: string = '';
-
+        console.log(staticParams);
         if (manualPagination) {
             filteData = `pageSize=${pagination.pageSize}&pageNumber=${pagination.pageIndex + 1}`;
         }
@@ -215,7 +214,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                 }
             });
         }
-        //console.log(staticParams, model.list?.parameters, filterdata);
+        // console.log(staticParams, model.list?.parameters, filterdata);
         if (filterdata) {
             Object.keys(filterdata).map((keyName) => {
                 //console.log(keyName);
@@ -281,6 +280,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     };
 
     const ExportData = async () => {
+        setIsExporting(true);
         let filteData: string = '';
 
         if (manualPagination) {
@@ -301,8 +301,6 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                 filteData = filteData + `${filteData != '' ? '&' : ''}${keyName}=${filterdata[keyName]}`;
             });
         }
-
-        setIsLoading(true);
 
         const fetchUrl = `${model.list?.url}/export/excel${filteData != '' ? `?${filteData}` : ''}`;
 
@@ -333,11 +331,11 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
             window.URL.revokeObjectURL(url);
 
             ColoredToast('success', 'فایل با موفقیت دانلود شد');
-            setIsLoading(false);
         } catch (error) {
             console.error('Export error:', error);
             ColoredToast('error', error instanceof Error ? error.message : 'خطا در دریافت فایل');
-            setIsLoading(false);
+        } finally {
+            setIsExporting(false);
         }
     };
 
@@ -596,9 +594,14 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                         color="inheritans"
                         style={{ '--ai-hover': 'rgba(134, 142, 150, 0.12)' }}
                         onClick={() => ExportData()}
+                        disabled={isExporting}
+                        className="disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {/* <IconExcel className="text-gray-400" /> */}
-                        <i className={`fa-duotone fa-solid fa-file-excel text-gray-500 hover:text-green-600 text-xl`} />
+                        {isExporting ? (
+                            <i className="fa-solid fa-spinner fa-spin text-gray-500 text-xl" />
+                        ) : (
+                            <i className="fa-duotone fa-solid fa-file-excel text-gray-500 hover:text-green-600 text-xl" />
+                        )}
                     </ActionIcon>
                 </Tooltip>
 
@@ -873,14 +876,13 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                                             <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="btn outline outline-red-500 text-red-500 hover:bg-red-500 hover:text-white">
                                                 انصراف
                                             </button>
-                                            <button type="button" onClick={() => handlerDelete(currentRowId)} className={`btn bg-red-500 text-white flex w-32 ltr:ml-4 rtl:mr-4 items-center justify-center ${isLoading ? 'disabled' : ''}}`}>
-                                                {isLoading ? (
+                                            <button type="button" disabled={isDeleting} onClick={() => handlerDelete(currentRowId)} className="btn bg-red-500 text-white flex w-32 ltr:ml-4 rtl:mr-4 items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+                                                {isDeleting ? (
                                                     <span className="inline-block h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-white border-l-transparent align-middle ltr:mr-4 rtl:ml-4"></span>
                                                 ) : (
-                                                    // <IconTrash className="ml-2" />
-                                                    <i className={`fa-duotone fa-solid fa-trash ml-2`} />
+                                                    <i className="fa-duotone fa-solid fa-trash ml-2" />
                                                 )}
-                                                حذف
+                                                {isDeleting ? 'در حال حذف...' : 'حذف'}
                                             </button>
                                         </div>
                                     </div>

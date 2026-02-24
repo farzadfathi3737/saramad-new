@@ -1,17 +1,16 @@
 'use client'
 
-import FColorField from '@/app/components/inputs/colorField';
 import FTextField from '@/app/components/inputs/textField';
+import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { Tooltip } from '@mantine/core';
 import { Field, Form, Formik } from 'formik';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import * as Yup from 'yup';
-//import axios from 'axios';
+import { apiFetch } from '@/lib/apiFetch';
 
 interface ICompany {
     name: string;
@@ -19,49 +18,37 @@ interface ICompany {
     textColor: string;
 }
 
-const Edit = () => {
+const Edit = ({ id }: { id: string }) => {
     const { t } = useLanguage();
     const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [data, setData] = useState<ICompany>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [rowId, setRowId] = useState<string>();
-
-    const router = useRouter();
+    const [isFetching, setIsFetching] = useState<boolean>(true);
 
     useEffect(() => {
-        // rowId should be passed as prop in App Router
-
         const setdata = async () => {
-            const _model = getEntityModel('vouchertemplates');
+            const _model = await getEntityModel('vouchertemplates');
             setModel(_model);
+            await fetchData(id);
         };
-
+        console.log('id', id);
         setdata();
-    }, []);
-
-    useEffect(() => {
-        const setdata = async () => {
-            rowId && fetchData(rowId);
-        };
-
-        setdata();
-    }, [rowId]);
+    }, [id]);
 
     const fetchData = async (id: string) => {
-        setIsLoading(true);
+        setIsFetching(true);
 
-        const res = await fetch(`${model?.read?.url.replace('{id}', id)}`);
+        const res = await apiFetch(`${model?.read?.url.replace('{id}', id)}`);
 
         if (res.ok) {
             const result: ICompany = await res?.json();
             setData(result);
-            console.log('>>>>>.', result);
-            setIsLoading(false);
         } else {
             setData(undefined);
-            setIsLoading(false);
+            ColoredToast('danger', t('msgError'));
         }
+        setIsFetching(false);
     };
 
     const SignupSchema = Yup.object().shape({
@@ -70,8 +57,7 @@ const Edit = () => {
 
     const handlEditClick = async (data: ICompany) => {
         setIsLoading(true);
-        console.log(data);
-        const res = await fetch(`${model?.update?.url.replace('{id}', rowId ? rowId : '')}`, {
+        const res = await apiFetch(`${model?.update?.url.replace('{id}', id)}`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',
@@ -81,31 +67,38 @@ const Edit = () => {
 
         if (res.ok) {
             const result = res && (await res?.json());
-            //setInitialRecords(result);
-            //setAddModal(false);
-            //fetchData();
             setIsLoading(false);
+            ColoredToast('success', t('msgSuccess'));
             subPage(model?.name.toLocaleLowerCase() ?? '');
         } else {
-            //setInitialRecords({ pageNumber: 1, pageSize: 10, totalPages: 1, totalCount: 10, items: [] });
+            const result = res && (await res?.json());
+            ColoredToast('danger', result);
+            setIsLoading(false);
         }
-        setIsLoading(false);
     };
 
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div>
+                <div className="flex h-[3rem] items-start justify-start border-b border-gray-300 pl-3">
+                    <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
-                                <i className="fa-duotone fa-solid fa-arrow-right text-xl ml-2" />
-                            </ActionIcon>
+                            <div
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
+                                <i className="fa-duotone fa-solid fa-chevron-right text-xl ml-2" />
+                            </div>
                         </Tooltip>
                     </div>
-                    <div className="p-2">{t('edit')} {t('vouchertemplates')}</div>
+                    <div className='px-2 h-full flex flex-col justify-center align-middle'>
+                        {t('edit')} {t('vouchertemplates')}
+                    </div>
                 </div>
-                {data && (
+                {isFetching ? (
+                    <div className="flex items-center justify-center p-10">
+                        <i className="fa-duotone fa-solid fa-spinner fa-spin text-4xl text-gray-400" />
+                    </div>
+                ) : data ? (
                     <div className="table-responsive px-5">
                         <div className="p-5">
                             <Formik
@@ -127,14 +120,18 @@ const Edit = () => {
                                             {t('cancel')}
                                         </button>
 
-                                        <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
-                                            {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
+                                        <button type="submit" disabled={isLoading} className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                                            {isLoading && <i className="fa-duotone fa-solid fa-spinner fa-spin ml-2" />}
                                             {t('save')}
                                         </button>
                                     </div>
                                 </Form>
                             </Formik>
                         </div>
+                    </div>
+                ) : (
+                    <div className="flex items-center justify-center p-10">
+                        <p className="text-gray-500">{t('noData')}</p>
                     </div>
                 )}
             </div>

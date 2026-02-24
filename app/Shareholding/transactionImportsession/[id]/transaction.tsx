@@ -199,17 +199,21 @@ const Add = ({ id }: AddProps) => {
     return (
         <div className="h-auto] flex flex-col">
             <div className="panel h-full w-full px-0">
-                <div className="mb-2 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div>
+                <div className="flex h-[3rem] items-start justify-start border-b border-gray-300 pl-3">
+                    <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900"
+                            <div
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
                                 onClick={() => subPage('transactionimportsession')}>
-                                <i className="fa-duotone fa-solid fa-arrow-right text-lg ml-2" />
-                            </ActionIcon>
+                                <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
+                            </div>
                         </Tooltip>
                     </div>
-                    <div className="p-2">تراکنش های بارگزاری شده</div>
+                    <div className='px-2 h-full flex flex-col justify-center align-middle'>
+                        <div className="p-2">تراکنش های بارگزاری شده</div>
+                    </div>
                 </div>
+
                 {data && (
                     <div className="flex px-0 py-0 w-full">
                         <div className="flex flex-col px-0 w-full">

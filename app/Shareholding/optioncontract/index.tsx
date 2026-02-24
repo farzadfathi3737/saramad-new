@@ -53,6 +53,8 @@ const Optioncontract = () => {
     const [selectedRow, setSelectedRow] = useState<IOptioncontract>();
     const [tedadEmal, setTedadEmal] = useState(0);
     const [mablaghEmal, setMablaghEmal] = useState(0);
+    const [isCalculating, setIsCalculating] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -313,7 +315,9 @@ const Optioncontract = () => {
                                                                 <div className="flex h-full w-full flex-col justify-center">
                                                                     <button
                                                                         type="button"
+                                                                        disabled={isCalculating}
                                                                         onClick={() => {
+                                                                            setIsCalculating(true);
                                                                             console.log(selectedRow.strikePrice);
                                                                             console.log(parseInt(tedadEmal.toString()))
 
@@ -329,10 +333,15 @@ const Optioncontract = () => {
                                                                                 console.log(_grossCost);
                                                                                 setMablaghEmal(_grossCost - _commission);
                                                                             }
+                                                                            setIsCalculating(false);
                                                                         }}
                                                                         className="btn btn-primary mt-3 flex h-12 w-full rounded-xl"
                                                                     >
-                                                                        محاسبه مبلغ اعمال
+                                                                        {isCalculating ? (
+                                                                            <i className="fa-duotone fa-solid fa-spinner fa-spin text-xl" />
+                                                                        ) : (
+                                                                            'محاسبه مبلغ اعمال'
+                                                                        )}
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -350,7 +359,7 @@ const Optioncontract = () => {
                                                                     <Field id="externalId2" name="externalId2" label="مبلغ نکول" component={FTextField} />
                                                                 </div>
                                                                 <div className="flex h-full w-full flex-col justify-center">
-                                                                    <button type="button" onClick={() => { }} className="btn btn-primary mt-3 flex h-12 w-full rounded-xl">
+                                                                    <button type="button" disabled onClick={() => { }} className="btn btn-primary mt-3 flex h-12 w-full rounded-xl">
                                                                         محاسبه مبلغ نکول
                                                                     </button>
                                                                 </div>
@@ -362,11 +371,15 @@ const Optioncontract = () => {
                                         )}
                                         <div className="p-5">
                                             <div className="mt-8 flex items-center justify-end">
-                                                <button type="button" onClick={() => setIsModalOpen(false)} className="btn btn-outline-danger">
+                                                <button type="button" onClick={() => setIsModalOpen(false)} className="btn btn-outline-danger" disabled={isSaving}>
                                                     انصراف
                                                 </button>
-                                                <button type="button" onClick={() => { }} className="btn btn-success flex w-32 ltr:ml-4 rtl:mr-4" disabled>
-                                                    ثبت
+                                                <button type="button" onClick={() => { }} className="btn btn-success flex w-32 ltr:ml-4 rtl:mr-4" disabled={isSaving}>
+                                                    {isSaving ? (
+                                                        <i className="fa-duotone fa-solid fa-spinner fa-spin text-xl" />
+                                                    ) : (
+                                                        'ثبت'
+                                                    )}
                                                 </button>
                                             </div>
                                         </div>

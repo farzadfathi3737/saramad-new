@@ -74,15 +74,13 @@ const Reapply = () => {
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div>
-                        <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage('transactioncommission')}>
-                                <i className="fa-duotone fa-solid fa-arrow-right text-lg ml-2" />
-                            </ActionIcon>
-                        </Tooltip>
+                <div className="flex h-[3.5rem] items-center justify-between border-b border-gray-300">
+                    <div className='p-2 h-full flex items-center pr-5'>
+                        <span className="mr-2">محاسبه مجدد کارمزدها</span>
                     </div>
-                    <div className="p-2">محاسبه مجدد کارمزدها</div>
+
+                    <div className='p-2 h-full flex flex-col justify-center align-middle pl-2'>
+                    </div>
                 </div>
 
                 <div className="">
@@ -120,13 +118,19 @@ const Reapply = () => {
 
 
                                 <div className="mt-8 flex items-center justify-end px-5">
-                                    <button type="button" onClick={() => subPage('transactioncommission')} className="btn btn-outline-[#2D9AA0] font-iranyekan">
+                                    {/* <button type="button" onClick={() => subPage('transactioncommission')} className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                         {t('cancel')}
-                                    </button>
+                                    </button> */}
 
-                                    <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
-                                        {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
-                                        {t('save')}
+                                    <button type="submit" disabled={loading} className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                                        {loading ? (
+                                            <>
+                                                <i className="fa-solid fa-spinner fa-spin ml-2" />
+                                                در حال پردازش...
+                                            </>
+                                        ) : (
+                                            t('save')
+                                        )}
                                     </button>
                                 </div>
                             </Form>

@@ -10,9 +10,8 @@ import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { IDataModel } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
-import { ActionIcon, Tooltip } from '@mantine/core';
+import { Tooltip } from '@mantine/core';
 import { Field, Form, Formik } from 'formik';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSelector } from 'react-redux';
@@ -24,12 +23,11 @@ const Add = () => {
     const [model, setModel] = useState<IDataModel>();
     const [loading, setLoading] = useState<boolean>(false);
     const [currentValueType, setCurrentValueType] = useState<string>();
-    const router = useRouter();
     const appConfig = useSelector((state: IRootState) => state.appConfig);
 
     useEffect(() => {
-        const setdata = async () => {
-            const _model = await getEntityModel('articleelements');
+        const setdata = () => {
+            const _model = getEntityModel('articleelements');
             setModel(_model);
         };
 
@@ -60,30 +58,32 @@ const Add = () => {
 
         if (res.ok) {
             const result = res && (await res?.json());
-            //setInitialRecords(result);
-            //setAddModal(false);
-            //fetchData();
             setLoading(false);
+            ColoredToast('success', t('msgSuccess'));
             subPage(model?.name.toLocaleLowerCase() ?? '');
         } else {
             const result = res && (await res?.json());
             ColoredToast('danger', result);
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div>
+                <div className="flex h-[3rem] items-start justify-start border-b border-gray-300 pl-3">
+                    <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
-                                <i className={`fa-duotone fa-solid fa-arrow-right text-xl ml-2`} />
-                            </ActionIcon>
+                            <div
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
+                                <i className="fa-duotone fa-solid fa-chevron-right text-xl ml-2" />
+                            </div>
                         </Tooltip>
                     </div>
-                    <div className="p-2">تعریف المان جدید</div>
+                    <div className='px-2 h-full flex flex-col justify-center align-middle'>
+                        تعریف المان جدید
+                    </div>
                 </div>
 
                 <div className="table-responsive px-5">
