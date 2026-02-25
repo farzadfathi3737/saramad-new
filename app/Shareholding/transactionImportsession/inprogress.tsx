@@ -8,12 +8,13 @@ import { IRootState } from '@/store';
 import { ActionIcon, Box, Tooltip } from '@mantine/core';
 import { useRouter } from 'next/navigation';
 import FileUploadModal from '@/app/components/Forms/uploadFile';
+import { useSubPage } from '@/app/components/Notifications/useSubPage';
 
 const Inprogress = () => {
+    const subPage = useSubPage();
     const [modelDataInProg, setModelDataInProg] = useState<IDataModel>();
     const appConfig = useSelector((state: IRootState) => state.appConfig);
     const [companyId, setCompanyId] = useState('');
-    const router = useRouter();
     const [initialRecords, setInitialRecords] = useState({ number: 1, numberOfElements: 10, size: 10, totalPages: 1, totalCount: 10, items: [] });
 
     useEffect(() => {
@@ -104,7 +105,8 @@ const Inprogress = () => {
                                                 <Box className="flex">
                                                     <Tooltip label="نمایش اطلاعات">
                                                         <ActionIcon
-                                                            onClick={() => router.push(`transactionImportsession/${item['id']}`)}
+                                                            //onClick={() => router.push(`transactionImportsession/${item['id']}`)}
+                                                            onClick={() => subPage('transactionimportsession', 'view', undefined, [{ key: 'id', value: item['id'] }])}
                                                             variant="transparent"
                                                             //className="btn btn-outline mr-3 flex items-center rounded-xl bg-blue-50 px-2 font-iranyekan text-blue-600 hover:bg-blue-100">
                                                             className="mr-3 flex items-center rounded-xl w-9 h-9 p-0">

@@ -87,7 +87,10 @@ import ShareMeeting from "../Shareholding/shareMeeting";
 import ShareMeetingCapitalRaise from "../Shareholding/shareMeeting/capitalraise";
 import ShareMeetingPreRightsForPayment from "../Shareholding/shareMeeting/prerightsforpayment";
 import ShareMeetingPreRightsForWaivedSell from "../Shareholding/shareMeeting/prerightsforwaivedsell";
+import ShareMeetingPreRightsForWaivedSellprerightswaivedsell from "../Shareholding/shareMeeting/prerightsforwaivedsell/prerightswaivedsell";
+import ShareMeetingPreRightsForWaivedSellprerightswaivedselladd from "../Shareholding/shareMeeting/prerightsforwaivedsell/prerightswaivedselladd";
 import ShareMeetingCapitalRaiseRegisterResult from "../Shareholding/shareMeeting/capitalraiseregisterresult";
+import ShareMeetingCapitalRaiseRegister from "../Shareholding/shareMeeting/capitalraiseregisterresult/capitalraiseregister";
 
 import ShareMeetingReapply from "../Shareholding/shareMeeting/reapply";
 
@@ -586,7 +589,10 @@ export default function TabsWithRouting() {
                                     {tab.key === "capitalraise" && <ShareMeetingCapitalRaise meetingId={getParamData('MeetingId', tab)} />}
                                     {tab.key === "prerightsforpayment" && <ShareMeetingPreRightsForPayment meetingId={getParamData('MeetingId', tab)} />}
                                     {tab.key === "prerightsforwaivedsell" && <ShareMeetingPreRightsForWaivedSell meetingId={getParamData('MeetingId', tab)} />}
+                                    {tab.key === "prerightsforwaivedsell/prerightswaivedsell" && <ShareMeetingPreRightsForWaivedSellprerightswaivedsell TradingCodeId={getParamData('tradingCodeId', tab)} TradingCode={getParamData('tradingCode', tab)} MeetingId={getParamData('MeetingId', tab)} />}
+                                    {tab.key === "prerightsforwaivedsell/prerightswaivedselladd" && <ShareMeetingPreRightsForWaivedSellprerightswaivedselladd TradingCodeId={getParamData('tradingCodeId', tab)} TradingCode={getParamData('tradingCode', tab)} MeetingId={getParamData('MeetingId', tab)} />}
                                     {tab.key === "capitalraiseregisterresult" && <ShareMeetingCapitalRaiseRegisterResult meetingId={getParamData('MeetingId', tab)} />}
+                                    {tab.key === "capitalraiseregisterresult/capitalraiseregister" && <ShareMeetingCapitalRaiseRegister TradingCodeId={getParamData('tradingCodeId', tab)} TradingCode={getParamData('tradingCode', tab)} MeetingId={getParamData('MeetingId', tab)} />}
                                     {tab.key === "sharecashdividend" && <ShareCashDividend meetingId={getParamData('MeetingId', tab)} />}
                                     {tab.key === "sharecashdividend/payments" && <ShareCashDividendPayments CashDividendId={getParamData('CashDividendId', tab)} tradingCode={getParamData('tradingCode', tab)} meetingId={getParamData('MeetingId', tab)} />}
                                     {tab.key === "sharecashdividend/submitdeposit" && <ShareCashDividendSubmitDeposit CashDividendId={getParamData('CashDividendId', tab)} tradingCode={getParamData('tradingCode', tab)} meetingId={getParamData('MeetingId', tab)} />}

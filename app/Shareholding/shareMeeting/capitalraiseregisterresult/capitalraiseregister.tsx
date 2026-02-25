@@ -2,33 +2,19 @@
 
 import { getEntityModel } from '@/models/entity';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Demo from '@/app/components/Datatable/MRT';
-import 'tippy.js/dist/tippy.css';
-import axios from 'axios';
-import { IDataModel, IFieldsTable } from '@/interface/dataModel';
-import Link from 'next/link';
-import { ActionIcon, Tooltip } from '@mantine/core';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { IDataModel } from '@/interface/dataModel';
+import { Tooltip } from '@mantine/core';
 
-const Payments = () => {
+const Payments = ({ TradingCodeId, TradingCode, MeetingId }: { TradingCodeId?: string; TradingCode?: string, MeetingId?: string }) => {
     const { t } = useLanguage();
     const subPage = useSubPage();
-    const [model, setModel] = useState<IDataModel>();
     const [modelData, setModelData] = useState<IDataModel>();
-    const [isLoading, setIsLoading] = useState(false);
-    const tableRefreshRef = useRef<{ fetchData: () => void }>(null);
-    const [rowId, setRowId] = useState<string>();
-    const [tradingCode, setTradingCode] = useState<string>();
-    const router = useRouter();
-    const searchParams = useSearchParams();
 
     useEffect(() => {
         const setdata = async () => {
-            setRowId(searchParams.get('CashDividendId') || undefined);
-            setTradingCode(searchParams.get('tradingCode') || undefined);
-
             const _model = getEntityModel('sharemeetingcapitalraiseregister');
             setModelData(_model);
         };
@@ -38,21 +24,22 @@ const Payments = () => {
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div>
+                <div className="flex h-[3rem] items-start justify-start border-b border-gray-300 pl-3">
+                    <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
-                                <i className="fa-duotone fa-solid fa-arrow-right text-lg ml-2" />
-                            </ActionIcon>
+                            <div
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50 cursor-pointer"
+                                onClick={() => subPage('sharemeeting', 'capitalraiseregisterresult', undefined, [{ key: 'MeetingId', value: MeetingId! }])}>
+                                <i className="fa-duotone fa-solid fa-chevron-right text-xl ml-2" />
+                            </div>
                         </Tooltip>
                     </div>
-                    <div className="mb-5 flex w-full h-[3rem] items-center justify-between border-b-2 px-5 pb-3">
-                        اسناد افزایش سرمایه - {tradingCode}
+                    <div className='px-2 h-full flex flex-col justify-center align-middle'>
+                        اسناد افزایش سرمایه - {TradingCode}
                     </div>
-
                 </div>
 
-                <div className="table-responsive px-5">
+                <div className="px-5 mt-5">
                     {modelData && (
                         <Demo
                             model={modelData}
@@ -60,13 +47,10 @@ const Payments = () => {
                             isEditable={false}
                             isShowSearchForm={false}
                             staticParams={[
-                                { name: 'CashDividendId', value: rowId! },
+                                { name: 'MeetingId', value: MeetingId! },
+                                { name: 'TradingCodeId', value: TradingCodeId! },
                             ]}
                             hideColList={['id']}
-                        // labaleNameList={[
-                        //     { label: 'Keyword', value: 'companyName' },
-                        //     { label: 'name', value: 'نام شرکت' },
-                        // ]}
                         />
                     )}
                 </div>

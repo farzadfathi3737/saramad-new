@@ -195,7 +195,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
 
     const FetchData = async () => {
         let filteData: string = '';
-        console.log(staticParams);
+        // console.log(staticParams);
         if (manualPagination) {
             filteData = `pageSize=${pagination.pageSize}&pageNumber=${pagination.pageIndex + 1}`;
         }
@@ -533,7 +533,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     const table = useMantineReactTable({
         renderFallbackValue: true,
         columns: columns,
-        data: initialRecords.items,
+        data: initialRecords.items ?? [],
         paginationDisplayMode: 'pages',
         state: { isLoading, rowSelection, expanded: expandedRow ? { [expandedRow]: true } : {}, grouping: changeGrouping, pagination: pagination },
         initialState: {
@@ -662,7 +662,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         enableGrouping: true,
         groupedColumnMode: 'reorder', //false, //'remove','reorder'
         positionToolbarAlertBanner: 'top', //: 'none',
-        enableExpanding: detailPanel || changeGrouping.length > 0 ? true : false,
+        enableExpanding: detailPanel || changeGrouping?.length > 0 ? true : false,
         onGroupingChange: (newGrouping) => {
             setChangeGrouping(newGrouping);
         },
@@ -775,7 +775,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         <>
             {isShowSearchForm &&
                 model?.list?.parameters.filter((f) => !filedNotShow.includes(f.name)) &&
-                model?.list?.parameters.filter((f) => !filedNotShow.includes(f.name)).length > 0 &&
+                model?.list?.parameters.filter((f) => !filedNotShow.includes(f.name))?.length > 0 &&
                 (model?.list?.parameters?.length == 5 ? (
                     <div className="flex w-full">
                         <div className="mb-5 w-full">

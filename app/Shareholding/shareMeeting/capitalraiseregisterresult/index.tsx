@@ -5,13 +5,8 @@ import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Demo from '@/app/components/Datatable/MRT';
-//import 'tippy.js/dist/tippy.css';
-import axios from 'axios';
 import { IDataModel, IFieldsTable } from '@/interface/dataModel';
-
-import Link from 'next/link';
 import { ActionIcon, Tooltip } from '@mantine/core';
-import { useRouter } from 'next/navigation';
 
 const Sharecashdividend = ({ meetingId }: { meetingId?: string }) => {
     const { t } = useTranslation();
@@ -22,14 +17,12 @@ const Sharecashdividend = ({ meetingId }: { meetingId?: string }) => {
     const tableRefreshRef = useRef<{ fetchData: () => void }>(null);
     const [rowId, setRowId] = useState<string>();
 
-    const router = useRouter();
-
     useEffect(() => {
         const setdata = async () => {
 
             setRowId(meetingId);
 
-            let _model = getEntityModel('sharemeetingcapitalraiseregisterresult');
+            const _model = getEntityModel('sharemeetingcapitalraiseregisterresult');
 
             setModelData(_model);
         };
@@ -90,12 +83,13 @@ const Sharecashdividend = ({ meetingId }: { meetingId?: string }) => {
                                 return (
                                     <>
                                         <Tooltip label="مرور اسناد">
-                                            <Link
-                                                href={`/Shareholding/shareMeeting/capitalraiseregisterresult/capitalraiseregister?CashDividendId=${rowId}&tradingCode=${row.tradingCode}`}
-                                                className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light px-2 font-iranyekan text-secondary"
+                                            <ActionIcon
+                                                onClick={() => subPage('sharemeeting', 'capitalraiseregisterresult/capitalraiseregister', undefined, [{ key: 'tradingCodeId', value: row.tradingCodeId }, { key: 'tradingCode', value: row.tradingCode }, { key: 'MeetingId', value: meetingId! }])}
+                                                variant="transparent"
+                                                className="mr-3 flex items-center rounded-xl w-9 h-9 p-0"
                                             >
-                                                <i className="fa-duotone fa-solid fa-check text-lg mx-1" />
-                                            </Link>
+                                                <i className="fa-duotone fa-solid fa-folder-open text-xl text-gray-400 hover:text-blue-500" />
+                                            </ActionIcon>
                                         </Tooltip>
                                     </>
                                 );

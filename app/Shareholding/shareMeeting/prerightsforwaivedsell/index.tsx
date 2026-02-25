@@ -54,7 +54,7 @@ const Sharecashdividend = ({ meetingId }: { meetingId?: string }) => {
                     </div>
                 </div>
 
-                <div className="px-5 mt-5">
+                <div className="p-5">
                     {modelData && (
                         <Demo
                             model={modelData}
@@ -92,23 +92,23 @@ const Sharecashdividend = ({ meetingId }: { meetingId?: string }) => {
                                 return (
                                     <>
                                         <Tooltip label="اسناد فروش">
-                                            <Link
-                                                href={`/Shareholding/shareMeeting/prerightsforwaivedsell/prerightswaivedsell?CashDividendId=${rowId}&tradingCode=${row.tradingCode}`}
-                                                className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light px-2 font-iranyekan text-secondary"
+                                            <ActionIcon
+                                                onClick={() => subPage('sharemeeting', 'prerightsforwaivedsell/prerightswaivedsell', undefined, [{ key: 'tradingCodeId', value: row.tradingCodeId }, { key: 'tradingCode', value: row.tradingCode }, { key: 'MeetingId', value: meetingId?.toString() }])}
+                                                variant="transparent"
+                                                className="mr-3 hover:bg-green-100 w-9 h-9"
                                             >
-                                                <i className="fa-duotone fa-solid fa-check text-lg mx-1" />
-                                            </Link>
+                                                <i className="fa-duotone fa-solid fa-file-doc text-xl text-gray-400 hover:text-green-600" />
+                                            </ActionIcon>
                                         </Tooltip>
                                         <Tooltip label="ثبت فروش">
-                                            <Link
-                                                // href={`submitdeposit?MeetingId=${rowId}`}
-                                                href={`/Shareholding/shareMeeting/prerightsforwaivedsell/prerightswaivedselladd?CashDividendId=${rowId}&tradingCode=${row.tradingCode}`}
-                                                className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light px-2 font-iranyekan text-secondary"
+                                            <ActionIcon
+                                                onClick={() => subPage('sharemeeting', 'prerightsforwaivedsell/prerightswaivedselladd', undefined, [{ key: 'tradingCodeId', value: row.tradingCodeId }, { key: 'tradingCode', value: row.tradingCode }, { key: 'MeetingId', value: meetingId! }])}
+                                                variant="transparent"
+                                                className="mr-3 hover:bg-blue-100 w-9 h-9"
                                             >
-                                                <i className="fa-duotone fa-solid fa-check text-lg mx-1" />
-                                            </Link>
+                                                <i className="fa-duotone fa-solid fa-save text-xl text-gray-400 hover:text-blue-600" />
+                                            </ActionIcon>
                                         </Tooltip>
-
                                     </>
                                 );
                             }}
