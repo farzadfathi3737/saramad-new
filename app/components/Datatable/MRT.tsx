@@ -302,10 +302,26 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
             });
         }
 
-        const fetchUrl = `${model.list?.url}/export/excel${filteData != '' ? `?${filteData}` : ''}`;
+        // const fetchUrl = `${model.list?.url}/export/excel${filteData != '' ? `?${filteData}` : ''}`;
+        const fetchUrl = `${model.list?.url}/export/excel`;
 
         try {
-            const res = await apiFetch(fetchUrl);
+            // const res = await apiFetch(fetchUrl, {
+            //     method: "post"
+            // });
+
+            const res = await apiFetch(fetchUrl, {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    companyId: staticParams?.find((x) => x.name === 'CompanyId')?.value,
+                    fiscalYearId: staticParams?.find((x) => x.name === 'FiscalYearId')?.value,
+                    date: staticParams?.find((x) => x.name === 'date')?.value,
+                }),
+            });
+
 
             // استخراج نام فایل از header
             const contentDisposition = res.headers.get('content-disposition');

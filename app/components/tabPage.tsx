@@ -571,7 +571,7 @@ export default function TabsWithRouting() {
                                 <>
                                     {tab.key === "add" && <ShareTransactionBatchNoBursAdd />}
                                     {tab.key === "edit" && <ShareTransactionBatchNoBursEdit id={getParamData('id', tab)} />}
-                                    {tab.key === "transfercodetocode" && <ShareTransactionBatchNoBurs />}
+                                    {tab.key === "sharetransactionbatchnoburs" && <ShareTransactionBatchNoBurs />}
                                 </>
                             )}
 
