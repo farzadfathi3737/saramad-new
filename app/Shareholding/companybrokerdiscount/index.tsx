@@ -59,7 +59,7 @@ const Company = ({ id, brokerName }: { id: string, brokerName: string }) => {
                                 { name: 'CompanyBrokerId', value: id },
                                 // { name: 'CompanyId', value: companyId },
                             ]}
-                            labaleNameList={[{ label: 'companybrokerid', value: 'نام کارگذار' }]}
+                            labaleNameList={[{ label: 'companybrokerid', value: 'نام کارگزار' }]}
                             // action={(row) => (
                             //     <div className="flex">
                             //         <ActionIcon onClick={() => router.push(`companybroker/code/${item}`)}>

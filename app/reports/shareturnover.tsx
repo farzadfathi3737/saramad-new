@@ -4,9 +4,13 @@ import { getEntityModel } from '@/models/entity';
 import { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Demo from '../components/Datatable/MRT';
-import { IDataModel } from '@/interface/dataModel';
-import { useSelector } from 'react-redux';
+import { IDataModel, ITabData } from '@/interface/dataModel';
+import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '@/store';
+import { useSubPage } from '../components/Notifications/useSubPage';
+import { useRouter } from 'next/navigation';
+import { setActiveTab, setTabs } from '@/store/appConfigSlice';
+import { ColoredToast } from '../components/Notifications/colorNotification';
 
 const ShareTurnover = () => {
     const { t } = useLanguage();
@@ -15,10 +19,53 @@ const ShareTurnover = () => {
     const [companyId, setCompanyId] = useState('');
     const [fiscalYearId, setFiscalYearId] = useState('');
     const [data, setData] = useState<any>();
+    const subPage = useSubPage();
+    const dispatch = useDispatch();
+    const router = useRouter();
+    const appConf = useSelector((state: IRootState) => state.appConfig);
+
+    const AddTab = (param: ITabData) => {
+
+        //console.log(param.key, param.name)
+
+        // بررسی: اگر تب قبلاً وجود دارد، فقط آن را فعال کن
+        const _existingTab = appConf.tabs.find((x) => x.id == param.id);
+
+        if (_existingTab) {
+            // تب قبلاً وجود دارد - فقط فعال کن
+            dispatch(setActiveTab(param.id));
+            router.replace(`?tab=${param.id}`);
+            return;
+        }
+
+        // اگر تب جدید است و تعداد < 6، اضافه کن
+        if (appConf.tabs.length >= 7) {
+            ColoredToast('warning', 'حداکثر 7 تب مجاز است!');
+            return;
+        }
+
+        // اضافه کردن تب جدید
+        const newTab: ITabData = {
+            id: param.id,
+            key: param.key,
+            name: param.name,
+            title: param.title,
+            orther: param.key == 'dashboard' ? 0 : appConf.tabs.length,
+            filters: param.filters ?? [],
+            params: param.params ?? [],
+        };
+
+        const updatedTabs = [...appConf.tabs, newTab];
+        dispatch(setTabs(updatedTabs));
+
+        // فعال کردن تب جدید
+        dispatch(setActiveTab(param.id));
+        router.replace(`?tab=${param.id}`);
+    };
 
     useEffect(() => {
         const setdata = async () => {
-            let _model = await getEntityModel('reportshareturnover');
+            const _model = await getEntityModel('reportshareturnover');
 
             setModel(_model);
         };
@@ -30,8 +77,8 @@ const ShareTurnover = () => {
         setFiscalYearId(appConfig.fiscalYear.id);
 
         setData({
-            FromDate: appConfig.fiscalYear.beginDate,
-            ToDate: appConfig.fiscalYear.endDate
+            FromDate: appConfig.fiscalYear.begin,
+            ToDate: appConfig.fiscalYear.end
         })
 
     }, [appConfig.company, appConfig.fiscalYear]);
@@ -66,6 +113,22 @@ const ShareTurnover = () => {
                             ]}
                             hideColList={['shareId', 'id']}
                             formInitialValues={data}
+                            onDoubleClick={(row) => {
+                                console.log(row.original.shareId)
+                                console.log(row.original.stockSymbol)
+
+                                const data: ITabData = {
+                                    id: row.original.shareId.toString(),
+                                    key: "stackedcardex",
+                                    name: "stackedcardex",
+                                    title: `روند موجودی (${row.original.stockSymbol.toString()})`,
+                                    orther: 0,
+                                    params: [{ key: 'id', value: row.original.shareId.toString() }, { key: 'name', value: row.original.stockSymbol.toString() }]
+                                };
+                                AddTab(data);
+                                //subPage('reportstackedcardex', '', undefined, [{ key: 'id', value: row.original.shareId.toString() }, { key: 'name', value: row.original.stockSymbol.toString() }])
+
+                            }}
                         />
                     )}
                 </div>

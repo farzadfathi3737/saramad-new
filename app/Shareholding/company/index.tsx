@@ -107,7 +107,7 @@ const Company = () => {
                         <button type="button" className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 font-iranyekan text-[#fff]"
                             onClick={() => subPage(modelData?.name.toLocaleLowerCase() ?? '', 'add')}>
                             <i className={`fa-duotone fa-solid fa-plus text-lg ml-2`} />
-                            {t('add')}
+                            {t('add')} {t('companes')}
                         </button>
                     </div>
                 </div>

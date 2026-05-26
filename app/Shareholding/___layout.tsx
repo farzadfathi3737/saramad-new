@@ -13,7 +13,7 @@ export function DefaultLayout({ children }: { children: React.ReactNode }) {
     return (
 
         <div className="flex min-h-screen flex-row w-full">
-            <div
+            {/* <div
                 className={`bg-Custom relative overflow-hidden transition-all duration-500 ease-in-out dark:border-gray-800 dark:bg-gray-900 ${isOpen ? "w-[320px]" : "w-[0px]"}`}
             >
                 <div
@@ -48,7 +48,45 @@ export function DefaultLayout({ children }: { children: React.ReactNode }) {
                         <Sidebar />
                     </div>
                 </div>
+            </div> */}
+
+            <div
+                className={`bg-Custom relative transition-all duration-500 ease-in-out dark:border-gray-800 dark:bg-gray-900 ${!isOpen ? "w-[320px]" : "w-[70px]"
+                    }`}
+            >
+                <div className="w-full">
+                    <div className="justify-items-center bg-inherit pb-1 bt-0">
+                        <div className="container flex flex-row justify-between gap-2.5">
+                            <div className={`flex flex-col items-center justify-center w-full transition-all duration-500 ${isOpen ? "" : "px-2"}`}>
+                                {isOpen ? (
+                                    <Link href="/" className="main-logo flex shrink-0 items-center w-full">
+                                        <img className="ml-[5px] w-[150px] flex-none" src="/assets/images/logo-white.png" alt="logo" />
+                                    </Link>
+                                ) : (
+                                    <div className="flex items-center justify-center h-[44px]">
+                                        <img className="w-[40px]" src="/assets/images/logo-icon.png" alt="logo" />
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className={`flex flex-col items-end justify-center ${isOpen ? "" : "absolute top-2 left-2"}`}>
+                                <button
+                                    type="button"
+                                    className="bg-text-link-interactive text-other-blue-gray-light h-[44px] rounded-r-xl px-3"
+                                    onClick={() => setIsOpen(!isOpen)}
+                                >
+                                    <i className={`fa-duotone fa-solid ${isOpen ? "fa-bars" : "fa-bars"} text-white text-2xl`}></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="p-2">
+                        {/* <Sidebar isOpen={isOpen} /> */}
+                    </div>
+                </div>
             </div>
+
+
             <div className="flex w-full flex-col">
                 <div className="justify-items-center border-b border-b-gray-200 bg-white py-2 dark:border-b-gray-800 dark:bg-gray-900">
                     <div

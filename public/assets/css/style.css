@@ -108,7 +108,7 @@ body {
 }
 
 .mantine-focus-auto:focus {
-  color: #ffffff;
+  color: gray;
 }
 
 .mantine-Table-thead .fixed {

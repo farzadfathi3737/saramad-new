@@ -37,18 +37,23 @@
   /* background-color: #fff; */
 }
 
-.m_326d024a:where([data-active]) {
+.m_326d024a:where([dataActive]) {
   background-color: transparent !important;
   border-color: #1b334d !important;
   color: #1b334d !important;
   font-weight: bold !important;
 }
 
-.m_326d024a:where([data-active]):hover {
+.m_326d024a:where([dataActive]):hover {
   background-color: #e8f4f8 !important;
   color: #1b334d !important;
 }
 
-.m_326d024a:hover:not([data-active]) {
+.m_326d024a:hover:not([dataActive]) {
   background-color: #f0f0f0 !important;
+}
+
+.m_8d3f4000:focus,
+.tabler-icon:focus {
+  color: red !important;
 }

@@ -6,6 +6,7 @@ import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { IDataModel } from '@/interface/dataModel';
+import { apiFetch } from '@/lib/apiFetch';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
 import { Tooltip } from '@mantine/core';
@@ -14,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
-const Add = ({ shareId }: { shareId: string }) => {
+const Add = () => {
     const { t } = useLanguage();
     const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
@@ -23,7 +24,7 @@ const Add = ({ shareId }: { shareId: string }) => {
 
     useEffect(() => {
         const setdata = async () => {
-            const _model = getEntityModel('ShareTransfer');
+            const _model = await getEntityModel('sharetransfer');
             setModel(_model);
         };
 
@@ -31,15 +32,18 @@ const Add = ({ shareId }: { shareId: string }) => {
     }, []);
 
     const SignupSchema = Yup.object().shape({
-        name: Yup.string().required('ورود نام شرکت اجباری است'),
+        transferDate: Yup.string().required('لطفا تاریخ را وارد کنید'),
+        fromTradingCodeId: Yup.string().required('لطفا سبد معاملاتی مبدا را مشخص کنید'),
+        toTradingCodeId: Yup.string().required('لطفا سبد معاملاتی مقصد را مشخص کنید'),
+        amount: Yup.string().required('تعداد انتقالی را وارد کنید'),
     });
 
     const handleAddClick = async (data: any) => {
         setLoading(true);
 
-        data.shareId = shareId;
+        console.log(model);
 
-        const res = await fetch(`${model?.register?.url}`, {
+        const res = await apiFetch(`${model?.register?.url}`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
@@ -91,6 +95,16 @@ const Add = ({ shareId }: { shareId: string }) => {
                                         <div>
                                             <Field id="transferDate" name="transferDate" label="تاریخ" component={FDateField} />
                                         </div>
+                                        <div>
+                                            <Field
+                                                id="shareId"
+                                                name="shareId"
+                                                label="سهم"
+                                                listRefName="share"
+                                                staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
+                                                component={FSelectModelField}
+                                            />
+                                        </div>
                                     </div>
                                     <div className="w-full"></div>
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
@@ -121,7 +135,7 @@ const Add = ({ shareId }: { shareId: string }) => {
                                     <div className="w-full"></div>
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                         <div>
-                                            <Field id="amount" name="amount" label="تعداد انتقالی" component={FDateField} />
+                                            <Field id="amount" name="amount" label="تعداد انتقالی" component={FTextField} />
                                         </div>
                                     </div>
                                     <div className="w-full"></div>

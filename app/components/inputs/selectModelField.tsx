@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { IListRef, IstaticParam, IOptionType } from '@/interface/dataModel';
 import { getEntityModel } from '@/models/entity';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { apiFetch } from '@/lib/apiFetch';
 
 interface CustomSelectProps extends FieldProps {
     label: string;
@@ -12,6 +13,7 @@ interface CustomSelectProps extends FieldProps {
     placeholder: string;
     isMulti?: boolean;
     isSearchable?: boolean;
+    isDefaultValue?: boolean;
     staticParams?: IstaticParam[];
     onChange?: any;
     className?: string;
@@ -28,12 +30,13 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
     placeholder = '',
     isMulti = false,
     isSearchable = true,
+    isDefaultValue = false,
     staticParams = null,
     className = '',
 }) => {
     const { t } = useLanguage();
     const [options, setOptions] = useState<IOptionType[]>([]);
-    const [selectedValue, setSelectedValue] = useState<IOptionType | IOptionType[] | undefined>(undefined);
+    const [selectedValue, setSelectedValue] = useState<IOptionType | IOptionType[] | undefined | null>(null);
     const [defaultValue, setDefaultValue] = useState<IOptionType | undefined>(undefined);
     //const [value, setValue] = useState<IOptionType | undefined>(undefined);
 
@@ -68,13 +71,13 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
         }
         //console.log(staticParams);
         setLoading(true);
-        const res = await fetch(`${listRef?.url}${filteData != '' ? `?${filteData}` : ''}`);
+        const res = await apiFetch(`${listRef?.url}${filteData != '' ? `?${filteData}` : ''}`);
 
         if (res.ok) {
             const result = res && (await res?.json());
             const _options: IOptionType[] = [];
 
-            result.items.map((item: any) => {
+            result.items.sort((a: any, b: any) => a.name).map((item: any) => {
                 _options.push({ value: item.id, label: item.name });
             });
 
@@ -104,7 +107,15 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
         const getData = async () => {
             await fetchData();
 
-            // field?.value && setSelectedValue(field.value)
+            // if (isDefaultValue) {
+            //     field?.value && setSelectedValue(options[0].value)
+            // }
+
+            // if (isDefaultValue) {
+            //     setSelectedValue(options[0]);
+            //     form.setFieldValue(field.name, options[0]?.value);
+            // }
+
         };
         listRef?.url && getData();
     }, [listRef, staticParams]);
@@ -122,7 +133,10 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
                 const foundOption = options.find((x: IOptionType) => x.value == field.value);
                 setSelectedValue(foundOption);
             } else {
-                //setSelectedValue(options[0]);
+                // if (isDefaultValue) {
+                //     setSelectedValue(options[0]);
+                //     // form.setFieldValue(field.name, options[0]?.value);
+                // }
             }
         } else {
             setSelectedValue(undefined);
@@ -137,8 +151,10 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
     };
 
     const clear = () => {
-        form.setFieldValue(field.name, undefined);
-        onChange && onChange(undefined);
+        const emptyValue = isMulti ? [] : null;
+        form.setFieldValue(field.name, emptyValue);
+        setSelectedValue(emptyValue);
+        onChange && onChange(emptyValue);
     };
     //setSelectedValue(isMulti ? options.filter((option) => (field.value || []).includes(option.value)) : options.find((option) => option.value === field.value));
 
@@ -175,7 +191,7 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
                     )}
                 </>
             )}
-            {form.touched[field.name] && form.errors[field.name] ? <div className="text-warning">{form.errors[field.name]?.toString()}</div> : null}
+            {form.touched[field.name] || form.errors[field.name] ? <div className="text-red-500 pt-1 justify-start">{form.errors[field.name]?.toString()}</div> : null}
         </div>
     );
 };

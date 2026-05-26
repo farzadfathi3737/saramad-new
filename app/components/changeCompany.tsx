@@ -7,7 +7,7 @@ import { IRootState } from '../../store';
 import { Field, Form, Formik } from 'formik';
 import FSelectModelField from './inputs/selectModelField';
 import { getEntityModel } from '@/models/entity';
-import { ICompanyParam, IOptionType, IstaticParam } from '@/interface/dataModel';
+import { ICompanyParam, IFiscalYear, IOptionType, IstaticParam } from '@/interface/dataModel';
 import { setActiveTab, setCompany, setFiscalYear, setTabs } from '@/store/appConfigSlice';
 import * as Yup from 'yup';
 import { Dropdown } from 'flowbite-react';
@@ -30,7 +30,7 @@ const ChangeCompany = () => {
 
     const [staticParams, setStaticParams] = useState<IstaticParam[]>();
     const [lcompany, setLCompany] = useState<ICompanyParam>();
-    const [lfiscalYear, setLFiscalYear] = useState<IstaticParam>();
+    const [lfiscalYear, setLFiscalYear] = useState<IFiscalYear>();
     const [initData, setInitData] = useState<IinitData>();
 
     const appConf = useSelector((state: IRootState) => state.appConfig);
@@ -47,6 +47,7 @@ const ChangeCompany = () => {
 
     const changeCompany = async () => {
         const res = await fetch(`${companyModel?.read?.url.replace('{id}', lcompany?.id)}`);
+        const res2 = await fetch(`${fiscalYearModel?.read?.url.replace('{id}', lfiscalYear?.id)}`);
 
         if (res.ok) {
             const result = res && (await res?.json());
@@ -58,25 +59,31 @@ const ChangeCompany = () => {
                     textColor: result?.textColor,
                 })
             );
-
-            dispatch(setTabs([{
-                id: "dashboard",
-                key: "dashboard",
-                name: "dashboard",
-                orter: 0,
-                filters: [], params: []
-            }]));
-            dispatch(setActiveTab('dashboard'));
-
-            window.location.reload();
-        } else {
         }
-        dispatch(
-            setFiscalYear({
-                name: lfiscalYear?.name,
-                id: lfiscalYear?.value,
-            })
-        );
+
+        if (res2.ok) {
+            const result2 = res2 && (await res2?.json());
+
+            dispatch(
+                setFiscalYear({
+                    name: lfiscalYear?.name,
+                    id: lfiscalYear?.id,
+                    begin: result2?.begin,
+                    end: result2?.end
+                })
+            );
+        }
+
+        dispatch(setTabs([{
+            id: "dashboard",
+            key: "dashboard",
+            name: "dashboard",
+            orter: 0,
+            filters: [], params: []
+        }]));
+        dispatch(setActiveTab('dashboard'));
+
+        window.location.reload();
 
         closeModal();
     };
@@ -161,17 +168,19 @@ const ChangeCompany = () => {
                                                     component={FSelectModelField}
                                                     isSearchable={false}
                                                     onChange={(val: IOptionType) => {
-                                                        setStaticParams([{ name: 'CompanyId', value: val.value }]);
+                                                        setStaticParams([{ name: 'CompanyId', value: val?.value ? val.value : '' }]);
                                                         setLCompany({
-                                                            name: val.label,
-                                                            id: val.value,
+                                                            name: val?.label,
+                                                            id: val?.value,
                                                             backgroundColor: '',
                                                             textColor: '',
                                                         });
-                                                        if (val.value !== appConf.company?.id) {
+                                                        if (val?.value !== appConf.company?.id) {
                                                             setLFiscalYear({
                                                                 name: '',
-                                                                value: '',
+                                                                id: '',
+                                                                begin: '',
+                                                                end: ''
                                                             });
                                                         }
                                                     }}
@@ -187,13 +196,15 @@ const ChangeCompany = () => {
                                                     listRefName={fiscalYearModel?.name}
                                                     component={FSelectModelField}
                                                     isSearchable={false}
-                                                    staticParams={staticParams}
-                                                    // value={initData?.fiscalYear}
+                                                    isDefaultValue={true} staticParams={staticParams}
+                                                    //value={initData?.fiscalYear}
                                                     onChange={(val: IOptionType) => {
                                                         console.log(val);
                                                         setLFiscalYear({
                                                             name: val.label,
-                                                            value: val.value,
+                                                            id: val.value,
+                                                            begin: '',
+                                                            end: ''
                                                         });
                                                         // setInitData({
                                                         //     company: lcompany?.id,
@@ -218,7 +229,7 @@ const ChangeCompany = () => {
                                             </button>
                                         )}
 
-                                        <button type="submit" disabled={isSubmitting || !isValid} className="rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-green-700">
+                                        <button type="submit" disabled={isSubmitting || !isValid || lfiscalYear?.id == ''} className="rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-green-700">
                                             تغییر
                                         </button>
                                     </div>
@@ -228,8 +239,9 @@ const ChangeCompany = () => {
                         {/* <div>{appConf.fiscalYear.name}</div> */}
                     </div>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 };
 

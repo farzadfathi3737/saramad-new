@@ -52,7 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fa" dir="rtl">
       <head>
-        <ThemeModeScript />
+        <ThemeModeScript mode="light" />
       </head>
       <LanguageProvider>
         <body className="">

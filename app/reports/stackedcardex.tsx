@@ -8,12 +8,13 @@ import { IDataModel } from '@/interface/dataModel';
 import { useSelector } from 'react-redux';
 import { IRootState } from '@/store';
 
-const StackedCardex = () => {
+const StackedCardex = ({ id, name }: { id?: string, name?: string }) => {
     const { t } = useLanguage();
     const [model, setModel] = useState<IDataModel>();
     const appConfig = useSelector((state: IRootState) => state.appConfig);
     const [companyId, setCompanyId] = useState('');
     const [fiscalYearId, setFiscalYearId] = useState('');
+    const [shareId, setShareId] = useState('');
 
     useEffect(() => {
         const setdata = async () => {
@@ -22,19 +23,24 @@ const StackedCardex = () => {
             setModel(_model);
         };
         setdata();
+
+
+        console.log(id)
+        console.log(name)
     }, []);
 
     useEffect(() => {
         setCompanyId(appConfig.company.id);
         setFiscalYearId(appConfig.fiscalYear.id);
-    }, [appConfig.company, appConfig.fiscalYear]);
+        setShareId(id ?? '');
+    }, [appConfig.company, appConfig.fiscalYear, id]);
 
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
                 <div className="flex h-[3.5rem] items-center justify-between border-b border-gray-300">
                     <div className='p-2 h-full flex flex-col justify-center align-middle pr-5'>
-                        روند موجودی
+                        روند موجودی {name && `(${name})`}
                     </div>
                 </div>
 
@@ -42,9 +48,12 @@ const StackedCardex = () => {
                     {model && (
                         <Demo
                             model={model}
+                            //loadingDataInit={shareId !== ''}
                             loadingDataInit={false}
                             isEditable={false}
                             isDeleteable={false}
+                            enableSorting={false}
+                            enableGrouping={false}
                             isShowHideCol={true}
                             addSepratorFildes={[
                                 'incAveragePrice',
@@ -102,10 +111,15 @@ const StackedCardex = () => {
                                     footerClassName: 'columnColorStyle',
                                 },
                             ]}
-                            staticParams={[
-                                { name: 'FiscalYearId', value: fiscalYearId },
-                                { name: 'CompanyId', value: companyId },
-                            ]}
+                            staticParams={
+                                shareId !== '' ?
+                                    [
+                                        //     { name: 'FiscalYearId', value: fiscalYearId },
+                                        // { name: 'CompanyId', value: companyId },
+                                        { name: 'ShareId', value: shareId }]
+                                    :
+                                    []
+                            }
                             labaleNameList={[
                                 { label: 'ShareId', value: 'share' },
                                 { label: 'TradingCodeId', value: 'tradingCode' },

@@ -27,7 +27,7 @@ const Add = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            const _model = getEntityModel('share');
+            const _model = getEntityModel('nonmarketshare');
             setModel(_model);
         };
 
@@ -68,7 +68,7 @@ const Add = () => {
             //setAddModal(false);
             //fetchData();
             setLoading(false);
-            subPage(model?.name.toLocaleLowerCase() ?? '');
+            subPage('share');
         } else {
             const result = res && (await res?.json());
             ColoredToast('danger', result);
@@ -84,7 +84,7 @@ const Add = () => {
                         <Tooltip label={t('back')}>
                             <div
                                 className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
-                                onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
+                                onClick={() => subPage('share')}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
                         </Tooltip>
@@ -195,7 +195,7 @@ const Add = () => {
 
                                 <div className="mt-8 flex items-center justify-end px-10">
                                     <button type="button"
-                                        onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}
+                                        onClick={() => subPage('share')}
                                         className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                         {t('cancel')}
                                     </button>

@@ -35,7 +35,7 @@ const theme = createTheme({
         Pagination: {
             styles: {
                 control: {
-                    '&[data-active]': {
+                    '&[dataActive]': {
                         backgroundColor: 'transparent !important',
                         borderColor: '#1B334D !important',
                         color: '#1B334D !important',
@@ -45,7 +45,7 @@ const theme = createTheme({
                             color: '#1B334D !important',
                         },
                     },
-                    '&:hover:not([data-active])': {
+                    '&:hover:not([dataActive])': {
                         backgroundColor: '#f0f0f0 !important',
                     },
                 },
