@@ -523,7 +523,7 @@ const Session = () => {
                                                 </div>
                                             </div> */}
 
-                                            {model && selectedItem && (
+                                            {model && (
                                                 <Demo
                                                     isShowSearchForm={false}
                                                     manualPagination={true}
