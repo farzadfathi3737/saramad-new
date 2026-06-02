@@ -118,7 +118,6 @@ const Edit = ({ id }: { id: string }) => {
                                 initialValues={data}
                                 validationSchema={SignupSchema}
                                 onSubmit={(values) => {
-                                    console.log('ok', values);
                                     handlEditClick(values);
                                     //alert(JSON.stringify(values, null, 2));
                                 }}

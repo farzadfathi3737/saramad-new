@@ -30,16 +30,16 @@ const Edit = ({ id }: { id: string }) => {
         const setdata = async () => {
             const _model = await getEntityModel('vouchertemplates');
             setModel(_model);
-            await fetchData(id);
+            await fetchData(_model, id);
         };
         console.log('id', id);
         setdata();
     }, [id]);
 
-    const fetchData = async (id: string) => {
-        setIsFetching(true);
+    const fetchData = async (_model: IDataModel, id: string) => {
 
-        const res = await apiFetch(`${model?.read?.url.replace('{id}', id)}`);
+        setIsFetching(true);
+        const res = await apiFetch(`${_model?.read?.url.replace('{id}', id)}`);
 
         if (res.ok) {
             const result: ICompany = await res?.json();

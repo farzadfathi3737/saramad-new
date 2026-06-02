@@ -196,7 +196,8 @@ const ChangeCompany = () => {
                                                     listRefName={fiscalYearModel?.name}
                                                     component={FSelectModelField}
                                                     isSearchable={false}
-                                                    isDefaultValue={true} staticParams={staticParams}
+                                                    isDefaultValue={true} 
+                                                    staticParams={staticParams}
                                                     //value={initData?.fiscalYear}
                                                     onChange={(val: IOptionType) => {
                                                         console.log(val);

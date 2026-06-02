@@ -82,8 +82,8 @@ const ShareRelationType = ({ id, name }: { id: string, name: string }) => {
                                     <ActionIcon
                                         onClick={() => subPage('share', 'shareinitialbalance/edit', undefined, [{ key: 'id', value: row.id.toString() }, { key: 'shareId', value: id }, { key: 'name', value: name }])
                                         }
-                                        className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light w-9 h-9 p-0 font-iranyekan text-secondary">
-                                        <i className={`fa-duotone fa-solid fa-pen-to-square text-xl`} />
+                                        className="mr-3 flex items-center rounded-xl w-9 h-9 p-0 bg-red-400">
+                                        <i className={`fa-duotone fa-solid fa-pen-to-square text-xl text-gray-400 hover:text-green-500`} />
                                     </ActionIcon>
                                 </Tooltip>
                             )}

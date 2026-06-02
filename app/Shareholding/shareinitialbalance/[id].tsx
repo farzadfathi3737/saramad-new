@@ -14,9 +14,14 @@ import { apiFetch } from '@/lib/apiFetch';
 import FSelectModelField from '@/app/components/inputs/selectModelField';
 
 interface ICompany {
-    name: string;
-    accountingCode: string;
-    creationDate: string;
+    name?: string;
+    accountingCode?: string;
+    creationDate?: string;
+    newInitialBalance?: number;
+    volume?: number;
+    newTotalPrimeCost?: number;
+    primeCost?: number;
+    tradingCode?: string;
 }
 
 const Edit = ({ id, shareId, name }: { id: string, shareId: string, name: string }) => {
@@ -49,6 +54,7 @@ const Edit = ({ id, shareId, name }: { id: string, shareId: string, name: string
 
         if (res.ok) {
             const result: ICompany = await res?.json();
+            console.log(result);
             setData(result);
             setIsLoading(false);
         } else {
@@ -107,7 +113,11 @@ const Edit = ({ id, shareId, name }: { id: string, shareId: string, name: string
                     <div className="table-responsive px-5">
                         <div className="p-5">
                             <Formik
-                                initialValues={data}
+                                initialValues={{
+                                    newInitialBalance: data.volume,
+                                    newTotalPrimeCost: data.primeCost,
+                                    tradingCode: data.tradingCode
+                                }}
                                 validationSchema={SignupSchema}
                                 onSubmit={(values) => {
                                     handlEditClick(values);
@@ -117,23 +127,15 @@ const Edit = ({ id, shareId, name }: { id: string, shareId: string, name: string
                                     <div className="grid w-full grid-cols-1 gap-2 px-10 pt-5 sm:grid-cols-2">
                                         <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                             <div>
-                                                <Field id="shareCount" name="shareCount" label="مانده ابتدای دوره" component={FTextField} />
+                                                <Field id="newInitialBalance" name="newInitialBalance" label="مانده ابتدای دوره" component={FTextField} />
                                             </div>
                                             <div>
-                                                <Field id="sharePrimeCost" name="sharePrimeCost" label="بهای تمام شده" component={FTextField} />
+                                                <Field id="newTotalPrimeCost" name="newTotalPrimeCost" label="بهای تمام شده" component={FTextField} />
                                             </div>
                                         </div>
                                         <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                             <div>
-                                                <Field
-                                                    id="tradingCodeId"
-                                                    name="tradingCodeId"
-                                                    label="سبد معاملاتی"
-                                                    listRefName="companytradingcode"
-                                                    staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
-                                                    component={FSelectModelField}
-                                                    placeholder="لطفا یک مورد را انتخاب کنید"
-                                                />
+                                                <Field id="tradingCode" name="tradingCode" label="سبد معاملاتی" disabled component={FTextField} />
                                             </div>
                                         </div>
                                     </div>

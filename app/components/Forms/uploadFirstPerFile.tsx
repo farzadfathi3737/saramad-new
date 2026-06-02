@@ -47,6 +47,66 @@ const FileUploadModal: React.FC = () => {
         setIsModalOpen(false);
     };
 
+    const handleDownloadRawFile = async () => {
+        //     const link = document.createElement('a');
+        //     link.href = 'cloud/api/shareholding/Share/import/template';
+        //     link.download = 'raw-file.xlsx';
+        //     link.click();
+        // };
+
+
+        // const ExportDataGet = async () => {
+        // setIsExporting(true);
+
+        const fetchUrl = `cloud/api/shareholding/Share/import/template`;
+
+        try {
+            const res = await fetch(fetchUrl, {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'accept': 'text/plain'
+                }
+            });
+
+            if (!res.ok) {
+                throw new Error('خطا در دریافت داده');
+            }
+
+            const contentDisposition = res.headers.get('content-disposition');
+
+            let fileName = '';
+
+            if (contentDisposition && contentDisposition.includes('filename')) {
+                const matches = contentDisposition.match(/filename\*=UTF-8''(.+)|filename="?(.+?)"?($|;)/i);
+                fileName = matches?.[1]
+                    ? decodeURIComponent(matches[1])
+                    : matches?.[2]
+                        ? matches[2]
+                        : fileName;
+            }
+
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            ColoredToast('success', 'فایل با موفقیت دانلود شد');
+        } catch (error) {
+            console.error('Export error:', error);
+            ColoredToast('error', error instanceof Error ? error.message : 'خطا در دریافت فایل');
+        } finally {
+            // setIsExporting(false);
+        }
+    };
+
+
+
     const saveFile = async () => {
         setIsLoading(true);
         const formData = new FormData();
@@ -95,6 +155,14 @@ const FileUploadModal: React.FC = () => {
         <div className="flex w-full">
             <button type="button" onClick={() => openModal()} disabled={isLoading} className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff] disabled:opacity-50 disabled:cursor-not-allowed">
                 بارگذاری مانده ابتدای دوره
+            </button>
+            <button type="button" onClick={() => handleDownloadRawFile()} disabled={isLoading} className="flex items-center gap-1 font-iranyekan text-[#2D9AA0] underline underline-offset-2 hover:opacity-70 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                دانلود فایل خام
             </button>
             {/* {errorMessage && <p className="mr-5 flex w-full items-center justify-center rounded-md bg-red-100 text-red-900">{errorMessage}</p>} */}
             <Transition appear show={isModalOpen} as={Fragment}>

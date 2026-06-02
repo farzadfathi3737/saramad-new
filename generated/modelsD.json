@@ -15376,6 +15376,15 @@
       ]
     }
   },
+  "shareimport/template": {
+    "name": "Shareimport/template",
+    "uniqueCols": null,
+    "haveAction": false,
+    "list": {
+      "metod": "get",
+      "url": "/cloud/api/shareholding/Share/import/template"
+    }
+  },
   "shareimport": {
     "name": "ShareImport",
     "uniqueCols": null,
@@ -22703,6 +22712,18 @@
           "format": "----"
         },
         {
+          "name": "shareBenefitIncomeMainCode",
+          "title": "shareBenefitIncomeMainCode",
+          "type": "string",
+          "format": "----"
+        },
+        {
+          "name": "shareBenefitIncomeSubCode",
+          "title": "shareBenefitIncomeSubCode",
+          "type": "string",
+          "format": "----"
+        },
+        {
           "name": "primeCostMainCode",
           "title": "primeCostMainCode",
           "type": "string",
@@ -22841,6 +22862,22 @@
           "header": "shareBenefitSubCode",
           "accessor": "shareBenefitSubCode",
           "title": "حساب معین سود سهام دریافتی",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "shareBenefitIncomeMainCode",
+          "header": "shareBenefitIncomeMainCode",
+          "accessor": "shareBenefitIncomeMainCode",
+          "title": "حساب کل درآمد حاصل از سود سهام",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "shareBenefitIncomeSubCode",
+          "header": "shareBenefitIncomeSubCode",
+          "accessor": "shareBenefitIncomeSubCode",
+          "title": "حساب معین درآمد حاصل از سود سهام",
           "sortable": true,
           "hidden": false
         },
@@ -23011,6 +23048,22 @@
           "hidden": false
         },
         {
+          "accessorKey": "shareBenefitIncomeMainCode",
+          "header": "shareBenefitIncomeMainCode",
+          "accessor": "shareBenefitIncomeMainCode",
+          "title": "حساب کل درآمد حاصل از سود سهام",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "shareBenefitIncomeSubCode",
+          "header": "shareBenefitIncomeSubCode",
+          "accessor": "shareBenefitIncomeSubCode",
+          "title": "حساب معین درآمد حاصل از سود سهام",
+          "sortable": true,
+          "hidden": false
+        },
+        {
           "accessorKey": "primeCostMainCode",
           "header": "primeCostMainCode",
           "accessor": "primeCostMainCode",
@@ -23138,6 +23191,18 @@
         {
           "name": "shareBenefitSubCode",
           "title": "حساب معین سود سهام دریافتی",
+          "type": "string",
+          "format": "----"
+        },
+        {
+          "name": "shareBenefitIncomeMainCode",
+          "title": "حساب کل درآمد حاصل از سود سهام",
+          "type": "string",
+          "format": "----"
+        },
+        {
+          "name": "shareBenefitIncomeSubCode",
+          "title": "حساب معین درآمد حاصل از سود سهام",
           "type": "string",
           "format": "----"
         },
@@ -23280,6 +23345,22 @@
           "header": "shareBenefitSubCode",
           "accessor": "shareBenefitSubCode",
           "title": "حساب معین سود سهام دریافتی",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "shareBenefitIncomeMainCode",
+          "header": "shareBenefitIncomeMainCode",
+          "accessor": "shareBenefitIncomeMainCode",
+          "title": "حساب کل درآمد حاصل از سود سهام",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "shareBenefitIncomeSubCode",
+          "header": "shareBenefitIncomeSubCode",
+          "accessor": "shareBenefitIncomeSubCode",
+          "title": "حساب معین درآمد حاصل از سود سهام",
           "sortable": true,
           "hidden": false
         },
@@ -30606,6 +30687,49 @@
     "uniqueCols": null,
     "haveAction": false,
     "register": { "metod": "post", "url": "/cloud/api/Membership/User/logout" }
+  },
+  "usercard": {
+    "name": "UserCard",
+    "uniqueCols": null,
+    "haveAction": false,
+    "list": {
+      "metod": "get",
+      "url": "/cloud/api/Membership/User/Card",
+      "responses": [
+        {
+          "accessorKey": "fullName",
+          "header": "fullName",
+          "accessor": "fullName",
+          "title": "fullName",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "username",
+          "header": "username",
+          "accessor": "username",
+          "title": "username",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "roleTitle",
+          "header": "roleTitle",
+          "accessor": "roleTitle",
+          "title": "roleTitle",
+          "sortable": true,
+          "hidden": false
+        },
+        {
+          "accessorKey": "defaultCompany",
+          "header": "defaultCompany",
+          "accessor": "defaultCompany",
+          "title": "defaultCompany",
+          "sortable": true,
+          "hidden": false
+        }
+      ]
+    }
   },
   "userauthorizedpermissions": {
     "name": "UserAuthorizedPermissions",
