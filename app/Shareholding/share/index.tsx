@@ -62,6 +62,7 @@ const Company = () => {
                     {model && (
                         <Demo
                             model={model}
+                            isEditable={false}
                             isShowHideCol={true}
                             staticParams={[{ name: 'CompanyId', value: companyId }]}
                             labaleNameList={[{ label: 'Keyword', value: 'نام / نماد' }]}
@@ -69,6 +70,16 @@ const Company = () => {
                             hideColList={['id', 'companyId', 'isNonMarket', 'stockId']}
                             action={(row: any) => (
                                 <>
+                                    <Tooltip label={row.isNonMarket ? "ویرایش غیر بورسی" : "ویرایش"}>
+                                        <ActionIcon
+                                            onClick={() =>
+                                                subPage(model.name.toLowerCase(), row.isNonMarket ? 'editt' : 'edit', undefined, [{ key: 'id', value: row.id.toString() }])
+                                            }
+                                            variant="transparent"
+                                            className="mr-3 w-9 h-9">
+                                            <i className={`fa-duotone fa-solid fa-pen-to-square text-xl text-gray-400 hover:text-green-500`} />
+                                        </ActionIcon>
+                                    </Tooltip>
                                     <Tooltip label="اطلاعات نماد">
                                         <ActionIcon
                                             onClick={() => subPage('share', 'stock/view', undefined, [{ key: 'id', value: row.stockId.toString() }, { key: 'master', value: 'share' }])}

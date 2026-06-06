@@ -1,6 +1,7 @@
 import FDateField from '@/app/components/inputs/dateField';
 import FSelectField from '@/app/components/inputs/selectField';
 import FSelectModelField from '@/app/components/inputs/selectModelField';
+import FTextAreaField from '@/app/components/inputs/textAreaField';
 import FTextField from '@/app/components/inputs/textField';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
@@ -15,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
-const FiscalYearTransfer = () => {
+const JournalarticleRelease = () => {
     const { t } = useLanguage();
     const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
@@ -32,29 +33,35 @@ const FiscalYearTransfer = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            const _model = await getEntityModel('shareinitialbalancetransfer-company-share-balances');
+            const _model = await getEntityModel('journalarticlerelease');
             setModel(_model);
         };
 
         setdata();
     }, []);
 
-    const handleAddClick = async () => {
+    const SignupSchema = Yup.object().shape({
+        fromDate: Yup.string().required(t('required').toString()),
+        toDate: Yup.string().required(t('required').toString()),
+        releaseType: Yup.string().required(t('required').toString()),
+    });
+
+    const handleAddClick = async (data: any) => {
         setLoading(true);
+
+        data.companyId = appConfig.company.id;
 
         const res = await fetch(`${model?.register?.url}`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                companyId: appConfig.company.id,
-                fiscalYearId: appConfig.fiscalYear.id
-            }),
+            body: JSON.stringify(data),
         });
 
         if (res.ok) {
-            ColoredToast('success', "انتقال سال مالی با موفقیت انجام شد.");
+            // const result = res && (await res?.json());
+            ColoredToast('success', "آزادسازی اسناد با موفقیت انجام شد.");
             setLoading(false);
             subPage(model?.name.toLocaleLowerCase() ?? '')
         } else {
@@ -72,7 +79,7 @@ const FiscalYearTransfer = () => {
 
                     </div>
                     <div className='px-2 h-full flex flex-col justify-center align-middle'>
-                        <div className="p-2">انتقال سال مالی</div>
+                        <div className="p-2">آزادسازی اسناد</div>
                     </div>
                 </div>
 
@@ -80,28 +87,43 @@ const FiscalYearTransfer = () => {
                     <div className="p-5">
                         <Formik
                             initialValues={{}}
-                            //validationSchema={{}}
-                            onSubmit={() => {
-                                handleAddClick();
+                            validationSchema={SignupSchema}
+                            onSubmit={(values) => {
+                                handleAddClick(values);
                             }}
                         >
                             <Form>
                                 <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                    <div className="w-full text-3xl text-red-400">
-                                        در صورتی که از انتقال سال مالی مطمئن هستید دکمه ثبت را بزنید.
+                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+                                        <div>
+                                            <Field id="fromDate" name="fromDate" label={t('fromdate')} component={FDateField} />
+                                        </div>
+                                        <div>
+                                            <Field id="toDate" name="toDate" label={t('todate')} component={FDateField} />
+                                        </div>
                                     </div>
-
+                                    <div className="w-full"></div>
+                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+                                        <div>
+                                            <Field
+                                                id="releaseType"
+                                                name="releaseType"
+                                                label={t('releasetype')}
+                                                options={model?.register?.requestBody
+                                                    .find((x) => x.name == 'releaseType')
+                                                    ?.enums.map((item: string) => {
+                                                        return { value: item, label: t(item.toLowerCase()) };
+                                                    })}
+                                                component={FSelectField}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="w-full"></div>
                                 </div>
-
-
 
                                 <div className="mt-8 flex items-center justify-end">
                                     {/* <button type="button" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')} className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                         {t('cancel')}
-                                    </button> */}
-
-                                    {/* <button type="submit" className="btn btn-outline mr-3 flex items-center font-iranyekan text-[#fff]">
-                                        {t('save')}
                                     </button> */}
 
                                     <button type="submit" disabled={loading} className="btn btn-outline mr-3 flex items-center font-iranyekan text-[#fff]">
@@ -121,4 +143,4 @@ const FiscalYearTransfer = () => {
     );
 };
 
-export default FiscalYearTransfer;
+export default JournalarticleRelease;

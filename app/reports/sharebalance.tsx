@@ -17,7 +17,7 @@ const ShareBalance = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            let _model = await getEntityModel('reportsharebalance');
+            const _model = await getEntityModel('reportsharebalance');
 
             setModel(_model);
         };
@@ -51,18 +51,13 @@ const ShareBalance = () => {
                                 'nonTradableBonusShares',
                                 'primePrice',
                                 'totalPrimeCost',
-                                'primeCostToPortfolioPercentage',
                                 'finalPrice',
                                 'finalPriceTotalValue',
                                 'finalPriceValueChange',
-                                'finalPriceValueChangePercentage',
                                 'yesterdayFinalPrice',
-                                'priceChangePercentage',
                                 'lastPrice',
                                 'lastPriceTotalValue',
                                 'lastPriceValueChange',
-                                'lastPriceValueChangePercentage',
-                                'ownershipPercentage',
                                 'capital',
                             ]}
                             addFooterSumFildes={[
@@ -70,19 +65,21 @@ const ShareBalance = () => {
                                 'nonTradableBonusShares',
                                 'primePrice',
                                 'totalPrimeCost',
-                                'primeCostToPortfolioPercentage',
                                 'finalPrice',
                                 'finalPriceTotalValue',
                                 'finalPriceValueChange',
-                                'finalPriceValueChangePercentage',
                                 'yesterdayFinalPrice',
-                                'priceChangePercentage',
                                 'lastPrice',
                                 'lastPriceTotalValue',
                                 'lastPriceValueChange',
+                                'capital',
+                            ]}
+                            addFooterAvrageFildes={[
+                                'primeCostToPortfolioPercentage',
+                                'finalPriceValueChangePercentage',
+                                'priceChangePercentage',
                                 'lastPriceValueChangePercentage',
                                 'ownershipPercentage',
-                                'capital',
                             ]}
                             staticParams={[
                                 { name: 'CompanyId', value: companyId },

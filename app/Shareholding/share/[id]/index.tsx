@@ -12,11 +12,14 @@ import { Tooltip } from '@mantine/core';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { apiFetch } from '@/lib/apiFetch';
+import AnimateHeight from 'react-animate-height';
+import { IconCaretDown } from '@tabler/icons-react';
 
 interface ICompany {
     name: string;
     backgroundColor: string;
     stockName: string;
+    isNonMarket: boolean;
 }
 
 const Edit = ({ id }: { id: string }) => {
@@ -26,6 +29,14 @@ const Edit = ({ id }: { id: string }) => {
     const [data, setData] = useState<ICompany>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const appConfig = useSelector((state: IRootState) => state.appConfig);
+
+    const [active1, setActive1] = useState<boolean>(true);
+
+    const togglePara1 = (value: boolean) => {
+        setActive1((oldValue) => {
+            return oldValue === value ? false : value;
+        });
+    };
 
     useEffect(() => {
         const setdata = async () => {
@@ -49,6 +60,9 @@ const Edit = ({ id }: { id: string }) => {
 
         if (res.ok) {
             const result: ICompany = await res?.json();
+
+            console.log(result);
+
             setData(result);
             setIsLoading(false);
         } else {
@@ -87,6 +101,9 @@ const Edit = ({ id }: { id: string }) => {
         setIsLoading(false);
     };
 
+
+    const handlnonEditClick = async (data: ICompany) => { }
+
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
@@ -108,8 +125,6 @@ const Edit = ({ id }: { id: string }) => {
                         </div>
                     </div>
                 </div>
-
-
 
                 {data && (
                     <div className="table-responsive px-5">

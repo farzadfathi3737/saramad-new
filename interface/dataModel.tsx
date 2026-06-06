@@ -147,6 +147,7 @@ export interface DatatableProps {
     addSepratorFildes?: string[];
     addLinkFildes?: string[];
     addFooterSumFildes?: string[];
+    addFooterAvrageFildes?: string[];
     //action?: (rowId: any, table?: MRT_TableInstance<any>) => ReactElement<any, string | import('react').JSXElementConstructor<any>>;
     action?: (rowId: any) => ReactElement<any, string | import('react').JSXElementConstructor<any>>;
     //onDoubleClick?: (rowId: any) => ReactElement<any, string | import('react').JSXElementConstructor<any>>;

@@ -35,6 +35,7 @@ import Share from "../Shareholding/share";
 import ShareAdd from "../Shareholding/share/add";
 import ShareAddT from "../Shareholding/share/addt";
 import ShareEdit from "../Shareholding/share/[id]";
+import ShareEditt from "../Shareholding/share/[id]/indext";
 
 
 import ShareRelationType from "../Shareholding/sharerelationtype";
@@ -132,6 +133,8 @@ import ArticleElementsAdd from "../Shareholding/accountings/articleelements/add"
 import ArticleElementsEdit from "../Shareholding/accountings/articleelements/[id]/index";
 
 import JournalArticle from "../Shareholding/accountings/journalarticle";
+import JournalArticleRelease from "../Shareholding/accountings/journalarticle/release";
+import JournalArticleClose from "../Shareholding/accountings/journalarticle/close";
 
 import VoucherTemplates from "../Shareholding/accountings/vouchertemplates";
 import VoucherTemplatesAdd from "../Shareholding/accountings/vouchertemplates/add";
@@ -505,6 +508,7 @@ export default function TabsWithRouting() {
                                     {tab.key === "add" && <ShareAdd />}
                                     {tab.key === "addt" && <ShareAddT />}
                                     {tab.key === "edit" && <ShareEdit id={getParamData('id', tab)} />}
+                                    {tab.key === "editt" && <ShareEditt id={getParamData('id', tab)} />}
                                     {tab.key === "stock/view" && <StockView id={getParamData('id', tab)} master={getParamData('master', tab)} />}
                                     {tab.key === "shareinitialbalance" && <Shareinitialbalance id={getParamData('id', tab)} name={getParamData('name', tab)} />}
                                     {tab.key === "shareinitialbalance/add" && <ShareinitialbalanceAdd shareId={getParamData('shareId', tab)} name={getParamData('name', tab)} />}
@@ -543,6 +547,8 @@ export default function TabsWithRouting() {
                             )}
 
                             {tab.name === "issueDocument" && <JournalArticle />}
+                            {tab.name === "documentReleaseUnLock" && <JournalArticleRelease />}
+                            {tab.name === "documentReleaseLock" && <JournalArticleClose />}
 
                             {tab.name === "vouchertemplates" && (
                                 <>

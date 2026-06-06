@@ -17,7 +17,7 @@ const Comprehensive = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            let _model = await getEntityModel('reportcomprehensive');
+            const _model = await getEntityModel('reportcomprehensive');
 
             setModel(_model);
         };
@@ -79,7 +79,6 @@ const Comprehensive = () => {
                                 'periodDpsSum',
                                 'endingDpsSum',
                                 'capital',
-                                'ownershipPercentage',
                                 'beginningEndingValueDifference',
                                 'totalCostBenefit',
                             ]}
@@ -116,9 +115,11 @@ const Comprehensive = () => {
                                 'periodDpsSum',
                                 'endingDpsSum',
                                 'capital',
-                                'ownershipPercentage',
                                 'beginningEndingValueDifference',
                                 'totalCostBenefit',
+                            ]}
+                            addFooterAvrageFildes={[
+                                'ownershipPercentage'
                             ]}
                             groupColumn={[
                                 {
@@ -127,7 +128,8 @@ const Comprehensive = () => {
                                 },
                                 {
                                     header: 'ابتدای دوره',
-                                    columnsName: ['incAveragePrice', 'incGrossCostSum', 'incCosts', 'incPrimeCostSum'],
+                                    // columnsName: ['incAveragePrice', 'incGrossCostSum', 'incCosts', 'incPrimeCostSum'],
+                                    columnsName: ["beginningBalance", "beginningPrimeCostSum", "beginningMarketValue", "beginningValueDifference"],
                                     bodyClassName: 'columnColorStyle columnColor_FFFACD',
                                     headerClassName: 'columnColorStyle',
                                     groupHeaderClassName: 'columnColorStyle',

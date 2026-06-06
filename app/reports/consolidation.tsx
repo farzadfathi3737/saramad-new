@@ -17,7 +17,7 @@ const Consolidation = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            let _model = await getEntityModel('reportconsolidation');
+            const _model = await getEntityModel('reportconsolidation');
 
             setModel(_model);
         };
@@ -54,22 +54,22 @@ const Consolidation = () => {
                                 'nonTradableBonusShares',
                                 'primePrice',
                                 'totalPrimeCost',
-                                'primeCostToPortfolioPercentage',
                                 'finalPrice',
                                 'finalPriceTotalValue',
                                 'finalPriceValueChange',
-                                'finalPriceValueChangePercentage',
                             ]}
                             addFooterSumFildes={[
                                 'shareBalance',
                                 'nonTradableBonusShares',
                                 'primePrice',
                                 'totalPrimeCost',
-                                'primeCostToPortfolioPercentage',
                                 'finalPrice',
                                 'finalPriceTotalValue',
                                 'finalPriceValueChange',
-                                'finalPriceValueChangePercentage',
+                            ]}
+                            addFooterAvrageFildes={[
+                                'primeCostToPortfolioPercentage',
+                                'finalPriceValueChangePercentage'
                             ]}
                             labaleNameList={[{ label: 'ShareId', value: 'share' }]}
                             hideColList={['shareId', 'isPreemptiveRight']}
