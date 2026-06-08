@@ -12,7 +12,9 @@ const initialState: InitialState = {
     },
     fiscalYear: {
         id: '',
-        name: ''
+        name: '',
+        begin: '',
+        end: ''
     },
     tabs: [],
     activeTab: ''

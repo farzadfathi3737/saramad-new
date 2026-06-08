@@ -131,8 +131,8 @@ const Company = () => {
                             isShowHideCol={true}
                             staticParams={[{ name: 'CompanyId', value: companyId }]}
                             labaleNameList={[
-                                { label: 'name', value: 'نام کارگذار اصلی' },
-                                { label: 'Keyword', value: 'نام کارگذار' },
+                                { label: 'name', value: 'نام کارگزار اصلی' },
+                                { label: 'Keyword', value: 'نام کارگزار' },
                             ]}
                             action={(row) => (
                                 <div className='flex'>

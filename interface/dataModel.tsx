@@ -85,18 +85,8 @@ export interface IUrls {
 }
 
 export interface InitialState {
-    company: {
-        id: string;
-        name: string;
-        backgroundColor: string;
-        textColor: string;
-    };
-    fiscalYear: {
-        id: string;
-        name: string;
-        beginDate?: string;
-        endDate?: string;
-    };
+    company: ICompanyParam;
+    fiscalYear: IFiscalYear;
     tabs: ITabData[];
     activeTab?: string;
 }
@@ -113,6 +103,12 @@ export interface ICompanyParam {
     textColor: string
 }
 
+export interface IFiscalYear {
+    id: string;
+    name: string;
+    begin?: string;
+    end?: string;
+}
 
 export interface IParameter {
     enums: any;
@@ -152,6 +148,8 @@ export interface DatatableProps {
     addFooterSumFildes?: string[];
     //action?: (rowId: any, table?: MRT_TableInstance<any>) => ReactElement<any, string | import('react').JSXElementConstructor<any>>;
     action?: (rowId: any) => ReactElement<any, string | import('react').JSXElementConstructor<any>>;
+    //onDoubleClick?: (rowId: any) => ReactElement<any, string | import('react').JSXElementConstructor<any>>;
+    onDoubleClick?: (row: any) => void;
     //detailPanel?: (rowId: any, table?: MRT_TableInstance<any>) => ReactElement<any, string | import('react').JSXElementConstructor<any>>;
     detailPanel?: (rowId: any) => ReactElement<any, string | import('react').JSXElementConstructor<any>>;
     headerAction?: ReactElement<any, string | import('react').JSXElementConstructor<any>>;

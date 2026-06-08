@@ -9,16 +9,22 @@ import FDateField from '../inputs/dateField';
 import FSelectModelField from '../inputs/selectModelField';
 import FCheckboxField from '../inputs/checkboxField';
 import FswitchField from '../inputs/switchField';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { IRootState } from '@/store';
+import { DateObject } from "react-multi-date-picker";
+import persian_fa from "react-date-object/calendars/persian";
+
 
 interface DFormsProps {
     model: IDataModel | undefined;
     parameter: IParameter[] | undefined;
     filedNotShow: string[];
     onClick: (data: any) => void;
+    clear?: () => void;
     setModal: (data: boolean) => void;
     sucsesBtnText: string;
-    cancelBtnText: string;
+    cancelBtnText: string | null;
     staticParams?: IstaticParam[] | null;
     labaleNameList?: IOptionType[];
     initialValues?: any | {};
@@ -30,18 +36,35 @@ const DForms: React.FC<DFormsProps> = ({
     initialValues,
     filedNotShow = [],
     onClick,
+    clear,
     setModal,
     sucsesBtnText,
-    cancelBtnText,
+    cancelBtnText = null,
     staticParams = null,
     labaleNameList = [],
 }) => {
     const { t } = useLanguage();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [_initialValues, set_InitialValues] = useState({});
+    const appConfig = useSelector((state: IRootState) => state.appConfig);
 
-    // useEffect(() => {
-    // console.log('>>>>>>', labaleNameList);
-    // }, []);
+    const today = new DateObject({ calendar: persian_fa });
+    const todayStr = today.format("YYYY/MM/DD");
+    const toDate = (todayStr > (appConfig.fiscalYear.end ?? '')) ? (appConfig.fiscalYear.end ?? '') : todayStr;
+
+    const fromDate = appConfig.fiscalYear.begin ?? '';
+    console.log(appConfig)
+
+    let init1 = {};
+    parameter?.map((item) => {
+        if (item.name.toLowerCase().includes('todate')) {
+            init1 = { ...init1, [item.name]: toDate };
+        }
+
+        if (item.name.toLowerCase().includes('fromdate')) {
+            init1 = { ...init1, [item.name]: fromDate };
+        }
+    });
 
     // const SignupSchema = Yup.object().shape({
     //     name: Yup.string().min(2, 'Too Short!').max(70, 'Too Long!').required('Required'),
@@ -51,7 +74,7 @@ const DForms: React.FC<DFormsProps> = ({
     return (
         <div className="">
             <Formik
-                initialValues={{}}
+                initialValues={init1}
                 //validationSchema={SignupSchema}
                 onSubmit={async (values) => {
                     setIsSubmitting(true);
@@ -67,8 +90,6 @@ const DForms: React.FC<DFormsProps> = ({
                         {parameter?.map((item) => {
                             if (!filedNotShow.includes(item.name)) {
                                 const _header = labaleNameList.find((x) => x.label == item.name)?.value;
-
-                                //console.log('>>>>>>', _header, item.name);
                                 switch (item?.type) {
                                     case 'string':
                                     case 'integer':
@@ -160,7 +181,11 @@ const DForms: React.FC<DFormsProps> = ({
                     </div>
                     <div className="mt-8 flex items-center justify-end">
                         {cancelBtnText && (
-                            <button type="button" onClick={() => setModal(false)} disabled={isSubmitting} className="btn btn-outline-[#2D9AA0] rounded-lg font-iranyekan disabled:opacity-50 disabled:cursor-not-allowed">
+                            <button type="button" onClick={() => {
+                                setModal(false);
+                                clear?.();
+                            }}
+                                className="btn bg-white border border-primary-50 text-primary-50 rounded-lg font-iranyekan disabled:opacity-50 disabled:cursor-not-allowed">
                                 {t(cancelBtnText)}
                             </button>
                         )}
@@ -201,7 +226,7 @@ const DForms: React.FC<DFormsProps> = ({
                     }
                 }
             })} */}
-        </div>
+        </div >
     );
 };
 

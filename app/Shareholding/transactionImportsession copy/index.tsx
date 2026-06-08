@@ -21,7 +21,7 @@ const Company = () => {
     const appConfig = useSelector((state: IRootState) => state.appConfig);
     const [companyId, setCompanyId] = useState('');
     const router = useRouter();
-    const [active1, setActive1] = useState<boolean>(false);
+    const [active1, setActive1] = useState<boolean>(true);
 
     console.log('companyId');
 
@@ -49,12 +49,11 @@ const Company = () => {
                         بارگذاری اطلاعات خرید و فروش
                     </div>
                 </div>
+                <div className="table-responsive px-5 pb-5 pt-5">
+                    <Inprogress />
+                </div>
 
-                <div className="flex flex-col space-y-2 font-iranyekan">
-                    <div className="px-5 pt-5">
-                        <Inprogress />
-                    </div>
-
+                <div className="space-y-2 font-iranyekan">
                     <div className="border-[#d3d3d3] dark:border-[#1b2e4b]">
                         <button
                             type="button"
@@ -73,16 +72,15 @@ const Company = () => {
                                         <Demo
                                             model={model}
                                             isShowHideCol={true}
-                                            hideColList={['id', 'companyId', 'date', 'status', 'stage', 'fileType', 'progress', 'importedFileId', 'includeInProgress', 'sourceType', 'subType']}
+                                            hideColList={['id', 'companyId', 'date', 'status', 'fileType', 'progress', 'importedFileId', 'includeInProgress', 'sourceType', 'subType']}
                                             addSepratorFildes={['transactionsCount']}
                                             addFooterSumFildes={['transactionsCount']}
                                             labaleNameList={[
                                                 { label: 'Keyword', value: 'نام سهام' },
                                                 { label: 'name', value: 'نام سهام' },
                                                 { label: 'industryName', value: 'زیرصنعت' },
-                                                { label: 'StockBrokerId', value: 'کارگزاری' },
+                                                { label: 'StockBrokerId', value: 'زیرصنعت' },
                                                 { label: 'sourceTypeName', value: 'نوع داده ورودی' },
-                                                { label: 'SourceType', value: 'نوع داده ورودی' },
                                                 { label: 'stockBrokerName', value: 'کارگزاری' },
                                             ]}
                                             staticParams={[{ name: 'CompanyId', value: companyId }]}

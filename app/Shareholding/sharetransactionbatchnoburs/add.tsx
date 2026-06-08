@@ -1,11 +1,13 @@
 import FColorField from '@/app/components/inputs/colorField';
 import FDateField from '@/app/components/inputs/dateField';
+import FSelectField from '@/app/components/inputs/selectField';
 import FSelectModelField from '@/app/components/inputs/selectModelField';
 import FTextField from '@/app/components/inputs/textField';
 import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { IDataModel } from '@/interface/dataModel';
+import { apiFetch } from '@/lib/apiFetch';
 import { getEntityModel } from '@/models/entity';
 import { IRootState } from '@/store';
 import { Tooltip } from '@mantine/core';
@@ -23,7 +25,7 @@ const Add = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            const _model = getEntityModel('ShareTransfer');
+            const _model = getEntityModel('nonmarketsharetransaction');
             setModel(_model);
         };
 
@@ -31,15 +33,13 @@ const Add = () => {
     }, []);
 
     const SignupSchema = Yup.object().shape({
-        name: Yup.string().required('ورود نام شرکت اجباری است'),
+        // name: Yup.string().required('ورود نام شرکت اجباری است'),
     });
 
     const handleAddClick = async (data: any) => {
         setLoading(true);
 
-        data.shareId = "";
-
-        const res = await fetch(`${model?.register?.url}`, {
+        const res = await apiFetch(`${model?.register?.url}`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
@@ -86,45 +86,61 @@ const Add = () => {
                             }}
                         >
                             <Form>
-                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                        <div>
-                                            <Field id="transferDate" name="transferDate" label="تاریخ" component={FDateField} />
-                                        </div>
+                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3">
+                                    <div>
+                                        <Field
+                                            id="shareId"
+                                            name="shareId"
+                                            label="سهم"
+                                            listRefName="share"
+                                            staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
+                                            component={FSelectModelField}
+                                        />
                                     </div>
-                                    <div className="w-full"></div>
-                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+                                    <div>
+                                        <Field
+                                            id="tradingCodeId"
+                                            name="tradingCodeId"
+                                            label="سبد معاملاتی"
+                                            listRefName="companytradingcode"
+                                            staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
+                                            component={FSelectModelField}
+                                        />
+                                    </div>
+                                    <div>
+                                        <Field id="transactionDate" name="transactionDate" label="تاریخ تعدیل" component={FDateField} />
+                                    </div>
+                                    <div>
+                                        <Field
+                                            id="calculationType"
+                                            name="calculationType"
+                                            label="نوع عملیات"
+                                            options={model?.register?.requestBody
+                                                .find((x) => x.name == 'calculationType')
+                                                ?.enums.map((item: string) => {
+                                                    return { value: item, label: t(item.toLowerCase()) };
+                                                })}
+                                            component={FSelectField}
+                                        />
+                                    </div>
+                                    <div>
+                                        <Field id="volume" name="volume" label="تعداد" component={FTextField} />
+                                    </div>
+                                    <div>
+                                        <Field id="price" name="price" label="قیمت" component={FTextField} />
+                                    </div>
 
-                                        <div>
-                                            <Field
-                                                id="fromTradingCodeId"
-                                                name="fromTradingCodeId"
-                                                label="از سبد معاملاتی"
-                                                listRefName="companytradingcode"
-                                                staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
-                                                component={FSelectModelField}
-                                            />
-                                        </div>
-                                        <div>
-                                            <div>
-                                                <Field
-                                                    id="toTradingCodeId"
-                                                    name="toTradingCodeId"
-                                                    label="به سبد معاملاتی"
-                                                    listRefName="companytradingcode"
-                                                    staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
-                                                    component={FSelectModelField}
-                                                />
-                                            </div>
-                                        </div>
+                                    <div>
+                                        <Field id="grossCost" name="grossCost" label="بهای ناخالص" component={FTextField} />
                                     </div>
-                                    <div className="w-full"></div>
-                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                        <div>
-                                            <Field id="amount" name="amount" label="تعداد انتقالی" component={FDateField} />
-                                        </div>
+                                    <div>
+                                        <Field id="primeCost" name="primeCost" label="بهای خالص" component={FTextField} />
                                     </div>
-                                    <div className="w-full"></div>
+                                    <div>
+                                        <Field id="netSellCost" name="netSellCost" label="بهای تمام شده کل" component={FTextField} />
+                                    </div>
+
+
                                 </div>
 
                                 <div className="mt-8 flex items-center justify-end">

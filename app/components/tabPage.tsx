@@ -79,6 +79,7 @@ import ShareTransactionBatchNoBursAdd from "../Shareholding/sharetransactionbatc
 import ShareTransactionBatchNoBursEdit from "../Shareholding/sharetransactionbatchnoburs/[id]";
 
 import ShareTransactionBatchTadilat from "../Shareholding/sharetransactionbatchtadilat";
+import ShareTransactionBatchTadilatAdd from "../Shareholding/sharetransactionbatchtadilat/add";
 
 import TransferCodeToCode from "../Shareholding/transfercodetocode";
 import TransferCodeToCodeAdd from "../Shareholding/transfercodetocode/add";
@@ -420,7 +421,7 @@ export default function TabsWithRouting() {
                         <div
                             key={tab.id}
                             onClick={() => handleTabClick(tab.id)}
-                            className={`pr-4 pl-2 py-2 rounded-t-lg border border-b transition-all border-gray-300 bg-gray-100 ${appConf.activeTab === tab.id
+                            className={`pr-4 pl-2 py-2 rounded-t-lg border border-b transition-all border-gray-300 bg-gray-100 dark:bg-gray-800 ${appConf.activeTab === tab.id
                                 ? "border-gray-300 text-gray-700 bg-white border-b border-b-white"
                                 : "border hover:text-black hover:bg-gray-200"
                                 }`}
@@ -429,14 +430,15 @@ export default function TabsWithRouting() {
                                 <i className={`fa-duotone fa-solid fa-gauge text-2xl ${appConf.activeTab === tab.id ? 'text-[#1b647e]' : 'text-gray-600 hover:t'}`} />
                             </div> :
                                 <div className="flex"><div className={`${appConf.activeTab === tab.id ? 'text-gray-600 font-bold hover:text-gray-900' : 'text-gray-600'}`}>{t(tab.title)}</div>
-                                    <Tooltip label={`حذف ${t(tab.id)}`}>
+                                    {/* <Tooltip label={`حذف ${t(tab.id)}`}> */}
+                                    <Tooltip label={`بستن`}>
                                         <ActionIcon
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 removeTab(tab.id);
                                             }}
                                             className="mr-2 flex items-center rounded-xl w-9 h-9 p-0 !bg-transparent !hover:bg-red-500">
-                                            <i className={`fa-duotone fa-solid fa-xmark text-sm ${appConf.activeTab === tab.id ? 'text-gray-700' : 'text-gray-700 hover:text-gray-900'}`} />
+                                            <i className={`fa-duotone fa-solid fa-xmark text-sm ${appConf.activeTab === tab.id ? 'text-gray-700 dark:text-gray-200' : 'text-gray-700 dark:text-gray-200 hover:text-gray-900'}`} />
                                         </ActionIcon>
                                     </Tooltip></div>
                             }
@@ -449,14 +451,14 @@ export default function TabsWithRouting() {
             {/* محتوای تب فعال */}
             <div className="bg-white rounded-b-md shadow border border-gray-300">
                 <div className="space-y-3">
-                    {_tabs.map((tab) => (
+                    {_tabs?.map((tab) => (
                         <div
                             key={tab.id}
                             className={appConf.activeTab === tab.id ? 'block' : 'hidden'}
                         >
-                            {tab.id === "dashboard" && <Dashboard />}
+                            {tab.name === "dashboard" && <Dashboard />}
 
-                            {tab.id === "company" && (
+                            {tab.name === "company" && (
                                 <>
                                     {tab.key === "add" && <CompanyAdd />}
                                     {tab.key === "edit" && <CompanyEdit id={getParamData('id', tab)} />}
@@ -464,7 +466,7 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "fiscalyear" && (
+                            {tab.name === "fiscalyear" && (
                                 <>
                                     {tab.key === "add" && <FiscalYearAdd />}
                                     {tab.key === "edit" && <FiscalYearEdit id={getParamData('id', tab)} />}
@@ -472,7 +474,7 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "companytradingcode" && (
+                            {tab.name === "companytradingcode" && (
                                 <>
                                     {tab.key === "add" && <CompanyTradingCodeAdd />}
                                     {tab.key === "edit" && <CompanyTradingCodeEdit id={getParamData('id', tab)} />}
@@ -483,14 +485,14 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "stock" && (
+                            {tab.name === "stock" && (
                                 <>
                                     {tab.key === "view" && <StockView id={getParamData('id', tab)} master={getParamData('master', tab)} />}
                                     {tab.key === "stock" && <Stock />}
                                 </>
                             )}
 
-                            {tab.id === "share" && (
+                            {tab.name === "share" && (
                                 <>
                                     {tab.key === "add" && <ShareAdd />}
                                     {tab.key === "addt" && <ShareAddT />}
@@ -503,7 +505,7 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "sharerelationtype" && (
+                            {tab.name === "sharerelationtype" && (
                                 <>
                                     {tab.key === "add" && <ShareRelationTypeAdd />}
                                     {tab.key === "edit" && <ShareRelationTypeEdit id={getParamData('id', tab)} />}
@@ -511,7 +513,7 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "companybroker" && (
+                            {tab.name === "companybroker" && (
                                 <>
                                     {tab.key === "add" && <CompanyBrokerAdd />}
                                     {tab.key === "all" && <CompanyBrokerAll />}
@@ -524,7 +526,7 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "articleelements" && (
+                            {tab.name === "articleelements" && (
                                 <>
                                     {tab.key === "add" && <ArticleElementsAdd />}
                                     {tab.key === "edit" && <ArticleElementsEdit id={getParamData('id', tab)} />}
@@ -532,9 +534,9 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "issueDocument" && <JournalArticle />}
+                            {tab.name === "issueDocument" && <JournalArticle />}
 
-                            {tab.id === "vouchertemplates" && (
+                            {tab.name === "vouchertemplates" && (
                                 <>
                                     {tab.key === "add" && <VoucherTemplatesAdd />}
                                     {tab.key === "edit" && <VoucherTemplatesEdit id={getParamData('id', tab)} />}
@@ -543,21 +545,21 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "buysell" && <BuySell />}
-                            {tab.id === "stackedbuysell" && <StackedBuySell />}
-                            {tab.id === "shareturnover" && <ShareTurnover />}
-                            {tab.id === "cardex" && <Cardex />}
-                            {tab.id === "stackedcardex" && <StackedCardex />}
-                            {tab.id === "sharebalance" && <ShareBalance />}
-                            {tab.id === "realizedprofit" && <RealizedProfit />}
-                            {tab.id === "investmentdepreciationreserve" && <InvestmentDepreciationReserve />}
-                            {tab.id === "capitalraise" && <CapitalRaise />}
-                            {tab.id === "cashdividend" && <CashDividend />}
-                            {tab.id === "cashdividenddeposit" && <CashDividendDeposit />}
-                            {tab.id === "marketnotice" && <MarketNotice />}
-                            {tab.id === "comprehensive" && <Comprehensive />}
-                            {tab.id === "consolidation" && <Consolidation />}
-                            {tab.id === "transactionimportsession" && (
+                            {tab.name === "buysell" && <BuySell />}
+                            {tab.name === "stackedbuysell" && <StackedBuySell />}
+                            {tab.name === "shareturnover" && <ShareTurnover />}
+                            {tab.name === "cardex" && <Cardex />}
+                            {tab.name === "stackedcardex" && <StackedCardex id={getParamData('id', tab)} name={getParamData('name', tab)} />}
+                            {tab.name === "sharebalance" && <ShareBalance />}
+                            {tab.name === "realizedprofit" && <RealizedProfit />}
+                            {tab.name === "investmentdepreciationreserve" && <InvestmentDepreciationReserve />}
+                            {tab.name === "capitalraise" && <CapitalRaise />}
+                            {tab.name === "cashdividend" && <CashDividend />}
+                            {tab.name === "cashdividenddeposit" && <CashDividendDeposit />}
+                            {tab.name === "marketnotice" && <MarketNotice />}
+                            {tab.name === "comprehensive" && <Comprehensive />}
+                            {tab.name === "consolidation" && <Consolidation />}
+                            {tab.name === "transactionimportsession" && (
                                 <>
                                     {tab.key === "view" && <TransactionImportSessionDetail id={getParamData('id', tab)} />}
                                     {tab.key === "transaction" && <TransactionImportSessionTransaction id={getParamData('id', tab)} />}
@@ -565,9 +567,9 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "sharetransactionbatch" && <ShareTransactionBatch />}
+                            {tab.name === "sharetransactionbatch" && <ShareTransactionBatch />}
 
-                            {tab.id === "sharetransactionbatchnoburs" && (
+                            {tab.name === "sharetransactionbatchnoburs" && (
                                 <>
                                     {tab.key === "add" && <ShareTransactionBatchNoBursAdd />}
                                     {tab.key === "edit" && <ShareTransactionBatchNoBursEdit id={getParamData('id', tab)} />}
@@ -575,16 +577,21 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "sharetransactionbatchtadilat" && <ShareTransactionBatchTadilat />}
-
-                            {tab.id === "transfercodetocode" && (
+                            {tab.name === "sharetransactionbatchtadilat" && (
                                 <>
-                                    {tab.key === "add" && <TransferCodeToCodeAdd shareId={getParamData('shareId', tab)} />}
+                                    {tab.key === "add" && <ShareTransactionBatchTadilatAdd />}
+                                    {tab.key === "sharetransactionbatchtadilat" && <ShareTransactionBatchTadilat />}
+                                </>
+                            )}
+
+                            {tab.name === "transfercodetocode" && (
+                                <>
+                                    {tab.key === "add" && <TransferCodeToCodeAdd />}
                                     {tab.key === "transfercodetocode" && <TransferCodeToCode />}
                                 </>
                             )}
 
-                            {tab.id === "sharemeeting" && (
+                            {tab.name === "sharemeeting" && (
                                 <>
                                     {tab.key === "capitalraise" && <ShareMeetingCapitalRaise meetingId={getParamData('MeetingId', tab)} />}
                                     {tab.key === "prerightsforpayment" && <ShareMeetingPreRightsForPayment meetingId={getParamData('MeetingId', tab)} />}
@@ -600,13 +607,13 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "shareMeetingReapply" && <ShareMeetingReapply />}
+                            {tab.name === "shareMeetingReapply" && <ShareMeetingReapply />}
 
-                            {tab.id === "brokercontradictions" && <BrokerContradictions />}
+                            {tab.name === "brokercontradictions" && <BrokerContradictions />}
 
-                            {tab.id === "optioncontract" && <OptionContract />}
+                            {tab.name === "optioncontract" && <OptionContract />}
 
-                            {tab.id === "stockcategorycode" && (
+                            {tab.name === "stockcategorycode" && (
                                 <>
                                     {tab.key === "add" && <StockCategoryCodeAdd />}
                                     {tab.key === "addt" && <StockCategoryCodeAddT />}
@@ -616,7 +623,7 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "stockindustrycode" && (
+                            {tab.name === "stockindustrycode" && (
                                 <>
                                     {tab.key === "add" && <StockIndustryCodeAdd />}
                                     {tab.key === "edit" && <StockIndustryCodeEdit id={getParamData('id', tab)} />}
@@ -625,7 +632,7 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "investmenttypecode" && (
+                            {tab.name === "investmenttypecode" && (
                                 <>
                                     {tab.key === "add" && <InvestmentTypeCodeAdd />}
                                     {tab.key === "edit" && <InvestmentTypeCodeEdit id={getParamData('id', tab)} />}
@@ -633,22 +640,22 @@ export default function TabsWithRouting() {
                                 </>
                             )}
 
-                            {tab.id === "accountingSettings" && <AccountingSettings />}
+                            {tab.name === "accountingSettings" && <AccountingSettings />}
 
-                            {tab.id === "transactioncommission" && <TransactionCommission />}
+                            {tab.name === "transactioncommission" && <TransactionCommission />}
 
-                            {tab.id === "transactioncommissionreapply" && <TransactionCommissionReapply />}
+                            {tab.name === "transactioncommissionreapply" && <TransactionCommissionReapply />}
 
-                            {tab.id === "transactioncommissiondiscount" && <TransactionCommissionDiscount />}
+                            {tab.name === "transactioncommissiondiscount" && <TransactionCommissionDiscount />}
 
-                            {tab.id === "jobs" && <Jobs />}
+                            {tab.name === "jobs" && <Jobs />}
 
-                            {tab.id === "running" && <Running />}
+                            {tab.name === "running" && <Running />}
 
-                            {tab.id === "finished" && <Finished />}
-                            {tab.id === "transactioncommissiondiscountapply" && <TransactionCommissionDiscountapply />}
+                            {tab.name === "finished" && <Finished />}
+                            {tab.name === "transactioncommissiondiscountapply" && <TransactionCommissionDiscountapply />}
 
-                            {tab.id === "transactioncommissiondiscountremove" && <TransactionCommissionDiscountremove />}
+                            {tab.name === "transactioncommissiondiscountremove" && <TransactionCommissionDiscountremove />}
 
 
 

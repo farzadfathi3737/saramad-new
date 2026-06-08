@@ -1,3 +1,4 @@
+import FDateField from '@/app/components/inputs/dateField';
 import FSelectField from '@/app/components/inputs/selectField';
 import FSelectModelField from '@/app/components/inputs/selectModelField';
 import FSelectPagingModelField from '@/app/components/inputs/selectPagingModelField';
@@ -22,7 +23,6 @@ const Add = () => {
     const { t } = useLanguage();
     const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
-    const [modelStock, setModelStock] = useState<IDataModel>();
     const [dataStock, setDataStock] = useState<any>();
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
@@ -30,11 +30,8 @@ const Add = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            const _model = getEntityModel('share');
+            const _model = getEntityModel('shareadjustment');
             setModel(_model);
-
-            const _modelStock = getEntityModel('stock');
-            setModelStock(_modelStock);
         };
 
         setdata();
@@ -55,15 +52,15 @@ const Add = () => {
         });
     };
     const SignupSchema = Yup.object().shape({
-        stockId: Yup.string().required(t('required').toString()),
-        investmentType: Yup.string().required(t('required').toString()),
-        relationTypeId: Yup.string().required(t('required').toString()),
+        // stockId: Yup.string().required(t('required').toString()),
+        // investmentType: Yup.string().required(t('required').toString()),
+        // relationTypeId: Yup.string().required(t('required').toString()),
     });
 
     const handleAddClick = async (data: any) => {
         setLoading(true);
 
-        data.companyId = appConfig.company.id;
+        //data.companyId = appConfig.company.id;
 
         const res = await apiFetch(`${model?.register?.url}`, {
             method: 'post',
@@ -88,21 +85,6 @@ const Add = () => {
         setLoading(false);
     };
 
-    const handleChange = async (id: string) => {
-        setLoading(true);
-
-        const res = await apiFetch(`${modelStock?.read?.url.replace('{id}', id)}`);
-
-        if (res.ok) {
-            const result = res && (await res?.json());
-            console.log('result', result);
-            setDataStock(result);
-            setLoading(false);
-        } else {
-            //setInitialRecords({ pageNumber: 1, pageSize: 10, totalPages: 1, totalCount: 10, items: [] });
-        }
-        setLoading(false);
-    };
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
@@ -111,13 +93,13 @@ const Add = () => {
                         <Tooltip label={t('back')}>
                             <div
                                 className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
-                                onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
+                                onClick={() => subPage('sharetransactionbatchtadilat')}>
                                 <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
                             </div>
                         </Tooltip>
                     </div>
                     <div className='px-2 h-full flex flex-col justify-center align-middle'>
-                        {t('add')} {t('share')}
+                        تعدیل جدید
                     </div>
                 </div>
 
@@ -132,198 +114,149 @@ const Add = () => {
                             }}
                         >
                             <Form>
-                                <div className="grid w-full grid-cols-1 gap-2 px-10 pb-5 sm:grid-cols-2">
+
+                                <div className="flex w-full px-5">
                                     <div className="w-full">
-                                        <Field
-                                            id="stockId"
-                                            name="stockId"
-                                            label="نام سهام"
-                                            listRefName="stock"
-                                            component={FSelectPagingModelField}
-                                            onChange={(item: any) => {
-                                                // console.log(item);
-                                                handleChange(item.value);
-                                            }}
-                                            placeholder="لطفا یک مورد را انتخاب کنید"
-                                        />
-                                    </div>
-                                    <div className="w-full"></div>
-                                </div>
-                                <hr />
-                                <div className="grid w-full grid-cols-1 gap-2 px-10 pt-5 sm:grid-cols-2">
-                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                        <div>
-                                            <fieldset>
-                                                <label className="!text-gray-600">{t('symbol')}</label>
-                                                <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.symbol}</div>
-                                            </fieldset>
-                                        </div>
-                                        <div>
-                                            <fieldset>
-                                                <label className="!text-gray-600">نوع سهام</label>
-                                                <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.stockTypeName}</div>
-                                            </fieldset>
-                                        </div>
-                                    </div>
-                                    <div className="flex w-full"></div>
-                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                        <div>
-                                            <fieldset>
-                                                <label className="!text-gray-600">نام سهام</label>
-                                                <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.name}</div>
-                                            </fieldset>
-                                        </div>
-                                        <div>
-                                            <Field
-                                                id="investmentType"
-                                                name="investmentType"
-                                                label={t('investmentType')}
-                                                options={model?.register?.requestBody
-                                                    .find((x) => x.name == 'investmentType')
-                                                    ?.enums.map((item: string) => {
-                                                        return { value: item, label: t(item.toLowerCase()) };
-                                                    })}
-                                                component={FSelectField}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="flex w-full"></div>
-                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                        <div>
-                                            <fieldset>
-                                                <label className="!text-gray-600">گروه</label>
-                                                <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.categoryName}</div>
-                                            </fieldset>
-                                        </div>
-                                        <div>
-                                            <Field
-                                                id="relationTypeId"
-                                                name="relationTypeId"
-                                                label={t('relationTypeId')}
-                                                listRefName="sharerelationtype"
-                                                staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
-                                                component={FSelectModelField}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="flex w-full"></div>
-                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                        <div>
-                                            <fieldset>
-                                                <label className="!text-gray-600">صنعت</label>
-                                                <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.industryName}</div>
-                                            </fieldset>
-                                        </div>
-                                        <div></div>
-                                    </div>
-                                    <div className="flex w-full"></div>
-                                    <div className="mb-5 w-full"></div>
-                                </div>
-
-                                {dataStock?.optionDetails && (
-                                    <div className="flex w-full">
-                                        <div className="w-full">
-                                            <div className="space-y-c space-y-2 font-iranyekan">
-                                                <div className="border-y border-[#d3d3d3] dark:border-[#1b2e4b]">
-                                                    <button
-                                                        type="button"
-                                                        className={`flex w-full items-center p-4 font-iranyekan text-[#089bab] dark:bg-[#1b2e4b] ${active2 ? '!#089bab' : '#089bab'}`}
-                                                        onClick={() => togglePara2(true)}
-                                                    >
-                                                        مشخصات اوراق اختیار معامله
-                                                        <div className={`text-[#089bab] ltr:ml-auto rtl:mr-auto ${active2 ? 'rotate-180' : ''}`}>
-                                                            <IconCaretDown />
-                                                        </div>
-                                                    </button>
-                                                    <div>
-                                                        <AnimateHeight duration={300} height={active2 === true ? 'auto' : 0}>
-                                                            <div className="grid w-full grid-cols-1 gap-2 p-5 px-10 sm:grid-cols-2">
-                                                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                                                    <div>
-                                                                        <fieldset>
-                                                                            <label className="!text-gray-600">{t('expirationDate')}</label>
-                                                                            <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.optionDetails.expirationDate}</div>
-                                                                        </fieldset>
-                                                                    </div>
-                                                                    <div>
-                                                                        <fieldset>
-                                                                            <label className="!text-gray-600">{'نوع اختیار'}</label>
-                                                                            <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.optionDetails.typeName}</div>
-                                                                        </fieldset>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="grid w-full"></div>
-                                                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                                                    <div>
-                                                                        <fieldset>
-                                                                            <label className="!text-gray-600">{t('strikePrice')}</label>
-                                                                            <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.optionDetails.strikePrice}</div>
-                                                                        </fieldset>
-                                                                    </div>
-                                                                    <div>
-                                                                        <fieldset>
-                                                                            <label className="!text-gray-600">{t('contractSize')}</label>
-                                                                            <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.optionDetails.contractSize}</div>
-                                                                        </fieldset>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="grid w-full"></div>
-                                                                <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                                                    <div>
-                                                                        <fieldset>
-                                                                            <label className="!text-gray-600">{'نماد سهم اصلی اختیار'}</label>
-                                                                            <div className="form-input !bg-gray-200 pt-3 !text-gray-600 flex items-center">{dataStock?.optionDetails.contractStockName}</div>
-                                                                        </fieldset>
-                                                                    </div>
-                                                                    <div></div>
-                                                                </div>
-                                                                <div className="grid w-full">
-                                                                    <div>
-                                                                        {/* <Link
-                                                                            className="btn btn-outline flex items-center rounded-xl bg-[#2D9AA0] font-iranyekan text-[#fff]"
-                                                                            href={`/Shareholding/stock/${data.optionDetails?.contractStockId}`}
-                                                                            onClick={() => setRowId(data.optionDetails?.contractStockId)}
-                                                                        >
-                                                                            نماد سهم اصلی اختیار
-                                                                        </Link> */}
-                                                                    </div>
-                                                                </div>
-                                                                <div className="grid w-full"></div>
+                                        <div className="space-y-c space-y-2 font-iranyekan">
+                                            <div className="border-y border-[#d3d3d3] dark:border-[#1b2e4b]">
+                                                <button
+                                                    type="button"
+                                                    className={`flex w-full items-center p-4 font-iranyekan text-[#089bab] dark:bg-[#1b2e4b] ${active2 ? '!#089bab' : '#089bab'}`}
+                                                    onClick={() => togglePara2(true)}
+                                                >
+                                                    اطلاعات پایه
+                                                    <div className={`text-[#089bab] ltr:ml-auto rtl:mr-auto ${active2 ? 'rotate-180' : ''}`}>
+                                                        <IconCaretDown />
+                                                    </div>
+                                                </button>
+                                                <div>
+                                                    <AnimateHeight duration={300} height={active2 === true ? 'auto' : 0}>
+                                                        <div className="grid w-full grid-cols-1 gap-2 p-5 px-10 sm:grid-cols-5">
+                                                            <div>
+                                                                <Field
+                                                                    id="shareId"
+                                                                    name="shareId"
+                                                                    label="سهم"
+                                                                    listRefName="share"
+                                                                    staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
+                                                                    component={FSelectModelField}
+                                                                />
                                                             </div>
-                                                        </AnimateHeight>
-                                                    </div>
+                                                            <div>
+                                                                <Field
+                                                                    id="tradingCodeId"
+                                                                    name="tradingCodeId"
+                                                                    label="سبد معاملاتی"
+                                                                    listRefName="tradingcode"
+                                                                    staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
+                                                                    component={FSelectModelField}
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <Field
+                                                                    id="brokerId"
+                                                                    name="brokerId"
+                                                                    label="کارگزاری"
+                                                                    listRefName="companybroker"
+                                                                    staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
+                                                                    component={FSelectModelField}
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="transactionDate" name="transactionDate" label="تاریخ تعدیل" component={FDateField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field
+                                                                    id="calculationType"
+                                                                    name="calculationType"
+                                                                    label="نوع عملیات"
+                                                                    options={model?.register?.requestBody
+                                                                        .find((x) => x.name == 'calculationType')
+                                                                        ?.enums.map((item: string) => {
+                                                                            return { value: item, label: t(item.toLowerCase()) };
+                                                                        })}
+                                                                    component={FSelectField}
+                                                                />
+                                                            </div>
+
+                                                            <div>
+                                                                <Field id="price" name="price" label="قیمت" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="volume" name="volume" label="حجم" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="grossCost" name="grossCost" label="بهای ناخالص" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="primeCost" name="primeCost" label="بهای تمام شده" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="netSellCost" name="netSellCost" label="بهای خالص فروش" component={FTextField} />
+                                                            </div>
+                                                        </div>
+                                                    </AnimateHeight>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                )}
+                                </div>
 
-                                <div className="space-y-c space-y-2 font-iranyekan">
-                                    <div className="border-y border-[#d3d3d3] dark:border-[#1b2e4b]">
-                                        <button
-                                            type="button"
-                                            className={`flex w-full items-center p-4 font-iranyekan text-[#089bab] dark:bg-[#1b2e4b] ${active1 ? '!#089bab' : '#089bab'}`}
-                                            onClick={() => togglePara1(true)}
-                                        >
-                                            <div className="px-5">مشخصات کدینگ حسابداری</div>
-                                            <div className={`text-[#089bab] ltr:ml-auto rtl:mr-auto ${active1 === true ? 'rotate-180' : ''}`}>
-                                                <IconCaretDown />
-                                            </div>
-                                        </button>
-                                        <div>
-                                            <AnimateHeight duration={300} height={active1 ? 'auto' : 0}>
-                                                <div className="grid w-full grid-cols-1 gap-2 px-10 sm:grid-cols-2">
-                                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                                        <div>
-                                                            <Field id="accountingCode" name="accountingCode" label={t('accountingCode')} component={FTextField} />
-                                                        </div>
-                                                        <div>
-                                                            <Field id="accountingCode2" name="accountingCode2" label={t('accountingCode2')} component={FTextField} />
-                                                        </div>
+                                <div className="flex w-full px-5">
+                                    <div className="w-full">
+                                        <div className="space-y-c space-y-2 font-iranyekan">
+                                            <div className="border-y border-[#d3d3d3] dark:border-[#1b2e4b]">
+                                                <button
+                                                    type="button"
+                                                    className={`flex w-full items-center p-4 font-iranyekan text-[#089bab] dark:bg-[#1b2e4b] ${active2 ? '!#089bab' : '#089bab'}`}
+                                                    onClick={() => togglePara2(true)}
+                                                >
+                                                    کارمزدها و هزینه ها
+                                                    <div className={`text-[#089bab] ltr:ml-auto rtl:mr-auto ${active2 ? 'rotate-180' : ''}`}>
+                                                        <IconCaretDown />
                                                     </div>
-                                                    <div className="flex w-full"></div>
+                                                </button>
+                                                <div>
+                                                    <AnimateHeight duration={300} height={active2 === true ? 'auto' : 0}>
+                                                        <div className="grid w-full grid-cols-1 gap-2 p-5 px-10 sm:grid-cols-5">
+
+
+                                                            <div>
+                                                                <Field id="bourseAgencyCommission" name="bourseAgencyCommission" label="کارمزد سازمان بورس" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="bourseCompanyCommission" name="bourseCompanyCommission" label="کارمزد شرکت بورس" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="bourseITCommission" name="bourseITCommission" label="کارمزد مدیریت فناوری" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="bourseRayanCommission" name="bourseRayanCommission" label="کارمزد بورس رایان" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="depositoryCommission" name="depositoryCommission" label="کارمزد سپرده گذاری" component={FTextField} />
+                                                            </div>
+
+                                                            <div>
+                                                                <Field id="brokerCommission" name="brokerCommission" label="کارمزد کارگزاری" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="brokerCommissionDiscount" name="brokerCommissionDiscount" label="تخفیف کارگزاری" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="tax" name="tax" label="مالیات" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="totalCommissions" name="totalCommissions" label="جمع کارمزد ها" component={FTextField} />
+                                                            </div>
+                                                            <div>
+                                                                <Field id="totalCosts" name="totalCosts" label="جمع هزینه ها" component={FTextField} />
+                                                            </div>
+
+                                                        </div>
+                                                    </AnimateHeight>
                                                 </div>
-                                            </AnimateHeight>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

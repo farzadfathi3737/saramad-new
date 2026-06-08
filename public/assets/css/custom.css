@@ -108,7 +108,7 @@ body {
 }
 
 .mantine-focus-auto:focus {
-  color: #ffffff;
+  color: gray;
 }
 
 .mantine-Table-thead .fixed {
@@ -184,4 +184,19 @@ body {
   --tw-shadow:
     0 0px 1px 0 var(--tw-shadow-color, #0000001a),
     0 1px 2px -1px var(--tw-shadow-color, #0000001a);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
 }

@@ -18,7 +18,7 @@ const Cardex = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            let _model = await getEntityModel('reportcardex');
+            const _model = await getEntityModel('reportcardex');
 
             setModel(_model);
         };
@@ -30,8 +30,8 @@ const Cardex = () => {
         setFiscalYearId(appConfig.fiscalYear.id);
 
         setData({
-            FromDate: appConfig.fiscalYear.beginDate,
-            ToDate: appConfig.fiscalYear.endDate
+            FromDate: appConfig.fiscalYear.begin,
+            ToDate: appConfig.fiscalYear.end
         })
 
     }, [appConfig.company, appConfig.fiscalYear]);
@@ -53,6 +53,8 @@ const Cardex = () => {
                             isEditable={false}
                             isDeleteable={false}
                             isShowHideCol={true}
+                            enableSorting={false}
+                            defaultGrouping={["date"]}
                             addSepratorFildes={['costBenefit', 'decAveragePrice', 'decCosts', 'decGrossCostSum', 'decPrimeCostSum', 'incAveragePrice', 'incCosts', 'incGrossCostSum', 'incPrimeCostSum', 'netSellCostSum', 'volume']}
                             addFooterSumFildes={['costBenefit', 'decAveragePrice', 'decCosts', 'decGrossCostSum', 'decPrimeCostSum', 'incAveragePrice', 'incCosts', 'incGrossCostSum', 'incPrimeCostSum', 'netSellCostSum', 'volume']}
                             staticParams={[
@@ -64,6 +66,7 @@ const Cardex = () => {
                                 { label: 'TradingCodeId', value: 'tradingCode' },
                                 { label: 'CalculationType', value: 'calculationType' },
                                 { label: 'BrokerId', value: 'broker' },
+                                { label: 'typeName', value: 'نوع تراکنش' },
                             ]}
                             hideColList={['shareId', 'id', 'tradingCode', 'tradingCodeId']}
                             formInitialValues={data}

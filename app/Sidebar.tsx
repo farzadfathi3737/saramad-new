@@ -19,8 +19,11 @@ import { setActiveTab, setTabs } from '@/store/appConfigSlice';
 import { useRouter } from 'next/navigation';
 import { ColoredToast } from './components/Notifications/colorNotification';
 
+interface SidebarProps {
+    isOpen: boolean;
+}
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen }: SidebarProps) => {
     const { t } = useLanguage();
     const [currentMenu, setCurrentMenu] = useState<string>('');
     const [lasttMenu, setLastMenu] = useState<string>('');
@@ -107,7 +110,7 @@ const Sidebar = () => {
             link: '/',
             icon: 'fa-gears',
             childe: [
-                { id: 'transactionimportsession', name: 'transactionimportsession', title: 'بارگزاری اطلاعات خرید و فروش', link: '/Shareholding/transactionImportsession', icon: 'fa-upload' },
+                { id: 'transactionimportsession', name: 'transactionimportsession', title: 'بارگذاری اطلاعات خرید و فروش', link: '/Shareholding/transactionImportsession', icon: 'fa-upload' },
                 { id: 'sharetransactionbatch', name: 'buyingAndSellingListBurs', title: 'فهرست خرید و فروش بورسی', link: '/Shareholding/sharetransactionbatch', icon: 'fa-chart-line' },
                 { id: 'sharetransactionbatchnoburs', name: 'sharetransactionbatchNoBurs', title: 'فهرست خرید و فروش غیر بورسی', link: '/Shareholding/sharetransactionbatchNoBurs', icon: 'fa-rectangle-list' },
                 { id: 'transfercodetocode', name: 'transferCodeToCode', title: 'انتقال کد به کد', link: 'Shareholding/transferCodeToCode', icon: 'fa-shuffle' },
@@ -165,7 +168,7 @@ const Sidebar = () => {
                 { id: 'stackedcardex', name: 'stackedcardex', title: 'روند موجودی', link: '/reports/stackedcardex', icon: 'fa-arrows-up-down' },
                 { id: 'sharebalance', name: 'sharebalance', title: 'مانده سهام', link: '/reports/sharebalance', icon: 'fa-scale-balanced' },
                 { id: 'realizedprofit', name: 'realizeedprofit', title: 'سود و زیان تحقق یافته', link: '/reports/realizedprofit', icon: 'fa-dollar-sign' },
-                { id: 'investmentdepreciationreserve', name: 'investmentdepreciationreserve', title: 'ذخیره کاهش ارزش سرمایه گزاری', link: '/reports/investmentdepreciationreserve', icon: 'fa-piggy-bank' },
+                { id: 'investmentdepreciationreserve', name: 'investmentdepreciationreserve', title: 'ذخیره کاهش ارزش سرمایه گذاری', link: '/reports/investmentdepreciationreserve', icon: 'fa-piggy-bank' },
                 { id: 'capitalraise', name: 'capitalraise', title: 'افزایش سرمایه', link: '/reports/capitalraise', icon: 'fa-arrow-up-long' },
                 { id: 'cashdividend', name: 'cashdividend', title: 'گزارش شناسایی سود اوراق بهادار ', link: '/reports/cashdividend', icon: 'fa-hand-holding-dollar' },
                 { id: 'cashdividenddeposit', name: 'cashdividenddeposit', title: 'گزارش واریز سود اوراق بهادار', link: '/reports/cashdividenddeposit', icon: 'fa-credit-card' },
@@ -223,7 +226,7 @@ const Sidebar = () => {
                         { id: 'sharerelationtype', name: 'companyType', title: 'نوع وابستگی سهم', link: '/Shareholding/sharerelationtype', icon: 'fa-share-nodes' },
                     ],
                 },
-                // { id: 'periodBeginningUpload', name: 'periodBeginningUpload', title: 'بارگزاری ابتدای دوره', link: '/', icon: 'fa-upload' },
+                // { id: 'periodBeginningUpload', name: 'periodBeginningUpload', title: 'بارگذاری ابتدای دوره', link: '/', icon: 'fa-upload' },
                 { id: 'fiscalYearTransfer', name: 'fiscalYearTransfer', title: 'انتقال سال مالی', link: '/', icon: 'fa-arrow-right' },
                 { id: 'supportSession', name: 'supportSession', title: 'جلسه پشتیبانی', link: '/', icon: 'fa-phone' },
             ],
@@ -271,200 +274,479 @@ const Sidebar = () => {
     }, []);
 
     // باز کردن منوی والد وقتی تب فعال تغییر می‌کنه
+    // useEffect(() => {
+    //     if (appConf.activeTab) {
+    //         // پیدا کردن منوی والد برای تب فعال
+    //         MenuData.forEach((menu) => {
+    //             if (menu.childe) {
+    //                 const hasActiveChild = menu.childe.some((child: any) => {
+    //                     if (child.id === appConf.activeTab) {
+    //                         return true;
+    //                     }
+    //                     // چک کردن زیرمنوهای تو در تو
+    //                     if (child.childe) {
+    //                         return child.childe.some((subChild: any) => subChild.id === appConf.activeTab);
+    //                     }
+    //                     return false;
+    //                 });
+
+    //                 if (hasActiveChild && currentMenu !== menu.name) {
+    //                     setCurrentMenu(menu.name);
+    //                 }
+    //             }
+    //         });
+    //     }
+    // }, [appConf.activeTab]);
     useEffect(() => {
         if (appConf.activeTab) {
-            // پیدا کردن منوی والد برای تب فعال
             MenuData.forEach((menu) => {
                 if (menu.childe) {
                     const hasActiveChild = menu.childe.some((child: any) => {
-                        if (child.id === appConf.activeTab) {
-                            return true;
-                        }
-                        // چک کردن زیرمنوهای تو در تو
+                        if (child.id === appConf.activeTab) return true;
                         if (child.childe) {
                             return child.childe.some((subChild: any) => subChild.id === appConf.activeTab);
                         }
                         return false;
                     });
 
-                    if (hasActiveChild && currentMenu !== menu.name) {
+                    if (hasActiveChild && currentMenu !== menu.name && isOpen) {
                         setCurrentMenu(menu.name);
                     }
                 }
             });
         }
-    }, [appConf.activeTab]);
+    }, [appConf.activeTab, isOpen]);
+
+    // return (
+    //     <div className='sidebar'>
+
+
+    //         <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
+    //             <ul className="relative space-y-0.5 font-iranyekan">
+    //                 <li className="nav-item">
+    //                     <ul>
+    //                         {MenuData.map((item) => (
+    //                             <li
+    //                                 key={item.name}
+    //                                 className={`${item.childe ? 'menu nav-item' : 'nav-item'} ${currentMenu === item.name || lasttMenu == item.name ? 'rounded-lg bg-[#FFFFFF] text-[#0f337a]' : ''
+    //                                     } text-[#0f337a]`}
+    //                             >
+    //                                 <ul>
+    //                                     {!item.childe ? (
+    //                                         <li key={item.name} className="nav-item">
+    //                                             <button
+    //                                                 type="button"
+    //                                                 className={`nav-link group w-full font-iranyekan flex py-2 rounded-lg transition-all ${appConf.activeTab === item.id
+    //                                                     ? 'bg-[#2691bf] text-white'
+    //                                                     : 'hover:bg-[#2691bf]/20 text-gray-200 hover:text-white'
+    //                                                     }`}
+    //                                                 onClick={() => {
+    //                                                     const data: ITabData = {
+    //                                                         id: item.id,
+    //                                                         key: item.id,
+    //                                                         name: item.name,
+    //                                                         title: item.title,
+    //                                                         orther: 0
+    //                                                     };
+
+    //                                                     AddTab(data);
+    //                                                 }
+    //                                                 }
+    //                                             >
+    //                                                 <div className="flex items-center">
+    //                                                     <i className={`fa-duotone fa-solid ${item.icon} text-lg ml-0`} />
+    //                                                     <span className="text-sm ltr:pl-3 rtl:pr-3">{t(item.name)}</span>
+    //                                                 </div>
+    //                                             </button>
+
+    //                                         </li>
+    //                                     ) : (
+    //                                         <li key={item.name} className="menu nav-item my-1">
+    //                                             <button
+    //                                                 type="button"
+    //                                                 className={`${currentMenu === item.name ? 'active' : ''} nav-link group w-full font-iranyekan flex px-2 transition-all duration-300 hover:bg-[#2ab0aa]/10 rounded-lg py-2`}
+    //                                                 onClick={() => toggleMenu(item.name)}
+
+    //                                             >
+    //                                                 <div className="flex items-center justify-start w-full">
+    //                                                     <i className={`fa-duotone fa-solid ${item.icon} text-xl transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a]' : 'text-[#fff]'}`} />
+    //                                                     <span
+    //                                                         className={`text-sm transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a] font-bold' : 'text-white'}
+    //                                                         } dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}
+    //                                                     >
+    //                                                         {t(item.title)}
+    //                                                     </span>
+    //                                                 </div>
+    //                                                 <i className={`fa-duotone fa-solid fa-angle-down text-lg transition-transform duration-300 ${currentMenu === item.name ? '-rotate-180 rtl:rotate-180' : ''} ${lasttMenu === item.name ? 'text-[#0f337a]!' : 'text-white!'}`} />
+    //                                             </button>
+
+    //                                             <AnimateHeight duration={300} height={currentMenu === item.name ? 'auto' : 0}>
+    //                                                 <ul className="rounded-lg bg-[#FFFFFF] text-gray-500 p-1">
+    //                                                     {item.childe.map((subItem) =>
+    //                                                         !subItem.childe ? (
+    //                                                             <li key={subItem.title} className="nav-item">
+    //                                                                 <button
+    //                                                                     type="button"
+    //                                                                     className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
+    //                                                                         ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
+    //                                                                         : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+    //                                                                         }`}
+    //                                                                     onClick={() => {
+    //                                                                         const data: ITabData = {
+    //                                                                             id: subItem.id,
+    //                                                                             key: subItem.id,
+    //                                                                             name: subItem.name,
+    //                                                                             title: subItem.title,
+    //                                                                             orther: 0
+    //                                                                         };
+
+
+    //                                                                         AddTab(data);
+    //                                                                     }
+    //                                                                     }
+    //                                                                 >
+    //                                                                     <div className="flex items-center">
+    //                                                                         <i className={`fa-duotone fa-solid ${subItem.icon} text-base ml-2`} />
+    //                                                                         <span className="text-xs">{t(subItem.title)}</span>
+    //                                                                     </div>
+    //                                                                 </button>
+    //                                                             </li>
+    //                                                         ) : (
+    //                                                             <li key={subItem.name} className="menu nav-item pl-2">
+    //                                                                 <button
+    //                                                                     type="button"
+    //                                                                     className={`${currentSubMenu === subItem.name + item.name ? 'active' : ''} nav-link group w-full font-iranyekan transition-all duration-300 hover:bg-[#2ab0aa]/20 rounded-lg py-2 px-2`}
+    //                                                                     onClick={() => toggleSubMenu(subItem.name, item.name)}
+    //                                                                 >
+    //                                                                     <div className="flex items-center">
+    //                                                                         <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}>
+    //                                                                             {t(subItem.title)}
+    //                                                                         </span>
+    //                                                                     </div>                                                                        <div
+    //                                                                         className={`transition-transform duration-300 ${currentSubMenu === subItem.name + item.name ? '-rotate-180 rtl:rotate-180' : ''} ${'!text-[#089bab] '}`}
+    //                                                                     >
+    //                                                                         <i className={`fa-duotone fa-solid fa-angle-down text-xl text-[#0f337a]`} />
+    //                                                                     </div>
+    //                                                                 </button>
+    //                                                                 <AnimateHeight duration={300} height={currentSubMenu === subItem.name + item.name ? 'auto' : 0}>
+    //                                                                     <ul className="sub-menu text-gray-500">
+    //                                                                         {subItem.childe.map((sub2Item) => (
+    //                                                                             <li key={sub2Item.name}>
+    //                                                                                 {/* <Link className="group" key={sub2Item.name} href={sub2Item.link}>
+    //                                                                                     <div className="flex items-center">
+    //                                                                                         <span className="text-[#777d74] text-xs  dark:text-[#506690] ltr:pl-3 rtl:pr-3">
+    //                                                                                             {t(sub2Item.title)}
+    //                                                                                         </span>
+    //                                                                                     </div>
+    //                                                                                 </Link> */}
+    //                                                                                 <button
+    //                                                                                     type="button"
+    //                                                                                     className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
+    //                                                                                         ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
+    //                                                                                         : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+    //                                                                                         }`}
+    //                                                                                     onClick={() => {
+    //                                                                                         const data: ITabData = {
+    //                                                                                             id: sub2Item.id,
+    //                                                                                             key: sub2Item.id,
+    //                                                                                             name: sub2Item.name,
+    //                                                                                             title: sub2Item.title,
+    //                                                                                             orther: 0
+    //                                                                                         };
+
+
+    //                                                                                         AddTab(data);
+    //                                                                                     }
+    //                                                                                     }
+    //                                                                                 >
+    //                                                                                     <div className="flex items-center">
+    //                                                                                         <i className={`fa-duotone fa-solid ${sub2Item.icon} text-base ml-2`} />
+    //                                                                                         <span className="text-xs">{t(sub2Item.title)}</span>
+    //                                                                                     </div>
+    //                                                                                 </button>
+    //                                                                             </li>
+    //                                                                         ))}
+    //                                                                     </ul>
+    //                                                                 </AnimateHeight>
+    //                                                             </li>
+    //                                                         )
+    //                                                     )}
+    //                                                 </ul>
+    //                                             </AnimateHeight>
+    //                                         </li>
+    //                                     )}
+    //                                 </ul>
+    //                             </li>
+    //                         ))}
+    //                     </ul>
+    //                 </li>
+    //             </ul>
+    //         </PerfectScrollbar >
+
+
+
+
+    //     </div >
+    // );
 
 
     return (
         <div className='sidebar'>
-
-
             <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
                 <ul className="relative space-y-0.5 font-iranyekan">
-                    <li className="nav-item">
-                        <ul>
-                            {MenuData.map((item) => (
-                                <li
-                                    key={item.name}
-                                    className={`${item.childe ? 'menu nav-item' : 'nav-item'} ${currentMenu === item.name || lasttMenu == item.name ? 'rounded-lg bg-[#FFFFFF] text-[#0f337a]' : ''
-                                        } text-[#0f337a]`}
+                    {MenuData.map((item) => (
+                        <li
+                            key={item.name}
+                            className={`${item.childe ? 'menu nav-item' : 'nav-item'} ${currentMenu === item.name || lasttMenu == item.name ? 'rounded-lg bg-[#FFFFFF] text-[#0f337a]' : ''
+                                } text-[#0f337a]`}
+                        >
+                            {!item.childe ? (
+                                <button
+                                    type="button"
+                                    className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === item.id
+                                        ? 'bg-[#2691bf] text-white'
+                                        : 'hover:bg-[#2691bf]/20 text-gray-200 hover:text-white'
+                                        } ${!isOpen ? 'justify-center' : ''}`}
+                                    onClick={() => {
+                                        const data: ITabData = {
+                                            id: item.id,
+                                            key: item.id,
+                                            name: item.name,
+                                            title: item.title,
+                                            orther: 0
+                                        };
+                                        AddTab(data);
+                                    }}
+                                    title={!isOpen ? t(item.title) : ''}
                                 >
-                                    <ul>
-                                        {!item.childe ? (
-                                            <li key={item.name} className="nav-item">
-                                                <button
-                                                    type="button"
-                                                    className={`nav-link group w-full font-iranyekan flex py-2 rounded-lg transition-all ${appConf.activeTab === item.id
-                                                        ? 'bg-[#2691bf] text-white'
-                                                        : 'hover:bg-[#2691bf]/20 text-gray-200 hover:text-white'
-                                                        }`}
-                                                    onClick={() => {
-                                                        const data: ITabData = {
-                                                            id: item.id,
-                                                            key: item.id,
-                                                            name: item.name,
-                                                            title: item.title,
-                                                            orther: 0
-                                                        };
+                                    <div className="flex items-center">
+                                        <i className={`fa-duotone fa-solid ${item.icon} text-lg ${!isOpen ? 'ml-0' : ''}`} />
+                                        {isOpen && <span className="text-sm ltr:pl-3 rtl:pr-3">{t(item.name)}</span>}
+                                    </div>
+                                </button>
+                            ) : (
+                                <div className={`${isOpen ? '' : "relative"}`}
+                                    // onMouseEnter={() => !isOpen && toggleMenu(item.name)}
+                                    onMouseEnter={() => !isOpen && setCurrentMenu(item.name)}
+                                >
+                                    <button
+                                        type="button"
+                                        className={`${currentMenu === item.name ? 'active' : ''} nav-link group w-full font-iranyekan flex px-2 transition-all duration-300 hover:bg-[#2ab0aa]/10 rounded-lg py-2 ${!isOpen ? 'justify-center' : ''
+                                            }`}
+                                        onClick={() => toggleMenu(item.name)}
+                                        title={!isOpen ? t(item.title) : ''}
+                                    >
+                                        <div className={`flex items-center ${isOpen ? 'justify-start w-full' : 'justify-center'}`}>
+                                            <i className={`fa-duotone fa-solid ${item.icon} text-xl transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a]' : 'text-[#fff]'
+                                                }`} />
+                                            {isOpen && (
+                                                <span className={`text-sm transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a] font-bold' : 'text-white'
+                                                    } dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}>
+                                                    {t(item.title)}
+                                                </span>
+                                            )}
+                                        </div>
+                                        {isOpen && (
+                                            <i className={`fa-duotone fa-solid fa-angle-down text-lg transition-transform duration-300 ${currentMenu === item.name ? '-rotate-180 rtl:rotate-180' : ''
+                                                } ${lasttMenu === item.name ? 'text-[#0f337a]! dark:text-white' : 'text-white!'}`} />
+                                        )}
+                                    </button>
 
-                                                        AddTab(data);
-                                                    }
-                                                    }
-                                                >
-                                                    <div className="flex items-center">
-                                                        <i className={`fa-duotone fa-solid ${item.icon} text-lg ml-0`} />
-                                                        <span className="text-sm ltr:pl-3 rtl:pr-3">{t(item.name)}</span>
-                                                    </div>
-                                                </button>
+                                    {isOpen ?
+                                        <AnimateHeight duration={300} height={currentMenu === item.name ? 'auto' : 0}>
+                                            <ul className={`rounded-lg bg-[#ffffff] dark:bg-gray-700 text-gray-500 p-1 ${isOpen ? '' : "absolute right-full top-0"}`}>
+                                                {item.childe.map((subItem) =>
+                                                    !subItem.childe ? (
+                                                        <li key={subItem.title} className="nav-item">
+                                                            <button
+                                                                type="button"
+                                                                className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
+                                                                    ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
+                                                                    : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+                                                                    }`}
+                                                                onClick={() => {
+                                                                    const data: ITabData = {
+                                                                        id: subItem.id,
+                                                                        key: subItem.id,
+                                                                        name: subItem.name,
+                                                                        title: subItem.title,
+                                                                        orther: 0
+                                                                    };
+                                                                    AddTab(data);
+                                                                }}
+                                                            >
+                                                                <div className="flex items-center">
+                                                                    <i className={`fa-duotone fa-solid ${subItem.icon} text-base ml-2`} />
+                                                                    <span className="text-xs">{t(subItem.title)}</span>
+                                                                </div>
+                                                            </button>
+                                                        </li>
+                                                    ) : (
+                                                        <li key={subItem.name} className="menu nav-item pl-2">
+                                                            <button
+                                                                type="button"
+                                                                className={`${currentSubMenu === subItem.name + item.name ? 'active' : ''} nav-link group w-full font-iranyekan transition-all duration-300 hover:bg-[#2ab0aa]/20 rounded-lg py-2 px-2`}
+                                                                onClick={() => toggleSubMenu(subItem.name, item.name)}
 
-                                            </li>
-                                        ) : (
-                                            <li key={item.name} className="menu nav-item my-1">
-                                                <button
-                                                    type="button"
-                                                    className={`${currentMenu === item.name ? 'active' : ''} nav-link group w-full font-iranyekan flex px-2 transition-all duration-300 hover:bg-[#2ab0aa]/10 rounded-lg py-2`}
-                                                    onClick={() => toggleMenu(item.name)}
-
-                                                >
-                                                    <div className="flex items-center justify-start w-full">
-                                                        <i className={`fa-duotone fa-solid ${item.icon} text-xl transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a]' : 'text-[#fff]'}`} />
-                                                        <span
-                                                            className={`text-sm transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a] font-bold' : 'text-white'}
-                                                            } dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}
-                                                        >
-                                                            {t(item.title)}
-                                                        </span>
-                                                    </div>
-                                                    <i className={`fa-duotone fa-solid fa-angle-down text-lg transition-transform duration-300 ${currentMenu === item.name ? '-rotate-180 rtl:rotate-180' : ''} ${lasttMenu === item.name ? 'text-[#0f337a]!' : 'text-white!'}`} />
-                                                </button>
-
-                                                <AnimateHeight duration={300} height={currentMenu === item.name ? 'auto' : 0}>
-                                                    <ul className="rounded-lg bg-[#FFFFFF] text-gray-500 p-1">
-                                                        {item.childe.map((subItem) =>
-                                                            !subItem.childe ? (
-                                                                <li key={subItem.title} className="nav-item">
-                                                                    <button
-                                                                        type="button"
-                                                                        className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
-                                                                            ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
-                                                                            : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
-                                                                            }`}
-                                                                        onClick={() => {
-                                                                            const data: ITabData = {
-                                                                                id: subItem.id,
-                                                                                key: subItem.id,
-                                                                                name: subItem.name,
-                                                                                title: subItem.title,
-                                                                                orther: 0
-                                                                            };
-
-
-                                                                            AddTab(data);
-                                                                        }
-                                                                        }
-                                                                    >
-                                                                        <div className="flex items-center">
-                                                                            <i className={`fa-duotone fa-solid ${subItem.icon} text-base ml-2`} />
-                                                                            <span className="text-xs">{t(subItem.title)}</span>
-                                                                        </div>
-                                                                    </button>
-                                                                </li>
-                                                            ) : (
-                                                                <li key={subItem.name} className="menu nav-item pl-2">
-                                                                    <button
-                                                                        type="button"
-                                                                        className={`${currentSubMenu === subItem.name + item.name ? 'active' : ''} nav-link group w-full font-iranyekan transition-all duration-300 hover:bg-[#2ab0aa]/20 rounded-lg py-2 px-2`}
-                                                                        onClick={() => toggleSubMenu(subItem.name, item.name)}
-                                                                    >
-                                                                        <div className="flex items-center">
-                                                                            <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}>
-                                                                                {t(subItem.title)}
-                                                                            </span>
-                                                                        </div>                                                                        <div
-                                                                            className={`transition-transform duration-300 ${currentSubMenu === subItem.name + item.name ? '-rotate-180 rtl:rotate-180' : ''} ${'!text-[#089bab] '}`}
-                                                                        >
-                                                                            <i className={`fa-duotone fa-solid fa-angle-down text-xl text-[#0f337a]`} />
-                                                                        </div>
-                                                                    </button>
-                                                                    <AnimateHeight duration={300} height={currentSubMenu === subItem.name + item.name ? 'auto' : 0}>
-                                                                        <ul className="sub-menu text-gray-500">
-                                                                            {subItem.childe.map((sub2Item) => (
-                                                                                <li key={sub2Item.name}>
-                                                                                    {/* <Link className="group" key={sub2Item.name} href={sub2Item.link}>
+                                                            >
+                                                                <div className="flex items-center">
+                                                                    <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}>
+                                                                        {t(subItem.title)}
+                                                                    </span>
+                                                                </div>                                                                        <div
+                                                                    className={`transition-transform duration-300 ${currentSubMenu === subItem.name + item.name ? '-rotate-180 rtl:rotate-180' : ''} ${'!text-[#089bab] '}`}
+                                                                >
+                                                                    <i className={`fa-duotone fa-solid fa-angle-down text-xl text-[#0f337a]`} />
+                                                                </div>
+                                                            </button>
+                                                            <AnimateHeight duration={300} height={currentSubMenu === subItem.name + item.name ? 'auto' : 0}>
+                                                                <ul className="sub-menu text-gray-500">
+                                                                    {subItem.childe.map((sub2Item) => (
+                                                                        <li key={sub2Item.name}>
+                                                                            {/* <Link className="group" key={sub2Item.name} href={sub2Item.link}>
                                                                                         <div className="flex items-center">
                                                                                             <span className="text-[#777d74] text-xs  dark:text-[#506690] ltr:pl-3 rtl:pr-3">
                                                                                                 {t(sub2Item.title)}
                                                                                             </span>
                                                                                         </div>
                                                                                     </Link> */}
-                                                                                    <button
-                                                                                        type="button"
-                                                                                        className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
-                                                                                            ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
-                                                                                            : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
-                                                                                            }`}
-                                                                                        onClick={() => {
-                                                                                            const data: ITabData = {
-                                                                                                id: sub2Item.id,
-                                                                                                key: sub2Item.id,
-                                                                                                name: sub2Item.name,
-                                                                                                title: sub2Item.title,
-                                                                                                orther: 0
-                                                                                            };
+                                                                            <button
+                                                                                type="button"
+                                                                                className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
+                                                                                    ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
+                                                                                    : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+                                                                                    }`}
+                                                                                onClick={() => {
+                                                                                    const data: ITabData = {
+                                                                                        id: sub2Item.id,
+                                                                                        key: sub2Item.id,
+                                                                                        name: sub2Item.name,
+                                                                                        title: sub2Item.title,
+                                                                                        orther: 0
+                                                                                    };
 
 
-                                                                                            AddTab(data);
-                                                                                        }
-                                                                                        }
-                                                                                    >
+                                                                                    AddTab(data);
+                                                                                }
+                                                                                }
+                                                                            >
+                                                                                <div className="flex items-center">
+                                                                                    <i className={`fa-duotone fa-solid ${sub2Item.icon} text-base ml-2`} />
+                                                                                    <span className="text-xs">{t(sub2Item.title)}</span>
+                                                                                </div>
+                                                                            </button>
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            </AnimateHeight>
+                                                        </li>
+                                                    )
+                                                )}
+                                            </ul>
+                                        </AnimateHeight>
+                                        :
+                                        <div className={`absolute right-full top-0 mr-2 z-50 animate-fade-in ${currentMenu === item.name ? "" : "hidden"}`}
+                                            onMouseEnter={() => !isOpen && setCurrentMenu(item.name)}
+                                            onMouseLeave={() => !isOpen && setCurrentMenu('')}
+                                        >
+                                            <ul className={`rounded-lg min-w-2xs shadow-2xl mr-2 border border-gray-300 bg-[#ffffff] text-gray-500 p-1 ${isOpen ? '' : "absolute right-full top-0"}`}>
+                                                {item.childe.map((subItem) =>
+                                                    !subItem.childe ? (
+                                                        <li key={subItem.title} className="nav-item">
+                                                            <button
+                                                                type="button"
+                                                                className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
+                                                                    ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
+                                                                    : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+                                                                    }`}
+                                                                onClick={() => {
+                                                                    const data: ITabData = {
+                                                                        id: subItem.id,
+                                                                        key: subItem.id,
+                                                                        name: subItem.name,
+                                                                        title: subItem.title,
+                                                                        orther: 0
+                                                                    };
+                                                                    AddTab(data);
+                                                                }}
+                                                            >
+                                                                <div className="flex items-center">
+                                                                    <i className={`fa-duotone fa-solid ${subItem.icon} text-base ml-2`} />
+                                                                    <span className="text-xs">{t(subItem.title)}</span>
+                                                                </div>
+                                                            </button>
+                                                        </li>
+                                                    ) : (
+                                                        <li key={subItem.name} className="menu nav-item pl-2">
+                                                            <button
+                                                                type="button"
+                                                                className={`${currentSubMenu === subItem.name + item.name ? 'active' : ''} nav-link group w-full font-iranyekan transition-all duration-300 hover:bg-[#2ab0aa]/20 rounded-lg py-2 px-2`}
+                                                                onClick={() => toggleSubMenu(subItem.name, item.name)}
+
+                                                            >
+                                                                <div className="flex items-center">
+                                                                    <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}>
+                                                                        {t(subItem.title)}
+                                                                    </span>
+                                                                </div>                                                                        <div
+                                                                    className={`transition-transform duration-300 ${currentSubMenu === subItem.name + item.name ? '-rotate-180 rtl:rotate-180' : ''} ${'!text-[#089bab] '}`}
+                                                                >
+                                                                    <i className={`fa-duotone fa-solid fa-angle-down text-xl text-[#0f337a]`} />
+                                                                </div>
+                                                            </button>
+                                                            <AnimateHeight duration={300} height={currentSubMenu === subItem.name + item.name ? 'auto' : 0}>
+                                                                <ul className="sub-menu text-gray-500">
+                                                                    {subItem.childe.map((sub2Item) => (
+                                                                        <li key={sub2Item.name}>
+                                                                            {/* <Link className="group" key={sub2Item.name} href={sub2Item.link}>
                                                                                         <div className="flex items-center">
-                                                                                            <i className={`fa-duotone fa-solid ${sub2Item.icon} text-base ml-2`} />
-                                                                                            <span className="text-xs">{t(sub2Item.title)}</span>
+                                                                                            <span className="text-[#777d74] text-xs  dark:text-[#506690] ltr:pl-3 rtl:pr-3">
+                                                                                                {t(sub2Item.title)}
+                                                                                            </span>
                                                                                         </div>
-                                                                                    </button>
-                                                                                </li>
-                                                                            ))}
-                                                                        </ul>
-                                                                    </AnimateHeight>
-                                                                </li>
-                                                            )
-                                                        )}
-                                                    </ul>
-                                                </AnimateHeight>
-                                            </li>
-                                        )}
-                                    </ul>
-                                </li>
-                            ))}
-                        </ul>
-                    </li>
+                                                                                    </Link> */}
+                                                                            <button
+                                                                                type="button"
+                                                                                className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
+                                                                                    ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
+                                                                                    : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+                                                                                    }`}
+                                                                                onClick={() => {
+                                                                                    const data: ITabData = {
+                                                                                        id: sub2Item.id,
+                                                                                        key: sub2Item.id,
+                                                                                        name: sub2Item.name,
+                                                                                        title: sub2Item.title,
+                                                                                        orther: 0
+                                                                                    };
+
+
+                                                                                    AddTab(data);
+                                                                                }
+                                                                                }
+                                                                            >
+                                                                                <div className="flex items-center">
+                                                                                    <i className={`fa-duotone fa-solid ${sub2Item.icon} text-base ml-2`} />
+                                                                                    <span className="text-xs">{t(sub2Item.title)}</span>
+                                                                                </div>
+                                                                            </button>
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            </AnimateHeight>
+                                                        </li>
+                                                    )
+                                                )}
+                                            </ul>
+                                        </div>
+                                    }
+
+                                </div>
+                            )}
+                        </li>
+                    ))}
                 </ul>
-            </PerfectScrollbar >
-
-
-
-
+            </PerfectScrollbar>
         </div >
     );
 };

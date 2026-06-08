@@ -41,10 +41,13 @@ interface CostomMRT extends DatatableProps {
     enableRowSelection?: boolean;
     enableMultiRowSelection?: boolean;
     enableStickyFooter?: boolean;
+    enableSorting?: boolean;
+    enableGrouping?: boolean;
     enableStickyHeader?: boolean;
     mantineTableBodyRowBackgroundColor?: string | undefined;
     mantineTableBodyRowBackgroundColorChangeByField?: string | undefined;
     groupColumn?: GroupColumn[] | undefined;
+    defaultGrouping?: string[] | undefined;
     manualPagination?: boolean;
     editAction?: any;
     formInitialValues?: any;
@@ -73,7 +76,10 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     enableRowSelection = false,
     enableMultiRowSelection = true,
     enableStickyFooter = false,
+    enableSorting = true,
+    enableGrouping = true,
     groupColumn = null,
+    defaultGrouping = [],
     manualPagination = false,
     mantineTableBodyRowBackgroundColor,
     mantineTableBodyRowBackgroundColorChangeByField,
@@ -81,6 +87,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     enableInlineEditing = false,
     editableColumns = [],
     onInlineSave = undefined,
+    onDoubleClick = undefined,
 }) => {
     const { t } = useLanguage();
     const subPage = useSubPage();
@@ -109,7 +116,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         pageSize: 10,
     });
 
-    const [changeGrouping, setChangeGrouping] = useState<string[]>([]);
+    const [changeGrouping, setChangeGrouping] = useState<string[]>(defaultGrouping);
     const [editingRows, setEditingRows] = useState<Record<string, boolean>>({});
     const [validationErrors, setValidationErrors] = useState<Record<string, Record<string, string | undefined>>>({});
 
@@ -125,6 +132,13 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     const handleClick = (data: IstaticParam) => {
         setPagination({ pageIndex: 0, pageSize: pagination.pageSize });
         setFilterdata(data);
+    };
+
+    const handleClear = () => {
+        setPagination({ pageIndex: 0, pageSize: pagination.pageSize });
+        setFilterdata({});
+        FetchData();
+        togglePara2('1');
     };
 
     const _filedNotShow: string[] = ['PageSize', 'PageNumber', 'IsDescending', 'SortBy'];
@@ -195,7 +209,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
 
     const FetchData = async () => {
         let filteData: string = '';
-        // console.log(staticParams);
+        console.log(staticParams);
         if (manualPagination) {
             filteData = `pageSize=${pagination.pageSize}&pageNumber=${pagination.pageIndex + 1}`;
         }
@@ -281,28 +295,24 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
 
     const ExportData = async () => {
         setIsExporting(true);
-        let filteData: string = '';
+        let filteData = filterdata ? filterdata : null;
 
-        if (manualPagination) {
-            filteData = `pageSize=${pagination.pageSize}&pageNumber=${pagination.pageIndex + 1}`;
-        }
+        // if (manualPagination) {
+        //     filteData = `pageSize=${pagination.pageSize}&pageNumber=${pagination.pageIndex + 1}`;
+        // }
 
         if (staticParams && model.list?.parameters) {
             model.list?.parameters?.map((item) => {
-                const val = staticParams.find((x) => x.name === item.name)?.value;
-                if (val) {
-                    filteData = filteData + `${filteData != '' ? '&' : ''}${item.name}=${val}`;
+
+                const param = staticParams.find((x) => x.name === item.name)?.value;
+                console.log(param);
+                if (param) {
+                    filteData = { ...filteData, [item.name]: param };
                 }
             });
         }
+        console.log(filteData);
 
-        if (filterdata) {
-            Object.keys(filterdata).map((keyName) => {
-                filteData = filteData + `${filteData != '' ? '&' : ''}${keyName}=${filterdata[keyName]}`;
-            });
-        }
-
-        // const fetchUrl = `${model.list?.url}/export/excel${filteData != '' ? `?${filteData}` : ''}`;
         const fetchUrl = `${model.list?.url}/export/excel`;
 
         try {
@@ -310,22 +320,28 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
             //     method: "post"
             // });
 
-            const res = await apiFetch(fetchUrl, {
+            const res = await fetch(fetchUrl, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    companyId: staticParams?.find((x) => x.name === 'CompanyId')?.value,
-                    fiscalYearId: staticParams?.find((x) => x.name === 'FiscalYearId')?.value,
-                    date: staticParams?.find((x) => x.name === 'date')?.value,
-                }),
+                body: JSON.stringify(filteData),
+                // body: JSON.stringify({
+                //     companyId: staticParams?.find((x) => x.name === 'CompanyId')?.value,
+                //     fiscalYearId: staticParams?.find((x) => x.name === 'FiscalYearId')?.value,
+                //     date: staticParams?.find((x) => x.name === 'date')?.value,
+                // }),
             });
 
+            if (!res.ok) {
+                throw new Error('خطا در دریافت داده');
+            }
 
             // استخراج نام فایل از header
             const contentDisposition = res.headers.get('content-disposition');
-            let fileName = 'export.xlsx';
+
+            let fileName = 'export-file.xlsx';
+
             if (contentDisposition && contentDisposition.includes('filename')) {
                 const matches = contentDisposition.match(/filename\*=UTF-8''(.+)|filename="?(.+?)"?($|;)/i);
                 fileName = matches?.[1]
@@ -354,6 +370,82 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
             setIsExporting(false);
         }
     };
+
+    const ExportDataGet = async () => {
+        setIsExporting(true);
+
+        let filteData: string = '';
+
+        if (manualPagination) {
+            filteData = `pageSize=${pagination.pageSize}&pageNumber=${pagination.pageIndex + 1}`;
+        }
+
+        if (staticParams && model.list?.parameters) {
+            model.list?.parameters?.map((item) => {
+                const val = staticParams.find((x) => x.name === item.name)?.value;
+                if (val) {
+                    filteData = filteData + `${filteData != '' ? '&' : ''}${item.name}=${val}`;
+                }
+            });
+        }
+
+        if (filterdata) {
+            Object.keys(filterdata).map((keyName) => {
+                filteData = filteData + `${filteData != '' ? '&' : ''}${keyName}=${filterdata[keyName]}`;
+            });
+        }
+
+        console.log(filteData);
+
+        const fetchUrl = `${model.list?.url}/export/excel${filteData != '' ? `?${filteData}` : ''}`;
+
+        try {
+            const res = await fetch(fetchUrl, {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'accept': 'text/plain'
+                }
+            });
+
+            if (!res.ok) {
+                throw new Error('خطا در دریافت داده');
+            }
+
+            // استخراج نام فایل از header
+            const contentDisposition = res.headers.get('content-disposition');
+
+            let fileName = '';// 'export-file.xlsx';
+
+            if (contentDisposition && contentDisposition.includes('filename')) {
+                const matches = contentDisposition.match(/filename\*=UTF-8''(.+)|filename="?(.+?)"?($|;)/i);
+                fileName = matches?.[1]
+                    ? decodeURIComponent(matches[1])
+                    : matches?.[2]
+                        ? matches[2]
+                        : fileName;
+            }
+
+            // دریافت blob و دانلود فایل
+            const blob = await res.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            ColoredToast('success', 'فایل با موفقیت دانلود شد');
+        } catch (error) {
+            console.error('Export error:', error);
+            ColoredToast('error', error instanceof Error ? error.message : 'خطا در دریافت فایل');
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
 
     useImperativeHandle(
         myRef,
@@ -518,6 +610,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     }, [model, staticParams]);
 
     useEffect(() => {
+        console.log('okokoko')
         if (Object.keys(filterdata)?.length > 0) {
             FetchData();
         }
@@ -609,7 +702,8 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                     <ActionIcon
                         color="inheritans"
                         style={{ '--ai-hover': 'rgba(134, 142, 150, 0.12)' }}
-                        onClick={() => ExportData()}
+                        // onClick={() => ExportData()}
+                        onClick={() => ExportDataGet()}
                         disabled={isExporting}
                         className="disabled:opacity-50 disabled:cursor-not-allowed"
                     >
@@ -640,7 +734,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         enableRowSelection: enableRowSelection,
         enableMultiRowSelection: enableMultiRowSelection,
         enableStickyFooter: enableStickyFooter,
-
+        enableSorting: enableSorting,
         // mantineTableBodyRowProps: ({ row }) => ({
         //     onClick: row.getToggleSelectedHandler(),
         //     style: { cursor: 'pointer' },
@@ -657,6 +751,9 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                 if (detailPanel) {
                     setExpandedRow(row.original.id);
                 }
+            },
+            onDoubleClick: () => {
+                onDoubleClick && onDoubleClick(row);
             },
             style: {
                 backgroundColor: row.original[mantineTableBodyRowBackgroundColorChangeByField!] ? mantineTableBodyRowBackgroundColor : '',
@@ -675,7 +772,8 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                 <div className="m-2 rounded-sm border border-gray-400 text-gray-500 text-sm p-2">{`تعدا کل ردیف ها : ${initialRecords?.totalCount?.toLocaleString('fa-IR')}`}</div>
             </Flex>
         ),
-        enableGrouping: true,
+        enableGrouping: enableGrouping && !manualPagination,
+        enableFilters: !manualPagination,
         groupedColumnMode: 'reorder', //false, //'remove','reorder'
         positionToolbarAlertBanner: 'top', //: 'none',
         enableExpanding: detailPanel || changeGrouping?.length > 0 ? true : false,
@@ -703,7 +801,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                             onClick={() => table.setEditingRow(row)}
                             variant="transparent"
                             className="mr-3 w-9 h-9">
-                            <i className={`fa-duotone fa-solid fa-pen-to-square text-xl text-gray-400 hover:text-orange-500`} />
+                            <i className={`fa-duotone fa-solid fa-pen-to-square text-xl text-gray-400 hover:text-green-500`} />
                         </ActionIcon>
                     </Tooltip>
                 )}
@@ -718,7 +816,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                             className="mr-3 w-9 h-9">
 
                             {/* <IconEdit className="color-red-400" /> */}
-                            <i className={`fa-duotone fa-solid fa-pen-to-square text-xl text-gray-400 hover:text-orange-500`} />
+                            <i className={`fa-duotone fa-solid fa-pen-to-square text-xl text-gray-400 hover:text-green-500`} />
                         </ActionIcon>
 
                         {/* <Link
@@ -803,9 +901,10 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                                             parameter={model?.list?.parameters}
                                             filedNotShow={filedNotShow}
                                             onClick={handleClick}
+                                            clear={handleClear}
                                             setModal={setFilterModal}
                                             sucsesBtnText="search"
-                                            cancelBtnText={''}
+                                            cancelBtnText="حذف فیلتر"
                                             staticParams={staticParams}
                                             labaleNameList={labaleNameList}
                                         />
@@ -842,9 +941,10 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                                                         handleClick(data);
                                                         togglePara2('0');
                                                     }}
+                                                    clear={handleClear}
                                                     setModal={setFilterModal}
                                                     sucsesBtnText="search"
-                                                    cancelBtnText={''}
+                                                    cancelBtnText="حذف فیلتر"
                                                     staticParams={staticParams}
                                                     labaleNameList={labaleNameList}
                                                 />

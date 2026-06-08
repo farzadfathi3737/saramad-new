@@ -18,7 +18,7 @@ const StackedBuySell = () => {
 
     useEffect(() => {
         const setdata = async () => {
-            let _model = await getEntityModel('reportstackedbuysell');
+            const _model = await getEntityModel('reportstackedbuysell');
 
             setModel(_model);
         };
@@ -30,8 +30,8 @@ const StackedBuySell = () => {
         setFiscalYearId(appConfig.fiscalYear.id);
 
         setData({
-            FromDate: appConfig.fiscalYear.beginDate,
-            ToDate: appConfig.fiscalYear.endDate
+            FromDate: appConfig.fiscalYear.begin,
+            ToDate: appConfig.fiscalYear.end
         })
 
     }, [appConfig.company, appConfig.fiscalYear]);
@@ -63,7 +63,7 @@ const StackedBuySell = () => {
                                 { label: 'ShareId', value: 'share' },
                                 { label: 'TradingCodeId', value: 'tradingCode' },
                                 { label: 'CalculationType', value: 'calculationType' },
-                                { label: 'BrokerId', value: 'broker' },
+                                { label: 'StockBrokerId', value: 'broker' },
                                 { label: 'reporttype', value: 'نوع گزارش' },
                             ]}
                             hideColList={['shareId', 'id']}

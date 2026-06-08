@@ -62,8 +62,8 @@ const Company = () => {
             setModelInProg(_modelInProg);
 
             setData({
-                FromDate: appConfig.fiscalYear.beginDate,
-                ToDate: appConfig.fiscalYear.endDate
+                FromDate: appConfig.fiscalYear.begin,
+                ToDate: appConfig.fiscalYear.end
             })
         };
 
@@ -152,6 +152,7 @@ const Company = () => {
             const contentDisposition = res.headers.get('content-disposition');
 
             let fileName = `${templateType}-file.xlsx`;
+
             if (contentDisposition && contentDisposition.includes('filename')) {
                 const matches = contentDisposition.match(/filename\*=UTF-8''(.+)|filename="?(.+?)"?($|;)/i);
                 fileName = matches?.[1]
@@ -178,8 +179,6 @@ const Company = () => {
             setLoading(false);
         }
     };
-
-    modelExport
 
     useEffect(() => {
         const _setdata = async () => {

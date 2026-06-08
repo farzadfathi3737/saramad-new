@@ -49,8 +49,8 @@ const Company = ({ id, brokerName, master }: { id: string, brokerName: string, m
                             isShowHideCol={true}
                             staticParams={[{ name: 'BrokerId', value: id }]}
                             labaleNameList={[
-                                { label: 'Keyword', value: 'نام / کد کارگذار' },
-                                { label: 'name', value: 'نام کارگذار' },
+                                { label: 'Keyword', value: 'نام / کد کارگزار' },
+                                { label: 'name', value: 'نام کارگزار' },
                                 { label: 'code', value: 'کد دو حرفی' },
                             ]}
                             hideColList={['id', 'companyId', 'brokerId']}

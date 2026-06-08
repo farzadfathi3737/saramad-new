@@ -1,5 +1,6 @@
 export async function apiFetch(url: string, options: RequestInit = {}) {
-    const _url = url.replace('/cloud/', 'api/proxy/')
+    // const _url = url.replace('/cloud/', 'api/proxy/')
+    const _url = url;
 
     // اگر client-side است، کوکی ها اتوماتیک فرستاده می‌شود
     // اگر server-side است، نیازی به credentials نیست
