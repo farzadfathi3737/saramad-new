@@ -170,7 +170,7 @@ const Add = ({ id, master }: { id: string, master: string }) => {
                                         <div className="grid w-full"></div>
                                         <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                             <div>
-                                                <Field id="nominalValue" name="nominalValue" label={t('nominalValue')} component={FTextField} disabled />
+                                                <Field id="nominalValue" name="nominalValue" label={t('nominalValue')} component={FTextField} isNumber={true} disabled />
                                             </div>
                                             <div>
                                                 <Field id="parentIndustryName" name="parentIndustryName" label={t('parentIndustryName')} component={FTextField} disabled />
@@ -179,7 +179,7 @@ const Add = ({ id, master }: { id: string, master: string }) => {
                                         <div className="grid w-full"></div>
                                         <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                             <div>
-                                                <Field id="capital" name="capital" label={'آخرین سرمایه ی ثبت شده'} component={FTextField} disabled />
+                                                <Field id="capital" name="capital" label={'آخرین سرمایه ی ثبت شده'} component={FTextField} isNumber={true} disabled />
                                             </div>
                                             <div>
                                                 <Field id="industryName" name="industryName" label={t('زیر صنعت')} component={FTextField} disabled />

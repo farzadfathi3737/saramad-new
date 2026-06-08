@@ -135,7 +135,7 @@ const Add = () => {
                                         </div>
                                         {currentValueType == 'FixedValue' && (
                                             <div>
-                                                <Field id="value" name="value" label={t('value')} component={FTextField} />
+                                                <Field id="value" name="value" label={t('value')} component={FTextField} isNumber={true} />
                                             </div>
                                         )}
                                         {currentValueType == 'Formula' && (

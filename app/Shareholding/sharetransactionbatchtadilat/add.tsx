@@ -180,19 +180,19 @@ const Add = () => {
                                                             </div>
 
                                                             <div>
-                                                                <Field id="price" name="price" label="قیمت" component={FTextField} />
+                                                                <Field id="price" name="price" label="قیمت" component={FTextField} isNumber={true} />
                                                             </div>
                                                             <div>
-                                                                <Field id="volume" name="volume" label="حجم" component={FTextField} />
+                                                                <Field id="volume" name="volume" label="حجم" component={FTextField} isNumber={true} />
                                                             </div>
                                                             <div>
-                                                                <Field id="grossCost" name="grossCost" label="بهای ناخالص" component={FTextField} />
+                                                                <Field id="grossCost" name="grossCost" label="بهای ناخالص" component={FTextField} isNumber={true} />
                                                             </div>
                                                             <div>
-                                                                <Field id="primeCost" name="primeCost" label="بهای تمام شده" component={FTextField} />
+                                                                <Field id="primeCost" name="primeCost" label="بهای تمام شده" component={FTextField} isNumber={true} />
                                                             </div>
                                                             <div>
-                                                                <Field id="netSellCost" name="netSellCost" label="بهای خالص فروش" component={FTextField} />
+                                                                <Field id="netSellCost" name="netSellCost" label="بهای خالص فروش" component={FTextField} isNumber={true} />
                                                             </div>
                                                         </div>
                                                     </AnimateHeight>

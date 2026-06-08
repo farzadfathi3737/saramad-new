@@ -806,7 +806,7 @@ const Session = () => {
                                                                     >
                                                                         <Form>
                                                                             <div className="p-6">
-                                                                                <Field id="amount" name="amount" label="مقدار اصلاحی" component={FTextField} />
+                                                                                <Field id="amount" name="amount" label="مقدار اصلاحی" component={FTextField} isNumber={true} />
                                                                             </div>
                                                                             <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
                                                                                 <button type="button" onClick={() => setIsPrimeCostAddModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
@@ -895,7 +895,7 @@ const Session = () => {
                                                                     >
                                                                         <Form>
                                                                             <div className="p-6">
-                                                                                <Field id="amount" name="amount" label="مقدار اصلاحی" component={FTextField} />
+                                                                                <Field id="amount" name="amount" label="مقدار اصلاحی" component={FTextField} isNumber={true} />
                                                                             </div>
                                                                             <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
                                                                                 <button type="button" onClick={() => setIsPrimeCostSubModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">

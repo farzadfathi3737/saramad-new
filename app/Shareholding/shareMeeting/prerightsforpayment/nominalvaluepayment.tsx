@@ -111,7 +111,7 @@ const Nominalvaluepayment = () => {
                                             <Field id="date" name="date" label="تاریخ" component={FDateField} />
                                         </div>
                                         <div>
-                                            <Field id="count" name="count" label="مبلغ" component={FTextField} />
+                                            <Field id="count" name="count" label="مبلغ" component={FTextField} isNumber={true} />
                                         </div>
                                     </div>
                                     <div className="w-full"></div>

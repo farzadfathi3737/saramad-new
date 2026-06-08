@@ -285,13 +285,13 @@ const Optioncontract = () => {
                                                             </div>
                                                             <div className="grid w-full grid-cols-3 gap-2">
                                                                 <div>
-                                                                    <Field id="strikePrice" name="strikePrice" label="تعداد مانده اختبار" component={FTextField} disabled />
+                                                                    <Field id="strikePrice" name="strikePrice" label="تعداد مانده اختبار" component={FTextField} isNumber={true} disabled />
                                                                 </div>
                                                                 <div>
-                                                                    <Field id="strikePrice" name="strikePrice" label="قیمت اعمال" component={FTextField} disabled />
+                                                                    <Field id="strikePrice" name="strikePrice" label="قیمت اعمال" component={FTextField} isNumber={true} disabled />
                                                                 </div>
                                                                 <div>
-                                                                    <Field id="contractSize" name="contractSize" label="اندازه قرارداد" component={FTextField} disabled />
+                                                                    <Field id="contractSize" name="contractSize" label="اندازه قرارداد" component={FTextField} isNumber={true} disabled />
                                                                 </div>
                                                             </div>
                                                             <hr />

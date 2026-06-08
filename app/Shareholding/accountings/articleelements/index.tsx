@@ -250,7 +250,7 @@ const ArticleElements = () => {
                                         >
                                             <Form>
                                                 <div className="p-6">
-                                                    <Field id="value" name="value" label="مقدار" component={FTextField} />
+                                                    <Field id="value" name="value" label="مقدار" component={FTextField} isNumber={true} />
                                                 </div>
                                                 <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
                                                     <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">

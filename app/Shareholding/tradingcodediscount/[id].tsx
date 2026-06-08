@@ -141,7 +141,7 @@ const Edit = ({ id, tradingCodeId, tradingCode }: { id: string, tradingCodeId: s
                                                 />
                                             </div>
                                             <div className="w-full">
-                                                <Field id="percentage" name="percentage" label={t('percentage')} component={FTextField} />
+                                                <Field id="percentage" name="percentage" label={t('percentage')} component={FTextField} isNumber={true} />
                                             </div>
                                         </div>
                                         <div className="w-full"></div>

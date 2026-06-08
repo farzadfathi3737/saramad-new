@@ -92,7 +92,7 @@ const SubmitDeposit = ({ CashDividendId, tradingCode, meetingId }: { CashDividen
                                             <Field id="date" name="date" label="تاریخ" component={FDateField} />
                                         </div>
                                         <div>
-                                            <Field id="depositAmount" name="depositAmount" label="مبلغ" component={FTextField} />
+                                            <Field id="depositAmount" name="depositAmount" label="مبلغ" component={FTextField} isNumber={true} />
                                         </div>
                                     </div>
                                     <div className="w-full"></div>

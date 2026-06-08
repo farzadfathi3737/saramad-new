@@ -127,10 +127,10 @@ const Edit = ({ id, shareId, name }: { id: string, shareId: string, name: string
                                     <div className="grid w-full grid-cols-1 gap-2 px-10 pt-5 sm:grid-cols-2">
                                         <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                             <div>
-                                                <Field id="newInitialBalance" name="newInitialBalance" label="مانده ابتدای دوره" component={FTextField} />
+                                                <Field id="newInitialBalance" name="newInitialBalance" label="مانده ابتدای دوره" component={FTextField} isNumber={true} />
                                             </div>
                                             <div>
-                                                <Field id="newTotalPrimeCost" name="newTotalPrimeCost" label="بهای تمام شده" component={FTextField} />
+                                                <Field id="newTotalPrimeCost" name="newTotalPrimeCost" label="بهای تمام شده" component={FTextField} isNumber={true} />
                                             </div>
                                         </div>
                                         <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">

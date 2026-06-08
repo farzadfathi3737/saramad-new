@@ -135,7 +135,7 @@ const Add = () => {
                                     <div className="w-full"></div>
                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                         <div>
-                                            <Field id="amount" name="amount" label="تعداد انتقالی" component={FTextField} />
+                                            <Field id="amount" name="amount" label="تعداد انتقالی" component={FTextField} isNumber={true} />
                                         </div>
                                     </div>
                                     <div className="w-full"></div>

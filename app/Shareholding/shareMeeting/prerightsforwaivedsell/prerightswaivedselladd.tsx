@@ -94,10 +94,10 @@ const SubmitDeposit = ({ TradingCodeId, TradingCode, MeetingId }: { TradingCodeI
                                             <Field id="date" name="date" label="تاریخ" component={FDateField} />
                                         </div>
                                         <div>
-                                            <Field id="count" name="count" label="تعداد" component={FTextField} />
+                                            <Field id="count" name="count" label="تعداد" component={FTextField} isNumber={true} />
                                         </div>
                                         <div>
-                                            <Field id="grossCost" name="grossCost" label="خالص فروش" component={FTextField} />
+                                            <Field id="grossCost" name="grossCost" label="خالص فروش" component={FTextField} isNumber={true} />
                                         </div>
                                     </div>
                                 </div>

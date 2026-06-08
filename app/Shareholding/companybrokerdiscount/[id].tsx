@@ -119,7 +119,7 @@ const Edit = ({ id, brokerName }: { id: string, brokerName: string }) => {
                                             <div className="form-input bg-white-light pt-3 !text-gray-600">{data2.broker}</div>
                                         </div> */}
                                             <div>
-                                                <Field id="percentage" name="percentage" label={t('percentage')} component={FTextField} />
+                                                <Field id="percentage" name="percentage" label={t('percentage')} component={FTextField} isNumber={true} />
                                             </div>
                                             <div>
                                                 <Field id="validFrom" name="validFrom" label={t('validFrom')} component={FDateField} />
