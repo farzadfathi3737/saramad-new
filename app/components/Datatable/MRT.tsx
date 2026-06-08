@@ -312,7 +312,6 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                 }
             });
         }
-        console.log(filteData);
 
         const fetchUrl = `${model.list?.url}/export/excel`;
 
@@ -571,7 +570,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                 let _groupColumns: MRT_GroupColumnDef<any | { header: string; columns: (MRT_ColumnDef<any> | undefined | unknown)[][] }>[] = [];
 
                 groupColumn.map((item) => {
-                    console.log(item);
+
                     _groupColumns = [
                         ..._groupColumns,
                         {

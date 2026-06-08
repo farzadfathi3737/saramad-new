@@ -133,10 +133,10 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
                 const foundOption = options.find((x: IOptionType) => x.value == field.value);
                 setSelectedValue(foundOption);
             } else {
-                // if (isDefaultValue) {
-                //     setSelectedValue(options[0]);
-                //     // form.setFieldValue(field.name, options[0]?.value);
-                // }
+                if (isDefaultValue) {
+                    setSelectedValue(options[0]);
+                    form.setFieldValue(field.name, options[0]?.value);
+                }
             }
         } else {
             setSelectedValue(undefined);
@@ -182,7 +182,7 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
                         menuPosition="absolute"
                         noOptionsMessage={() => t('noOptions')}
                     />
-                    {field.value && (
+                    {field.value && isSearchable && (
                         <div className="absolute bottom-0 left-8 p-3 !text-gray-600 flex items-center h-[48px]" onClick={clear}>
 
                             <i className="fa-duotone fa-solid fa-xmark text-gray-700 text-lg"></i>

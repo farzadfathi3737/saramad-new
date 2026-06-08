@@ -142,6 +142,8 @@
   "investmentBenefitSubCode": "حساب معین سود سرمایه گذاری",
   "shareBenefitMainCode": "حساب کل سود سهام دریافتنی",
   "shareBenefitSubCode": "حساب معین سود سهام دریافتنی",
+  "shareBenefitIncomeMainCode": "حساب کل درآمد حاصل از سود سهام",
+  "shareBenefitIncomeSubCode": "حساب معین درآمد حاصل از سود سهام",
   "primeCostMainCode": "حساب کل قیمت تمام شده",
   "primeCostSubCode": "حساب معین قیمت تمام شده",
   "sellIncomeMainCode": "حساب کل فروش و درآمد های عملیاتی",

@@ -67,6 +67,7 @@ const StackedCardex = ({ id, name }: { id?: string, name?: string }) => {
                                 'decPrimeCostSum',
                                 'costBenefit',
                                 'volume',
+                                'balance', 'balancePrice', 'balancePrimeCost'
                             ]}
                             addFooterSumFildes={[
                                 'incAveragePrice',
@@ -80,6 +81,7 @@ const StackedCardex = ({ id, name }: { id?: string, name?: string }) => {
                                 'decPrimeCostSum',
                                 'costBenefit',
                                 'volume',
+                                'balance', 'balancePrice', 'balancePrimeCost'
                             ]}
                             groupColumn={[
                                 {
@@ -110,15 +112,17 @@ const StackedCardex = ({ id, name }: { id?: string, name?: string }) => {
                                     groupHeaderClassName: 'columnColorStyle',
                                     footerClassName: 'columnColorStyle',
                                 },
+                                {
+                                    header: 'مانده',
+                                    columnsName: ['balance', 'balancePrice', 'balancePrimeCost'],
+                                },
                             ]}
                             staticParams={
                                 shareId !== '' ?
-                                    [
-                                        //     { name: 'FiscalYearId', value: fiscalYearId },
-                                        // { name: 'CompanyId', value: companyId },
-                                        { name: 'ShareId', value: shareId }]
+                                    [{ name: 'ShareId', value: shareId }]
                                     :
-                                    []
+                                    [{ name: 'FiscalYearId', value: fiscalYearId },
+                                    { name: 'CompanyId', value: companyId },]
                             }
                             labaleNameList={[
                                 { label: 'ShareId', value: 'share' },

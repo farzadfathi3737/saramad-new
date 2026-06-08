@@ -313,6 +313,14 @@ const Add = ({ id }: { id: string }) => {
                                                                     <Field id="shareBenefitSubCode" name="shareBenefitSubCode" label={t('shareBenefitSubCode')} component={FTextField} />
                                                                 </div>
                                                             </div>
+                                                            <div className="grid w-full grid-cols-1 gap-2 px-10 pt-1 sm:grid-cols-2">
+                                                                <div className="w-full">
+                                                                    <Field id="shareBenefitIncomeMainCode" name="shareBenefitIncomeMainCode" label={t('shareBenefitIncomeMainCode')} component={FTextField} />
+                                                                </div>
+                                                                <div className="w-full">
+                                                                    <Field id="shareBenefitIncomeSubCode" name="shareBenefitIncomeSubCode" label={t('shareBenefitIncomeSubCode')} component={FTextField} />
+                                                                </div>
+                                                            </div>
                                                         </AnimateHeight>
                                                     </div>
                                                 </div>

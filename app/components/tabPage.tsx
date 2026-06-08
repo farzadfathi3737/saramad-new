@@ -19,6 +19,8 @@ import FiscalYear from "../Shareholding/fiscalyear";
 import FiscalYearAdd from "../Shareholding/fiscalyear/add";
 import FiscalYearEdit from "../Shareholding/fiscalyear/[id]";
 
+import FiscalYearTransfer from "../Shareholding/fiscalYearTransfer";
+
 import CompanyTradingCode from "../Shareholding/companytradingcode";
 import CompanyTradingCodeAdd from "../Shareholding/companytradingcode/add";
 import CompanyTradingCodeEdit from "../Shareholding/companytradingcode/[id]";
@@ -471,6 +473,12 @@ export default function TabsWithRouting() {
                                     {tab.key === "add" && <FiscalYearAdd />}
                                     {tab.key === "edit" && <FiscalYearEdit id={getParamData('id', tab)} />}
                                     {tab.key === "fiscalyear" && <FiscalYear />}
+                                </>
+                            )}
+
+                            {tab.name === "fiscalYearTransfer" && (
+                                <>
+                                    {tab.key === "fiscalYearTransfer" && <FiscalYearTransfer />}
                                 </>
                             )}
 
