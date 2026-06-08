@@ -105,23 +105,22 @@ interface IShareTransactionPrimeCost {
     amount: number
 }
 
-type Props = {
-    sessionid?: string;
-};
-
-const Session = ({ sessionid }: Props) => {
+const Session = () => {
     const { t } = useLanguage();
     const [model, setModel] = useState<IDataModel>();
     const [modelS, setModelS] = useState<IDataModel>();
     const [modelTC, setModelTC] = useState<ITC>();
-    const [data, setData] = useState<ICompany | undefined>();
-    const [dataSession, setDataSession] = useState<ISessionlist | undefined>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [rowId, setRowId] = useState<string>();
+    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+    const [isPrimeCostAdding, setIsPrimeCostAdding] = useState<boolean>(false);
+    const [isPrimeCostSubbing, setIsPrimeCostSubbing] = useState<boolean>(false);
+    const [isDiscountReapplying, setIsDiscountReapplying] = useState<boolean>(false);
+    const [isDiscountRemoving, setIsDiscountRemoving] = useState<boolean>(false);
+    const [isCommissionReapplying, setIsCommissionReapplying] = useState<boolean>(false);
+    const [isCommissionEditing, setIsCommissionEditing] = useState<boolean>(false);
+    const [isTicketNumberEditing, setIsTicketNumberEditing] = useState<boolean>(false);
+    const [isSubTypeEditing, setIsSubTypeEditing] = useState<boolean>(false);
     const [selectedItem, setSelectedItem] = useState<ISession>();
-    const [sessionId, setSessionId] = useState<string>(sessionid!);
     const appConfig = useSelector((state: IRootState) => state.appConfig);
-    const [modelData, setModelData] = useState<any>();
     const [companyId, setCompanyId] = useState('');
     const [fiscalYearId, setFiscalYearId] = useState('');
     const [selected, setSelected] = useState<number>(0);
@@ -218,10 +217,8 @@ const Session = ({ sessionid }: Props) => {
             //setPage(page + 1);
             //if (result.items.length === 0) setHasMore(false);
             //setDataSession(result);
-            setIsLoading(false);
         } else {
             setItems([]);
-            setIsLoading(false);
         }
     };
 
@@ -231,7 +228,7 @@ const Session = ({ sessionid }: Props) => {
     };
 
     const deleteSharetransactionbatch = async (id: string) => {
-        setIsLoading(true);
+        setIsDeleting(true);
 
         const res = await fetch(modelS?.delete?.url.replace('{id}', id) as string, {
             method: 'delete',
@@ -248,23 +245,7 @@ const Session = ({ sessionid }: Props) => {
             const responce = await res.text();
             ColoredToast('danger', responce);
         }
-    };
-
-    const fetchData = async (id: string) => {
-        setIsLoading(true);
-
-        const res = await fetch(`${modelS?.read?.url.replace('{id}', id)}`);
-
-        if (res.ok) {
-            const result: ICompany = await res?.json();
-            setData(result);
-            console.log(result);
-            setSessionId(result.id);
-            setIsLoading(false);
-        } else {
-            setData(undefined);
-            setIsLoading(false);
-        }
+        setIsDeleting(false);
     };
 
     const handlerGetTransactioncommission = async (id: string) => {
@@ -277,16 +258,12 @@ const Session = ({ sessionid }: Props) => {
 
             setModelTC(result);
             setIsHandlyCommissionModalOpen(true);
-            setSessionId(result.id);
-            setIsLoading(false);
-        } else {
-            setData(undefined);
-            setIsLoading(false);
         }
 
     }
 
     const handlerShareTransactionPrimeCostAdd = async (data: IShareTransactionPrimeCost) => {
+        setIsPrimeCostAdding(true);
         const _model = await getEntityModel('sharetransactionprimecostadd');
 
         const res = await fetch(_model?.register?.url, {
@@ -304,9 +281,11 @@ const Session = ({ sessionid }: Props) => {
             const responce = await res.text();
             ColoredToast('danger', responce);
         }
+        setIsPrimeCostAdding(false);
     }
 
     const handlerShareTransactionPrimeCostSub = async (data: IShareTransactionPrimeCost) => {
+        setIsPrimeCostSubbing(true);
         const _model = await getEntityModel('sharetransactionprimecostsub');
 
         const res = await fetch(_model?.register?.url, {
@@ -324,9 +303,11 @@ const Session = ({ sessionid }: Props) => {
             const responce = await res.text();
             ColoredToast('danger', responce);
         }
+        setIsPrimeCostSubbing(false);
     }
 
     const handlerShareTransactionDiscountReapplyOn = async (id: string) => {
+        setIsDiscountReapplying(true);
         const _model = await getEntityModel('transactioncommissiondiscountreapplyon');
 
         const res = await fetch(_model?.default?.url.replace('{transactionId}', id) as string, {
@@ -343,9 +324,11 @@ const Session = ({ sessionid }: Props) => {
             const responce = await res.text();
             ColoredToast('danger', responce);
         }
+        setIsDiscountReapplying(false);
     }
 
     const handlerShareTransactionDiscountRemoveOn = async (id: string) => {
+        setIsDiscountRemoving(true);
         const _model = await getEntityModel('transactioncommissiondiscountremoveon');
 
         const res = await fetch(_model?.default?.url.replace('{transactionId}', id) as string, {
@@ -362,9 +345,11 @@ const Session = ({ sessionid }: Props) => {
             const responce = await res.text();
             ColoredToast('danger', responce);
         }
+        setIsDiscountRemoving(false);
     }
 
     const handlerShareTransactionCommissionReapplyOn = async (id: string) => {
+        setIsCommissionReapplying(true);
         const _model = await getEntityModel('transactioncommissionreapplyon');
 
         const res = await fetch(_model?.default?.url.replace('{transactionId}', id) as string, {
@@ -381,10 +366,11 @@ const Session = ({ sessionid }: Props) => {
             const responce = await res.text();
             ColoredToast('danger', responce);
         }
+        setIsCommissionReapplying(false);
     }
 
     const handlerShareTransactionCommissionEditClick = async (data: ITC, id: string) => {
-        setIsLoading(true);
+        setIsCommissionEditing(true);
 
         const _model = await getEntityModel('transactioncommission');
 
@@ -399,15 +385,15 @@ const Session = ({ sessionid }: Props) => {
         if (res.ok) {
             ColoredToast('success', ' ویرایش کارمزدها با موفقیت انجام گردید گردید');
             setIsHandlyCommissionModalOpen(false)
-            setIsLoading(false);
         } else {
             const responce = await res.text();
             ColoredToast('danger', responce);
         }
+        setIsCommissionEditing(false);
     };
 
     const handlerShareTransactionTicketNumberEditClick = async (data: ITicket, id: string) => {
-        setIsLoading(true);
+        setIsTicketNumberEditing(true);
 
         const _model = await getEntityModel('sharetransactionticketnumber');
 
@@ -422,15 +408,15 @@ const Session = ({ sessionid }: Props) => {
         if (res.ok) {
             ColoredToast('success', ' ویرایش اعلامیه با موفقیت انجام گردید گردید');
             setIsTicketNumberModalOpen(false)
-            setIsLoading(false);
         } else {
             const responce = await res.text();
             ColoredToast('danger', responce);
         }
+        setIsTicketNumberEditing(false);
     };
 
     const handlerShareTransactionSubTypeEditClick = async (data: ISubType, id: string) => {
-        setIsLoading(true);
+        setIsSubTypeEditing(true);
 
         const _model = await getEntityModel('sharetransactionsubtype');
 
@@ -445,16 +431,15 @@ const Session = ({ sessionid }: Props) => {
         if (res.ok) {
             ColoredToast('success', ' ویرایش نوع فرعی با موفقیت انجام گردید گردید');
             setIsSubTypeModalOpen(false)
-            setIsLoading(false);
         } else {
             const responce = await res.text();
             ColoredToast('danger', responce);
         }
+        setIsSubTypeEditing(false);
     };
 
     return (
         <>
-            <link rel="stylesheet" href="/assets/css/style2.css" />
             <div className="h-auto flex flex-col">
                 <div className="panel h-full w-full px-0">
                     <div className="flex px-0 py-0 w-full">
@@ -613,116 +598,141 @@ const Session = ({ sessionid }: Props) => {
                                                     //     </Tooltip>
                                                     // )}
                                                     detailPanel={(row: any) => {
-                                                        //console.log(row.original);
                                                         return (
-                                                            <div className="h-[134px]">
-                                                                <div className="flex p-5 absolute">
-                                                                    <div className="ml-5 flex flex-col rounded-md border-2 p-2">
-                                                                        <div className="py-2 text-center">اصلاح بها</div>
-                                                                        <div className="flex">
+                                                            <div className="min-h-[130px] bg-white border-t border-gray-200 p-4">
+                                                                <div className="flex flex-wrap gap-3 justify-start">
+                                                                    {/* اصلاح بها */}
+                                                                    <div className="w-[230px] flex flex-col rounded-lg border border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                                                                        <div className="bg-gradient-to-r from-slate-600 to-slate-700 px-3 py-2 text-center border-b border-slate-200">
+                                                                            <h3 className="text-white font-semibold text-[11px] flex items-center justify-center gap-1.5">
+                                                                                <i className="fa-duotone fa-solid fa-coins text-sm" />
+                                                                                اصلاح بها
+                                                                            </h3>
+                                                                        </div>
+                                                                        <div className="flex gap-1.5 p-2">
                                                                             <button
                                                                                 type="button"
-                                                                                className="btn btn-success ml-2 w-28 px-0"
+                                                                                className="flex-1 flex items-center justify-center gap-1 px-2 h-8 bg-gradient-to-b from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-md text-[11px] font-medium shadow-sm hover:shadow transition-all duration-200 whitespace-nowrap"
                                                                                 onClick={() => {
                                                                                     setSelectedRow(row.row.original);
                                                                                     setIsPrimeCostAddModalOpen(true);
                                                                                 }}
                                                                             >
-                                                                                <i className="fa-duotone fa-solid fa-plus ml-2" />
-                                                                                افرایش
+                                                                                <i className="fa-duotone fa-solid fa-plus text-xs" />
+                                                                                <span>افزایش</span>
                                                                             </button>
                                                                             <button
                                                                                 type="button"
-                                                                                className="btn btn-danger w-28 px-0"
+                                                                                className="flex-1 flex items-center justify-center gap-1 px-2 h-8 bg-gradient-to-b from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-md text-[11px] font-medium shadow-sm hover:shadow transition-all duration-200 whitespace-nowrap"
                                                                                 onClick={() => {
                                                                                     setSelectedRow(row.row.original);
                                                                                     setIsPrimeCostSubModalOpen(true);
                                                                                 }}
                                                                             >
-                                                                                <i className="fa-duotone fa-solid fa-minus ml-2" />
-                                                                                کاهش
+                                                                                <i className="fa-duotone fa-solid fa-minus text-xs" />
+                                                                                <span>کاهش</span>
                                                                             </button>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="ml-5 flex flex-col rounded-md border-2 p-2">
-                                                                        <div className="py-2 text-center">تخفیف کارمزد</div>
-                                                                        <div className="flex">
+
+                                                                    {/* تخفیف کارمزد */}
+                                                                    <div className="w-[230px] flex flex-col rounded-lg border border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                                                                        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-3 py-2 text-center border-b border-slate-200">
+                                                                            <h3 className="text-white font-semibold text-[11px] flex items-center justify-center gap-1.5">
+                                                                                <i className="fa-duotone fa-solid fa-percent text-sm" />
+                                                                                تخفیف کارمزد
+                                                                            </h3>
+                                                                        </div>
+                                                                        <div className="flex gap-1.5 p-2">
                                                                             <button
                                                                                 type="button"
-                                                                                className="btn btn-success ml-2 w-36 px-0"
+                                                                                className="flex-1 flex items-center justify-center gap-1 px-2 h-8 bg-gradient-to-b from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-md text-[11px] font-medium shadow-sm hover:shadow transition-all duration-200 whitespace-nowrap"
                                                                                 onClick={() => {
                                                                                     setSelectedRow(row.row.original);
                                                                                     setIsReapplyAddModalOpen(true);
                                                                                 }}
                                                                             >
-                                                                                <i className="fa-duotone fa-solid fa-plus ml-2" />
-                                                                                اعمال تخفیف
+                                                                                <i className="fa-duotone fa-solid fa-badge-percent text-xs" />
+                                                                                <span>اعمال</span>
                                                                             </button>
                                                                             <button
                                                                                 type="button"
-                                                                                className="btn btn-danger w-36 px-0"
+                                                                                className="flex-1 flex items-center justify-center gap-1 px-2 h-8 bg-gradient-to-b from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-md text-[11px] font-medium shadow-sm hover:shadow transition-all duration-200 whitespace-nowrap"
                                                                                 onClick={() => {
                                                                                     setSelectedRow(row.row.original);
                                                                                     setIsReapplyDelModalOpen(true);
                                                                                 }}
                                                                             >
-                                                                                <i className="fa-duotone fa-solid fa-trash text-xl" />
-                                                                                حذف تخفیف
+                                                                                <i className="fa-duotone fa-solid fa-trash text-xs" />
+                                                                                <span>حذف</span>
                                                                             </button>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="ml-5 flex flex-col rounded-md border-2 p-2">
-                                                                        <div className="py-2 text-center">ویرایش کارمزد ها</div>
-                                                                        <div className="flex">
+
+                                                                    {/* ویرایش کارمزدها */}
+                                                                    <div className="w-[290px] flex flex-col rounded-lg border border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                                                                        <div className="bg-gradient-to-r from-amber-600 to-amber-700 px-3 py-2 text-center border-b border-slate-200">
+                                                                            <h3 className="text-white font-semibold text-[11px] flex items-center justify-center gap-1.5">
+                                                                                <i className="fa-duotone fa-solid fa-pen-to-square text-sm" />
+                                                                                ویرایش کارمزدها
+                                                                            </h3>
+                                                                        </div>
+                                                                        <div className="flex gap-1.5 p-2">
                                                                             <button
                                                                                 type="button"
-                                                                                className="btn btn-success ml-2 w-36 px-0"
+                                                                                className="flex-1 flex items-center justify-center gap-1 px-1.5 h-8 bg-gradient-to-b from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-md text-[10px] font-medium shadow-sm hover:shadow transition-all duration-200 whitespace-nowrap"
                                                                                 onClick={() => {
                                                                                     setSelectedRow(row.row.original);
                                                                                     setIsAutoCommissionModalOpen(true);
                                                                                 }}
                                                                             >
-                                                                                {/* <IconPlus className='ml-2'/> */}
-                                                                                محاسبه اتوماتیک
+                                                                                <i className="fa-duotone fa-solid fa-wand-magic-sparkles text-xs" />
+                                                                                <span>محاسبه اتوماتیک</span>
                                                                             </button>
                                                                             <button
                                                                                 type="button"
-                                                                                className="btn btn-danger w-36 px-0"
+                                                                                className="flex-1 flex items-center justify-center gap-1 px-1.5 h-8 bg-gradient-to-b from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white rounded-md text-[10px] font-medium shadow-sm hover:shadow transition-all duration-200 whitespace-nowrap"
                                                                                 onClick={() => {
                                                                                     setSelectedRow(row.row.original);
                                                                                     handlerGetTransactioncommission(row.row.original?.id ?? '')
-                                                                                    //setIsHandlyCommissionModalOpen(true);
                                                                                 }}
                                                                             >
-                                                                                {/* <IconTrash className='ml-2'/> */}
-                                                                                ویرایش دستی
+                                                                                <i className="fa-duotone fa-solid fa-hand-pointer text-xs" />
+                                                                                <span>ویرایش دستی</span>
                                                                             </button>
                                                                         </div>
                                                                     </div>
-                                                                    <div className="ml-5 flex flex-col rounded-md border-2 p-2">
-                                                                        <div className="py-2 text-center">سایر</div>
-                                                                        <div className="flex">
+
+                                                                    {/* سایر */}
+                                                                    <div className="w-[280px] flex flex-col rounded-lg border border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                                                                        <div className="bg-gradient-to-r from-teal-600 to-teal-700 px-3 py-2 text-center border-b border-slate-200">
+                                                                            <h3 className="text-white font-semibold text-[11px] flex items-center justify-center gap-1.5">
+                                                                                <i className="fa-duotone fa-solid fa-ellipsis text-sm" />
+                                                                                سایر عملیات
+                                                                            </h3>
+                                                                        </div>
+                                                                        <div className="flex gap-1.5 p-2">
                                                                             <button
                                                                                 type="button"
-                                                                                className="btn btn-warning ml-2 w-36 px-0"
+                                                                                className="flex-1 flex items-center justify-center gap-1 px-1.5 h-8 bg-gradient-to-b from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-md text-[10px] font-medium shadow-sm hover:shadow transition-all duration-200 whitespace-nowrap"
                                                                                 onClick={() => {
                                                                                     setSelectedRow(row.row.original);
                                                                                     setIsTicketNumberModalOpen(true);
                                                                                 }}
                                                                             >
-                                                                                {/* <IconPlus className='ml-2'/> */}
-                                                                                ویرایش اعلامیه
+                                                                                <i className="fa-duotone fa-solid fa-file-lines text-xs" />
+                                                                                <span>ویرایش اعلامیه</span>
                                                                             </button>
                                                                             <button
                                                                                 type="button"
-                                                                                className="btn btn-primary w-36 px-0"
+                                                                                className="flex-1 flex items-center justify-center gap-1 px-1.5 h-8 bg-gradient-to-b from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white rounded-md text-[10px] font-medium shadow-sm hover:shadow transition-all duration-200 whitespace-nowrap"
                                                                                 onClick={() => {
                                                                                     setSelectedRow(row.row.original);
                                                                                     setIsSubTypeModalOpen(true);
                                                                                 }}
                                                                             >
-                                                                                {/* <IconTrash className='ml-2'/> */}
-                                                                                ویرایش نوع فرعی
+                                                                                <i className="fa-duotone fa-solid fa-tags text-xs" />
+                                                                                <span>ویرایش نوع فرعی</span>
                                                                             </button>
                                                                         </div>
                                                                     </div>
@@ -759,27 +769,22 @@ const Session = ({ sessionid }: Props) => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-lg bg-white p-6 shadow-lg">
-                                                                    <div className="flex items-center justify-between mb-4">
-                                                                        <div className="flex text-lg font-bold">
-                                                                            <div className="flex pl-2 text-success">
-                                                                                <i className="fa-duotone fa-solid fa-plus ml-2" />
-                                                                                افزایش
-                                                                            </div>
-                                                                            بها
-                                                                        </div>
-                                                                        <div className="flex w-full flex-col items-end justify-items-end pl-5">
-                                                                            <div className="flex items-center justify-items-center">
-                                                                                <div className={`flex pl-2 text-lg font-bold ${selectedRow?.calculationTypeName == 'خرید' ? 'text-success' : 'text-danger'}`}>
-                                                                                    {selectedRow?.calculationTypeName}
+                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                    <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-4">
+                                                                        <div className="flex items-center justify-between">
+                                                                            <div className="flex items-center gap-3">
+                                                                                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                                                                    <i className="fa-duotone fa-solid fa-plus text-white text-lg" />
                                                                                 </div>
-                                                                                {selectedRow?.stockSymbol}
+                                                                                <div>
+                                                                                    <h3 className="text-white font-bold text-lg">افزایش بها</h3>
+                                                                                    <p className="text-white/80 text-sm">{selectedRow?.stockSymbol} - {selectedRow?.calculationTypeName}</p>
+                                                                                </div>
                                                                             </div>
+                                                                            <button type="button" onClick={() => setIsPrimeCostAddModalOpen(false)} className="text-white/80 hover:text-white transition-colors">
+                                                                                <i className="fa-duotone fa-solid fa-xmark text-2xl" />
+                                                                            </button>
                                                                         </div>
-
-                                                                        <button type="button" onClick={() => setIsPrimeCostAddModalOpen(false)} className="text-gray-500 hover:text-gray-700">
-                                                                            <i className="fa-duotone fa-solid fa-xmark text-xl" />
-                                                                        </button>
                                                                     </div>                                                                    <Formik
                                                                         initialValues={{
                                                                             transactionId: selectedRow?.id ?? '',
@@ -798,19 +803,26 @@ const Session = ({ sessionid }: Props) => {
                                                                         }}
                                                                     >
                                                                         <Form>
-                                                                            <div className="p-5 text-xl">
+                                                                            <div className="p-6">
                                                                                 <Field id="amount" name="amount" label="مقدار اصلاحی" component={FTextField} />
                                                                             </div>
-                                                                            <div className="p-5">
-                                                                                <div className="mt-8 flex items-center justify-end">
-                                                                                    <button type="button" onClick={() => setIsPrimeCostAddModalOpen(false)} className="btn btn-outline-danger">
-                                                                                        انصراف
-                                                                                    </button>
-                                                                                    <button type="submit" className="btn btn-success flex w-32 ltr:ml-4 rtl:mr-4">
-                                                                                        <i className="fa-duotone fa-solid fa-plus ml-2" />
-                                                                                        افزایش
-                                                                                    </button>
-                                                                                </div>
+                                                                            <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
+                                                                                <button type="button" onClick={() => setIsPrimeCostAddModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                                                    انصراف
+                                                                                </button>
+                                                                                <button type="submit" disabled={isPrimeCostAdding} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium hover:from-emerald-600 hover:to-emerald-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                                                                    {isPrimeCostAdding ? (
+                                                                                        <>
+                                                                                            <i className="fa-duotone fa-solid fa-spinner fa-spin" />
+                                                                                            در حال پردازش...
+                                                                                        </>
+                                                                                    ) : (
+                                                                                        <>
+                                                                                            <i className="fa-duotone fa-solid fa-plus" />
+                                                                                            افزایش
+                                                                                        </>
+                                                                                    )}
+                                                                                </button>
                                                                             </div>
                                                                         </Form>
                                                                     </Formik>
@@ -846,27 +858,22 @@ const Session = ({ sessionid }: Props) => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-lg bg-white p-6 shadow-lg">
-                                                                    <div className="flex items-center justify-between mb-4">
-                                                                        <div className="flex text-lg font-bold">
-                                                                            <div className="flex pl-2 text-danger">
-                                                                                <i className="fa-duotone fa-solid fa-plus ml-2" />
-                                                                                کاهش
-                                                                            </div>
-                                                                            بها
-                                                                        </div>
-                                                                        <div className="flex w-full flex-col items-end justify-items-end pl-5">
-                                                                            <div className="flex items-center justify-items-center">
-                                                                                <div className={`flex pl-2 text-lg font-bold ${selectedRow?.calculationTypeName == 'خرید' ? 'text-success' : 'text-danger'}`}>
-                                                                                    {selectedRow?.calculationTypeName}
+                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                    <div className="bg-gradient-to-r from-rose-500 to-rose-600 px-6 py-4">
+                                                                        <div className="flex items-center justify-between">
+                                                                            <div className="flex items-center gap-3">
+                                                                                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                                                                    <i className="fa-duotone fa-solid fa-minus text-white text-lg" />
                                                                                 </div>
-                                                                                {selectedRow?.stockSymbol}
+                                                                                <div>
+                                                                                    <h3 className="text-white font-bold text-lg">کاهش بها</h3>
+                                                                                    <p className="text-white/80 text-sm">{selectedRow?.stockSymbol} - {selectedRow?.calculationTypeName}</p>
+                                                                                </div>
                                                                             </div>
+                                                                            <button type="button" onClick={() => setIsPrimeCostSubModalOpen(false)} className="text-white/80 hover:text-white transition-colors">
+                                                                                <i className="fa-duotone fa-solid fa-xmark text-2xl" />
+                                                                            </button>
                                                                         </div>
-
-                                                                        <button type="button" onClick={() => setIsPrimeCostSubModalOpen(false)} className="text-gray-500 hover:text-gray-700">
-                                                                            <i className="fa-duotone fa-solid fa-xmark text-xl" />
-                                                                        </button>
                                                                     </div>                                                                    <Formik
                                                                         initialValues={{
                                                                             transactionId: selectedRow?.id ?? '',
@@ -885,19 +892,26 @@ const Session = ({ sessionid }: Props) => {
                                                                         }}
                                                                     >
                                                                         <Form>
-                                                                            <div className="p-5 text-xl">
+                                                                            <div className="p-6">
                                                                                 <Field id="amount" name="amount" label="مقدار اصلاحی" component={FTextField} />
                                                                             </div>
-                                                                            <div className="p-5">
-                                                                                <div className="mt-8 flex items-center justify-end">
-                                                                                    <button type="button" onClick={() => setIsPrimeCostSubModalOpen(false)} className="btn btn-outline-danger">
-                                                                                        انصراف
-                                                                                    </button>
-                                                                                    <button type="submit" className="btn btn-danger flex w-32 ltr:ml-4 rtl:mr-4">
-                                                                                        <i className="fa-duotone fa-solid fa-plus ml-2" />
-                                                                                        کاهش
-                                                                                    </button>
-                                                                                </div>
+                                                                            <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
+                                                                                <button type="button" onClick={() => setIsPrimeCostSubModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                                                    انصراف
+                                                                                </button>
+                                                                                <button type="submit" disabled={isPrimeCostSubbing} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-rose-500 to-rose-600 text-white font-medium hover:from-rose-600 hover:to-rose-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                                                                    {isPrimeCostSubbing ? (
+                                                                                        <>
+                                                                                            <i className="fa-duotone fa-solid fa-spinner fa-spin" />
+                                                                                            در حال پردازش...
+                                                                                        </>
+                                                                                    ) : (
+                                                                                        <>
+                                                                                            <i className="fa-duotone fa-solid fa-minus" />
+                                                                                            کاهش
+                                                                                        </>
+                                                                                    )}
+                                                                                </button>
                                                                             </div>
                                                                         </Form>
                                                                     </Formik>
@@ -933,34 +947,43 @@ const Session = ({ sessionid }: Props) => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-lg bg-white p-6 shadow-lg">
-                                                                    <div className="flex items-center justify-between mb-4">
-                                                                        <div className="flex text-lg font-bold">
-                                                                            <div className="flex w-40 pl-2 text-success">اعمال تخفیف</div>
-                                                                        </div>
-                                                                        <div className="flex w-full flex-col items-end justify-items-end pl-5">
-                                                                            <div className="flex items-center justify-items-center">
-                                                                                <div className={`flex pl-2 text-lg font-bold ${selectedRow?.calculationTypeName == 'خرید' ? 'text-success' : 'text-danger'}`}>
-                                                                                    {selectedRow?.calculationTypeName}
+                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                    <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+                                                                        <div className="flex items-center justify-between">
+                                                                            <div className="flex items-center gap-3">
+                                                                                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                                                                    <i className="fa-duotone fa-solid fa-tag text-white text-lg" />
                                                                                 </div>
-                                                                                {selectedRow?.stockSymbol}
+                                                                                <div>
+                                                                                    <h3 className="text-white font-bold text-lg">اعمال تخفیف</h3>
+                                                                                    <p className="text-white/80 text-sm">{selectedRow?.stockSymbol} - {selectedRow?.calculationTypeName}</p>
+                                                                                </div>
                                                                             </div>
+                                                                            <button type="button" onClick={() => setIsReapplyAddModalOpen(false)} className="text-white/80 hover:text-white transition-colors">
+                                                                                <i className="fa-duotone fa-solid fa-xmark text-2xl" />
+                                                                            </button>
                                                                         </div>
-
-                                                                        <button type="button" onClick={() => setIsReapplyAddModalOpen(false)} className="text-gray-500 hover:text-gray-700">
-                                                                            <i className="fa-duotone fa-solid fa-xmark text-xl" />
-                                                                        </button>
                                                                     </div>
-                                                                    <div className="p-5 text-center text-2xl">آیا از انجام این عملیات مطمئن هستید؟</div>
-                                                                    <div className="p-5">
-                                                                        <div className="mt-8 flex items-center justify-end">
-                                                                            <button type="button" onClick={() => setIsReapplyAddModalOpen(false)} className="btn btn-outline-danger">
-                                                                                انصراف
-                                                                            </button>
-                                                                            <button type="button" onClick={() => handlerShareTransactionDiscountReapplyOn(selectedRow?.id ?? '')} className="btn btn-success flex w-32 ltr:ml-4 rtl:mr-4">
-                                                                                تایید
-                                                                            </button>
+                                                                    <div className="p-8 text-center">
+                                                                        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                                            <i className="fa-duotone fa-solid fa-question text-blue-600 text-2xl" />
                                                                         </div>
+                                                                        <p className="text-gray-700 text-lg font-medium">آیا از انجام این عملیات مطمئن هستید؟</p>
+                                                                    </div>
+                                                                    <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
+                                                                        <button type="button" onClick={() => setIsReapplyAddModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                                            انصراف
+                                                                        </button>
+                                                                        <button type="button" disabled={isDiscountReapplying} onClick={() => handlerShareTransactionDiscountReapplyOn(selectedRow?.id ?? '')} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                                                                            {isDiscountReapplying ? (
+                                                                                <>
+                                                                                    <i className="fa-duotone fa-solid fa-spinner fa-spin" />
+                                                                                    در حال پردازش...
+                                                                                </>
+                                                                            ) : (
+                                                                                'تایید'
+                                                                            )}
+                                                                        </button>
                                                                     </div>
                                                                 </Dialog.Panel>
                                                             </Transition.Child>
@@ -993,38 +1016,46 @@ const Session = ({ sessionid }: Props) => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-lg bg-white p-6 shadow-lg">
-                                                                    <div className="flex items-center justify-between mb-4">
-                                                                        <div className="flex text-lg font-bold">
-                                                                            <div className="flex w-40 pl-2 text-danger">
-                                                                                <i className="fa-duotone fa-solid fa-trash text-xl" />
-                                                                                حذف تخفیف
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="flex w-full flex-col items-end justify-items-end pl-5">
-                                                                            <div className="flex items-center justify-items-center">
-                                                                                <div className={`flex pl-2 text-lg font-bold ${selectedRow?.calculationTypeName == 'خرید' ? 'text-success' : 'text-danger'}`}>
-                                                                                    {selectedRow?.calculationTypeName}
+                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                    <div className="bg-gradient-to-r from-red-500 to-red-600 px-6 py-4">
+                                                                        <div className="flex items-center justify-between">
+                                                                            <div className="flex items-center gap-3">
+                                                                                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                                                                    <i className="fa-duotone fa-solid fa-trash text-white text-lg" />
                                                                                 </div>
-                                                                                {selectedRow?.stockSymbol}
+                                                                                <div>
+                                                                                    <h3 className="text-white font-bold text-lg">حذف تخفیف</h3>
+                                                                                    <p className="text-white/80 text-sm">{selectedRow?.stockSymbol} - {selectedRow?.calculationTypeName}</p>
+                                                                                </div>
                                                                             </div>
+                                                                            <button type="button" onClick={() => setIsReapplyDelModalOpen(false)} className="text-white/80 hover:text-white transition-colors">
+                                                                                <i className="fa-duotone fa-solid fa-xmark text-2xl" />
+                                                                            </button>
                                                                         </div>
-
-                                                                        <button type="button" onClick={() => setIsReapplyDelModalOpen(false)} className="text-gray-500 hover:text-gray-700">
-                                                                            <i className="fa-duotone fa-solid fa-xmark text-xl" />
-                                                                        </button>
                                                                     </div>
-                                                                    <div className="p-5 text-center text-2xl">آیا از انجام این عملیات مطمئن هستید؟</div>
-                                                                    <div className="p-5">
-                                                                        <div className="mt-8 flex items-center justify-end">
-                                                                            <button type="button" onClick={() => setIsReapplyDelModalOpen(false)} className="btn btn-outline-danger">
-                                                                                انصراف
-                                                                            </button>
-                                                                            <button type="button" onClick={() => handlerShareTransactionDiscountRemoveOn(selectedRow?.id ?? '')} className="btn btn-danger flex w-32 ltr:ml-4 rtl:mr-4">
-                                                                                <i className="fa-duotone fa-solid fa-trash text-xl" />
-                                                                                حذف
-                                                                            </button>
+                                                                    <div className="p-8 text-center">
+                                                                        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                                            <i className="fa-duotone fa-solid fa-exclamation-triangle text-red-600 text-2xl" />
                                                                         </div>
+                                                                        <p className="text-gray-700 text-lg font-medium">آیا از انجام این عملیات مطمئن هستید؟</p>
+                                                                    </div>
+                                                                    <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
+                                                                        <button type="button" onClick={() => setIsReapplyDelModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                                            انصراف
+                                                                        </button>
+                                                                        <button type="button" disabled={isDiscountRemoving} onClick={() => handlerShareTransactionDiscountRemoveOn(selectedRow?.id ?? '')} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-white font-medium hover:from-red-600 hover:to-red-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                                                                            {isDiscountRemoving ? (
+                                                                                <>
+                                                                                    <i className="fa-duotone fa-solid fa-spinner fa-spin" />
+                                                                                    در حال پردازش...
+                                                                                </>
+                                                                            ) : (
+                                                                                <>
+                                                                                    <i className="fa-duotone fa-solid fa-trash" />
+                                                                                    حذف
+                                                                                </>
+                                                                            )}
+                                                                        </button>
                                                                     </div>
                                                                 </Dialog.Panel>
                                                             </Transition.Child>
@@ -1057,38 +1088,43 @@ const Session = ({ sessionid }: Props) => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-lg bg-white p-6 shadow-lg">
-                                                                    <div className="flex items-center justify-between mb-4">
-                                                                        <div className="flex w-10 text-lg font-bold">
-                                                                            <div className="flex w-56 pl-2 text-success">
-                                                                                {/* <IconTrash className="ml-2" /> */}
-                                                                                محاسبه اتوماتیک
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="flex w-full flex-col items-end justify-items-end pl-5">
-                                                                            <div className="flex items-center justify-items-center">
-                                                                                <div className={`flex pl-2 text-lg font-bold ${selectedRow?.calculationTypeName == 'خرید' ? 'text-success' : 'text-danger'}`}>
-                                                                                    {selectedRow?.calculationTypeName}
+                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                    <div className="bg-gradient-to-r from-purple-500 to-purple-600 px-6 py-4">
+                                                                        <div className="flex items-center justify-between">
+                                                                            <div className="flex items-center gap-3">
+                                                                                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                                                                    <i className="fa-duotone fa-solid fa-calculator text-white text-lg" />
                                                                                 </div>
-                                                                                {selectedRow?.stockSymbol}
+                                                                                <div>
+                                                                                    <h3 className="text-white font-bold text-lg">محاسبه اتوماتیک</h3>
+                                                                                    <p className="text-white/80 text-sm">{selectedRow?.stockSymbol} - {selectedRow?.calculationTypeName}</p>
+                                                                                </div>
                                                                             </div>
+                                                                            <button type="button" onClick={() => setIsAutoCommissionModalOpen(false)} className="text-white/80 hover:text-white transition-colors">
+                                                                                <i className="fa-duotone fa-solid fa-xmark text-2xl" />
+                                                                            </button>
                                                                         </div>
-
-                                                                        <button type="button" onClick={() => setIsAutoCommissionModalOpen(false)} className="text-gray-500 hover:text-gray-700">
-                                                                            <i className="fa-duotone fa-solid fa-xmark text-xl" />
-                                                                        </button>
                                                                     </div>
-                                                                    <div className="p-5 text-center text-2xl">آیا از انجام محاسبه اتوماتیک مطمئن هستید؟</div>
-                                                                    <div className="p-5">
-                                                                        <div className="mt-8 flex items-center justify-end">
-                                                                            <button type="button" onClick={() => setIsAutoCommissionModalOpen(false)} className="btn btn-outline-danger">
-                                                                                انصراف
-                                                                            </button>
-                                                                            <button type="button" onClick={() => handlerShareTransactionCommissionReapplyOn(selectedRow?.id ?? '')} className="btn btn-success flex w-32 ltr:ml-4 rtl:mr-4">
-                                                                                {/* <IconTrash className="ml-2" /> */}
-                                                                                محاسبه
-                                                                            </button>
+                                                                    <div className="p-8 text-center">
+                                                                        <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                                            <i className="fa-duotone fa-solid fa-wand-magic-sparkles text-purple-600 text-2xl" />
                                                                         </div>
+                                                                        <p className="text-gray-700 text-lg font-medium">آیا از انجام محاسبه اتوماتیک مطمئن هستید؟</p>
+                                                                    </div>
+                                                                    <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
+                                                                        <button type="button" onClick={() => setIsAutoCommissionModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                                            انصراف
+                                                                        </button>
+                                                                        <button type="button" disabled={isCommissionReapplying} onClick={() => handlerShareTransactionCommissionReapplyOn(selectedRow?.id ?? '')} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white font-medium hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                                                                            {isCommissionReapplying ? (
+                                                                                <>
+                                                                                    <i className="fa-duotone fa-solid fa-spinner fa-spin" />
+                                                                                    در حال محاسبه...
+                                                                                </>
+                                                                            ) : (
+                                                                                'محاسبه'
+                                                                            )}
+                                                                        </button>
                                                                     </div>
                                                                 </Dialog.Panel>
                                                             </Transition.Child>
@@ -1121,23 +1157,24 @@ const Session = ({ sessionid }: Props) => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-lg bg-white p-6 shadow-lg">
-                                                                    <div className="flex items-center justify-between mb-4">
-                                                                        <div className="flex w-56 text-lg font-bold">ویرایش کارمزد ها</div>
-                                                                        <div className="flex w-full flex-col items-end justify-items-end pl-5">
-                                                                            <div className="flex items-center justify-items-center">
-                                                                                <div className={`flex pl-2 text-lg font-bold ${selectedRow?.calculationTypeName == 'خرید' ? 'text-success' : 'text-danger'}`}>
-                                                                                    {selectedRow?.calculationTypeName}
+                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                    <div className="bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-4">
+                                                                        <div className="flex items-center justify-between">
+                                                                            <div className="flex items-center gap-3">
+                                                                                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                                                                    <i className="fa-duotone fa-solid fa-edit text-white text-lg" />
                                                                                 </div>
-                                                                                {selectedRow?.stockSymbol}
+                                                                                <div>
+                                                                                    <h3 className="text-white font-bold text-lg">ویرایش کارمزد ها</h3>
+                                                                                    <p className="text-white/80 text-sm">{selectedRow?.stockSymbol} - {selectedRow?.calculationTypeName}</p>
+                                                                                </div>
                                                                             </div>
+                                                                            <button type="button" onClick={() => setIsHandlyCommissionModalOpen(false)} className="text-white/80 hover:text-white transition-colors">
+                                                                                <i className="fa-duotone fa-solid fa-xmark text-2xl" />
+                                                                            </button>
                                                                         </div>
-
-                                                                        <button type="button" onClick={() => setIsHandlyCommissionModalOpen(false)} className="text-gray-500 hover:text-gray-700">
-                                                                            <i className="fa-duotone fa-solid fa-xmark text-xl" />
-                                                                        </button>
                                                                     </div>
-                                                                    <div className="p-5 text-xl">
+                                                                    <div className="p-6">
                                                                         <Formik
                                                                             initialValues={modelTC!}
                                                                             //validationSchema={{}}
@@ -1182,16 +1219,20 @@ const Session = ({ sessionid }: Props) => {
                                                                                     </div>
                                                                                 </div>
 
-                                                                                <div className="p-5">
-                                                                                    <div className="mt-8 flex items-center justify-end">
-                                                                                        <button type="button" onClick={() => setIsHandlyCommissionModalOpen(false)} className="btn btn-outline-danger">
-                                                                                            انصراف
-                                                                                        </button>
-                                                                                        <button type="submit" className="btn btn-success flex w-32 ltr:ml-4 rtl:mr-4">
-                                                                                            {/* <IconPlus className="ml-2" /> */}
-                                                                                            ثبت
-                                                                                        </button>
-                                                                                    </div>
+                                                                                <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
+                                                                                    <button type="button" onClick={() => setIsHandlyCommissionModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                                                        انصراف
+                                                                                    </button>
+                                                                                    <button type="submit" disabled={isCommissionEditing} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                                                                                        {isCommissionEditing ? (
+                                                                                            <>
+                                                                                                <i className="fa-duotone fa-solid fa-spinner fa-spin" />
+                                                                                                در حال ذخیره...
+                                                                                            </>
+                                                                                        ) : (
+                                                                                            'ثبت'
+                                                                                        )}
+                                                                                    </button>
                                                                                 </div>
                                                                             </Form>
                                                                         </Formik>
@@ -1227,21 +1268,22 @@ const Session = ({ sessionid }: Props) => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-lg bg-white p-6 shadow-lg">
-                                                                    <div className="flex items-center justify-between mb-4">
-                                                                        <div className="flex w-56 text-lg font-bold">ویرایش اعلامیه</div>
-                                                                        <div className="flex w-full flex-col items-end justify-items-end pl-5">
-                                                                            <div className="flex items-center justify-items-center">
-                                                                                <div className={`flex pl-2 text-lg font-bold ${selectedRow?.calculationTypeName == 'خرید' ? 'text-success' : 'text-danger'}`}>
-                                                                                    {selectedRow?.calculationTypeName}
+                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                    <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4">
+                                                                        <div className="flex items-center justify-between">
+                                                                            <div className="flex items-center gap-3">
+                                                                                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                                                                    <i className="fa-duotone fa-solid fa-file-alt text-white text-lg" />
                                                                                 </div>
-                                                                                {selectedRow?.stockSymbol}
+                                                                                <div>
+                                                                                    <h3 className="text-white font-bold text-lg">ویرایش اعلامیه</h3>
+                                                                                    <p className="text-white/80 text-sm">{selectedRow?.stockSymbol} - {selectedRow?.calculationTypeName}</p>
+                                                                                </div>
                                                                             </div>
+                                                                            <button type="button" onClick={() => setIsTicketNumberModalOpen(false)} className="text-white/80 hover:text-white transition-colors">
+                                                                                <i className="fa-duotone fa-solid fa-xmark text-2xl" />
+                                                                            </button>
                                                                         </div>
-
-                                                                        <button type="button" onClick={() => setIsTicketNumberModalOpen(false)} className="text-gray-500 hover:text-gray-700">
-                                                                            <i className="fa-duotone fa-solid fa-xmark text-xl" />
-                                                                        </button>
                                                                     </div>                                                                    <Formik
                                                                         initialValues={{
                                                                             ticketNumber: selectedRow?.ticketNumber ?? ''
@@ -1252,19 +1294,23 @@ const Session = ({ sessionid }: Props) => {
                                                                         }}
                                                                     >
                                                                         <Form>
-                                                                            <div className="p-5 text-xl">
+                                                                            <div className="p-6">
                                                                                 <Field id="ticketNumber" name="ticketNumber" label="شماره اعلامیه" component={FTextField} />
                                                                             </div>
-                                                                            <div className="p-5">
-                                                                                <div className="mt-8 flex items-center justify-end">
-                                                                                    <button type="button" onClick={() => setIsTicketNumberModalOpen(false)} className="btn btn-outline-danger">
-                                                                                        انصراف
-                                                                                    </button>
-                                                                                    <button type="submit" className="btn btn-success flex w-32 ltr:ml-4 rtl:mr-4">
-                                                                                        {/* <IconPlus className="ml-2" /> */}
-                                                                                        ثبت
-                                                                                    </button>
-                                                                                </div>
+                                                                            <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
+                                                                                <button type="button" onClick={() => setIsTicketNumberModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                                                    انصراف
+                                                                                </button>
+                                                                                <button type="submit" disabled={isTicketNumberEditing} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                                                                                    {isTicketNumberEditing ? (
+                                                                                        <>
+                                                                                            <i className="fa-duotone fa-solid fa-spinner fa-spin" />
+                                                                                            در حال ذخیره...
+                                                                                        </>
+                                                                                    ) : (
+                                                                                        'ثبت'
+                                                                                    )}
+                                                                                </button>
                                                                             </div>
 
                                                                         </Form>
@@ -1301,21 +1347,22 @@ const Session = ({ sessionid }: Props) => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-lg bg-white p-6 shadow-lg">
-                                                                    <div className="flex items-center justify-between mb-4">
-                                                                        <div className="flex w-56 text-lg font-bold">ویرایش نوع فرعی</div>
-                                                                        <div className="flex w-full flex-col items-end justify-items-end pl-5">
-                                                                            <div className="flex items-center justify-items-center">
-                                                                                <div className={`flex pl-2 text-lg font-bold ${selectedRow?.calculationTypeName == 'خرید' ? 'text-success' : 'text-danger'}`}>
-                                                                                    {selectedRow?.calculationTypeName}
+                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                    <div className="bg-gradient-to-r from-sky-500 to-sky-600 px-6 py-4">
+                                                                        <div className="flex items-center justify-between">
+                                                                            <div className="flex items-center gap-3">
+                                                                                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                                                                    <i className="fa-duotone fa-solid fa-layer-group text-white text-lg" />
                                                                                 </div>
-                                                                                {selectedRow?.stockSymbol}
+                                                                                <div>
+                                                                                    <h3 className="text-white font-bold text-lg">ویرایش نوع فرعی</h3>
+                                                                                    <p className="text-white/80 text-sm">{selectedRow?.stockSymbol} - {selectedRow?.calculationTypeName}</p>
+                                                                                </div>
                                                                             </div>
+                                                                            <button type="button" onClick={() => setIsSubTypeModalOpen(false)} className="text-white/80 hover:text-white transition-colors">
+                                                                                <i className="fa-duotone fa-solid fa-xmark text-2xl" />
+                                                                            </button>
                                                                         </div>
-
-                                                                        <button type="button" onClick={() => setIsSubTypeModalOpen(false)} className="text-gray-500 hover:text-gray-700">
-                                                                            <i className="fa-duotone fa-solid fa-xmark text-xl" />
-                                                                        </button>
                                                                     </div>                                                                    <Formik
                                                                         initialValues={{
                                                                             subType: selectedRow?.subType ?? ''
@@ -1326,7 +1373,7 @@ const Session = ({ sessionid }: Props) => {
                                                                         }}
                                                                     >
                                                                         <Form>
-                                                                            <div className="p-5 text-xl">
+                                                                            <div className="p-6">
                                                                                 <Field id="subType" name="subType" label="نوع فرعی"
                                                                                     options={[
                                                                                         { value: "Normal", label: "تراکنش عادی" },
@@ -1337,15 +1384,20 @@ const Session = ({ sessionid }: Props) => {
                                                                                     component={FSelectField} />
 
                                                                             </div>
-                                                                            <div className="p-5">
-                                                                                <div className="mt-8 flex items-center justify-end">
-                                                                                    <button type="button" onClick={() => setIsSubTypeModalOpen(false)} className="btn btn-outline-danger">
-                                                                                        انصراف
-                                                                                    </button>
-                                                                                    <button type="submit" className="btn btn-success flex w-32 ltr:ml-4 rtl:mr-4">
-                                                                                        ثبت
-                                                                                    </button>
-                                                                                </div>
+                                                                            <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
+                                                                                <button type="button" onClick={() => setIsSubTypeModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                                                    انصراف
+                                                                                </button>
+                                                                                <button type="submit" disabled={isSubTypeEditing} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-sky-500 to-sky-600 text-white font-medium hover:from-sky-600 hover:to-sky-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                                                                                    {isSubTypeEditing ? (
+                                                                                        <>
+                                                                                            <i className="fa-duotone fa-solid fa-spinner fa-spin" />
+                                                                                            در حال ذخیره...
+                                                                                        </>
+                                                                                    ) : (
+                                                                                        'ثبت'
+                                                                                    )}
+                                                                                </button>
                                                                             </div>
                                                                         </Form>
 
@@ -1470,8 +1522,8 @@ const Session = ({ sessionid }: Props) => {
                                             <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="btn btn-outline-danger">
                                                 انصراف
                                             </button>
-                                            <button type="button" onClick={() => deleteSharetransactionbatch(currentRowId)} className={`btn btn-danger flex w-32 ltr:ml-4 rtl:mr-4 ${isLoading ? 'disabled' : ''}}`}>
-                                                {isLoading ? (
+                                            <button type="button" onClick={() => deleteSharetransactionbatch(currentRowId)} disabled={isDeleting} className={`btn btn-danger flex w-32 ltr:ml-4 rtl:mr-4 ${isDeleting ? 'disabled' : ''}}`}>
+                                                {isDeleting ? (
                                                     <span className="inline-block h-5 w-5 shrink-0 animate-spin rounded-full border-2 border-white border-l-transparent align-middle ltr:mr-4 rtl:ml-4"></span>
                                                 ) : (
                                                     <i className="fa-duotone fa-solid fa-trash text-xl" />

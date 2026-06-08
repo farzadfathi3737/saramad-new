@@ -142,9 +142,15 @@ const Nominalvaluepayment = () => {
                                         {t('cancel')}
                                     </button>
 
-                                    <button type="submit" className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
-                                        {/* <IconPencil className="ltr:mr-1 rtl:ml-1 rtl:rotate-180" /> */}
-                                        {t('save')}
+                                    <button type="submit" disabled={loading} className="btn btn-outline mr-3 flex items-center bg-[#2D9AA0] font-iranyekan text-[#fff]">
+                                        {loading ? (
+                                            <>
+                                                <i className="fa-solid fa-spinner fa-spin ml-2" />
+                                                در حال پردازش...
+                                            </>
+                                        ) : (
+                                            t('save')
+                                        )}
                                     </button>
                                 </div>
                             </Form>

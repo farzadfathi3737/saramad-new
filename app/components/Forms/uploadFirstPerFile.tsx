@@ -20,14 +20,15 @@ const optionData: IOptionType[] = [
 const FileUploadModal: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string | undefined>();
+    const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
     const [selectedValue, setSelectedValue] = useState<SingleValue<IOptionType>>(optionData[0]);
     const [companyId, setCompanyId] = useState('');
+    const [fiscalYearId, setFiscalYearId] = useState('');
     const appConfig = useSelector((state: IRootState) => state.appConfig);
 
     useEffect(() => {
-        ColoredToast('danger', errorMessage ?? 'خطا در بارگزاری فایل رخ داده است');
+        errorMessage && ColoredToast('danger', errorMessage ?? 'خطا در بارگزاری فایل رخ داده است');
     }, [errorMessage]);
 
     const onDrop = (acceptedFiles: UploadedFile[]) => {
@@ -49,9 +50,9 @@ const FileUploadModal: React.FC = () => {
     const saveFile = async () => {
         setIsLoading(true);
         const formData = new FormData();
-        formData.append('File', uploadedFiles[0]);
+        formData.append('SharesFile', uploadedFiles[0]);
 
-        const res = await fetch(`cloud/api/shareholding/share/import?CompanyId=${companyId}&FileType=${selectedValue?.value}`, {
+        const res = await fetch(`cloud/api/shareholding/share/import?CompanyId=${companyId}&FiscalYearId=${fiscalYearId}`, {
             method: 'POST',
             body: formData,
         });
@@ -69,8 +70,9 @@ const FileUploadModal: React.FC = () => {
             //setAddModal(false);
             //fetchData();
         } else {
+            const error = res && (await res?.json());
             setIsLoading(false);
-            setErrorMessage('خطا در بارگزاری فایل رخ داده است');
+            setErrorMessage(error ? error : 'خطا در بارگزاری فایل رخ داده است');
             //setInitialRecords({ pageNumber: 1, pageSize: 10, totalPages: 1, totalCount: 10, items: [] });
         }
 
@@ -86,11 +88,12 @@ const FileUploadModal: React.FC = () => {
 
     useEffect(() => {
         setCompanyId(appConfig.company.id);
-    }, [appConfig.company]);
+        setFiscalYearId(appConfig.fiscalYear.id);
+    }, [appConfig.company, appConfig.fiscalYear]);
 
     return (
         <div className="flex w-full">
-            <button type="button" onClick={() => openModal()} className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff]">
+            <button type="button" onClick={() => openModal()} disabled={isLoading} className="btn btn-outline mr-3 flex items-center rounded-lg p-2 px-4 bg-[#2D9AA0] font-iranyekan text-[#fff] disabled:opacity-50 disabled:cursor-not-allowed">
                 بارگزاری مانده ابتدای دوره
             </button>
             {/* {errorMessage && <p className="mr-5 flex w-full items-center justify-center rounded-md bg-red-100 text-red-900">{errorMessage}</p>} */}
@@ -169,11 +172,21 @@ const FileUploadModal: React.FC = () => {
                                         </div>
 
                                         <div className="mt-8 flex justify-end">
-                                            <button type="button" onClick={() => closeModal()} className="ml-2 rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600">
+                                            <button type="button" onClick={() => closeModal()} disabled={isLoading} className="ml-2 rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed">
                                                 انصراف
                                             </button>
-                                            <button type="button" onClick={() => saveFile()} className="rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-green-700" disabled={fileList?.length > 0 ? false : true}>
-                                                شروع بارگزاری
+                                            <button type="button" onClick={() => saveFile()} className="rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" disabled={isLoading || fileList?.length === 0}>
+                                                {isLoading ? (
+                                                    <>
+                                                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                        </svg>
+                                                        در حال بارگذاری...
+                                                    </>
+                                                ) : (
+                                                    'شروع بارگزاری'
+                                                )}
                                             </button>
                                         </div>
                                     </div>

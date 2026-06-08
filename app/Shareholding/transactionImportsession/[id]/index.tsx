@@ -452,11 +452,15 @@ const Add = ({ id }: AddProps) => {
                                                                             <p>آیا از لغو فایل اطمینان دارید ؟</p>
                                                                         </div>
                                                                         <div className="flex justify-end">
-                                                                            <button type="button" onClick={() => setIsRejectModalOpen(false)} className="ml-2 rounded-lg bg-gray-500 px-4 py-2 text-white hover:bg-gray-600">
+                                                                            <button type="button" onClick={() => setIsRejectModalOpen(false)} className="ml-2 rounded-lg bg-gray-500 px-4 py-2 text-white hover:bg-gray-600" disabled={isLoading}>
                                                                                 انصراف
                                                                             </button>
-                                                                            <button type="button" onClick={() => reject()} className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600">
-                                                                                لغو
+                                                                            <button type="button" onClick={() => reject()} className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600" disabled={isLoading}>
+                                                                                {isLoading ? (
+                                                                                    <i className="fa-duotone fa-solid fa-spinner fa-spin text-xl" />
+                                                                                ) : (
+                                                                                    'لغو'
+                                                                                )}
                                                                             </button>
                                                                         </div>
                                                                     </Dialog.Panel>
@@ -508,11 +512,15 @@ const Add = ({ id }: AddProps) => {
                                                                             <p>آیا از بررسی مجدد فایل اطمینان دارید ؟</p>
                                                                         </div>
                                                                         <div className="flex justify-end">
-                                                                            <button type="button" onClick={() => setIsRecheckModalOpen(false)} className="ml-2 rounded-lg bg-gray-500 px-4 py-2 text-white hover:bg-gray-600">
+                                                                            <button type="button" onClick={() => setIsRecheckModalOpen(false)} className="ml-2 rounded-lg bg-gray-500 px-4 py-2 text-white hover:bg-gray-600" disabled={isLoading}>
                                                                                 انصراف
                                                                             </button>
-                                                                            <button type="button" onClick={() => recheck()} className="rounded-lg bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
-                                                                                بررسی مجدد
+                                                                            <button type="button" onClick={() => recheck()} className="rounded-lg bg-orange-500 px-4 py-2 text-white hover:bg-orange-600" disabled={isLoading}>
+                                                                                {isLoading ? (
+                                                                                    <i className="fa-duotone fa-solid fa-spinner fa-spin text-xl" />
+                                                                                ) : (
+                                                                                    'بررسی مجدد'
+                                                                                )}
                                                                             </button>
                                                                         </div>
                                                                     </Dialog.Panel>
@@ -563,11 +571,15 @@ const Add = ({ id }: AddProps) => {
                                                                             <p>آیا از ثبت نهایی فایل اطمینان دارید ؟</p>
                                                                         </div>
                                                                         <div className="flex justify-end">
-                                                                            <button type="button" onClick={() => setIsApproveModalOpen(false)} className="ml-2 rounded-lg bg-gray-500 px-4 py-2 text-white hover:bg-gray-600">
+                                                                            <button type="button" onClick={() => setIsApproveModalOpen(false)} className="ml-2 rounded-lg bg-gray-500 px-4 py-2 text-white hover:bg-gray-600" disabled={isLoading}>
                                                                                 انصراف
                                                                             </button>
-                                                                            <button type="button" onClick={() => approve()} className="rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-green-600">
-                                                                                ثبت نهایی
+                                                                            <button type="button" onClick={() => approve()} className="rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-green-600" disabled={isLoading}>
+                                                                                {isLoading ? (
+                                                                                    <i className="fa-duotone fa-solid fa-spinner fa-spin text-xl" />
+                                                                                ) : (
+                                                                                    'ثبت نهایی'
+                                                                                )}
                                                                             </button>
                                                                         </div>
                                                                     </Dialog.Panel>

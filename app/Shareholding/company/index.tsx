@@ -14,6 +14,7 @@ const Company = () => {
     const subPage = useSubPage();
     const [modelData, setModelData] = useState<IDataModel>();
     const tableRefreshRef = useRef<{ fetchData: () => void }>(null);
+    const [isSettingHolding, setIsSettingHolding] = useState<string | null>(null);
 
     useEffect(() => {
         const setdata = async () => {
@@ -60,6 +61,7 @@ const Company = () => {
     }, []);
 
     const SetIsHolding = async (id: any) => {
+        setIsSettingHolding(id);
         const _modelholding = getEntityModel('companysetasholding');
 
         const res = await apiFetch(_modelholding?.register?.url as string, {
@@ -77,6 +79,7 @@ const Company = () => {
             tableRefreshRef?.current?.fetchData();
         } else {
         }
+        setIsSettingHolding(null);
     };
 
     // const loadSubPage = (name: string) => {
@@ -138,10 +141,14 @@ const Company = () => {
                                     <Tooltip label="انتخاب به عنوان هلدینگ">
                                         <ActionIcon
                                             onClick={() => SetIsHolding(row.id.toString())}
-                                            //className="btn btn-outline mr-3 flex items-center rounded-xl bg-secondary-light w-9 h-9 p-0 font-iranyekan text-secondary">
+                                            disabled={isSettingHolding === row.id.toString()}
                                             variant="transparent"
                                             className="mr-3 hover:bg-orange-100 w-9 h-9">
-                                            <i className={`fa-duotone fa-solid fa-check text-xl text-gray-400 hover:text-blue-500`} />
+                                            {isSettingHolding === row.id.toString() ? (
+                                                <i className="fa-duotone fa-solid fa-spinner fa-spin text-xl text-gray-400" />
+                                            ) : (
+                                                <i className="fa-duotone fa-solid fa-check text-xl text-gray-400 hover:text-blue-500" />
+                                            )}
                                         </ActionIcon>
                                     </Tooltip>
                                 );

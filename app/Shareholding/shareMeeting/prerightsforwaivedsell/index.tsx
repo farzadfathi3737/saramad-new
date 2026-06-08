@@ -3,19 +3,18 @@
 import { getEntityModel } from '@/models/entity';
 import { useSubPage } from '@/app/components/Notifications/useSubPage';
 import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/contexts/LanguageContext';
 import Demo from '@/app/components/Datatable/MRT';
-import 'tippy.js/dist/tippy.css';
+//import 'tippy.js/dist/tippy.css';
 import axios from 'axios';
 import { IDataModel, IFieldsTable } from '@/interface/dataModel';
 
 import Link from 'next/link';
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { useRouter } from 'next/navigation';
-import { useRouter as Router } from 'next/router';
 
-const Sharecashdividend = () => {
-    const { t } = useTranslation();
+const Sharecashdividend = ({ meetingId }: { meetingId?: string }) => {
+    const { t } = useLanguage();
     const subPage = useSubPage();
     const [model, setModel] = useState<IDataModel>();
     const [modelData, setModelData] = useState<IDataModel>();
@@ -24,38 +23,38 @@ const Sharecashdividend = () => {
     const [rowId, setRowId] = useState<string>();
 
     const router = useRouter();
-    const _router = Router();
-    const { query } = _router;
 
     useEffect(() => {
         const setdata = async () => {
 
-            setRowId(query.MeetingId?.toString());
+            setRowId(meetingId);
 
-            let _model = getEntityModel('sharemeetingprerightsforwaivedsell');
+            const _model = getEntityModel('sharemeetingprerightsforwaivedsell');
 
             setModelData(_model);
         };
         setdata();
-    }, []);
+    }, [meetingId]);
 
     return (
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-1">
             <div className="panel h-full w-full px-0">
-                <div className="mb-5 flex h-[3rem] items-start justify-start border-b-2 px-5 pb-3">
-                    <div>
+                <div className="flex h-[3rem] items-start justify-start border-b border-gray-300 pl-3">
+                    <div className='flex border-l h-full border-inherit justify-center items-center'>
                         <Tooltip label={t('back')}>
-                            <ActionIcon color="inheritans" className="flex items-center justify-center rounded-[50%] p-5 hover:bg-inherit hover:text-blue-900" onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}>
-                                <i className="fa-duotone fa-solid fa-arrow-right text-lg ml-2" />
-                            </ActionIcon>
+                            <div
+                                className="btn pr-3 flex items-center w-full h-full bg-none hover:bg-gray-500 text-secondary text-gray-900 hover:text-gray-50"
+                                onClick={() => subPage('sharemeeting')}>
+                                <i className={`fa-duotone fa-solid fa-chevron-right text-xl ml-2`} />
+                            </div>
                         </Tooltip>
                     </div>
-                    <div className='p-2'>
+                    <div className='px-2 h-full flex flex-col justify-center align-middle'>
                         فروش حق تقدم استفاده نشده
                     </div>
                 </div>
 
-                <div className="table-responsive px-5">
+                <div className="px-5 mt-5">
                     {modelData && (
                         <Demo
                             model={modelData}
