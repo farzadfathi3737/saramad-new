@@ -14,6 +14,7 @@ interface CustomSelectProps extends FieldProps {
     isMulti?: boolean;
     isSearchable?: boolean;
     isDefaultValue?: boolean;
+    autoSelectFirst?: boolean;
     staticParams?: IstaticParam[];
     onChange?: any;
     className?: string;
@@ -31,6 +32,7 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
     isMulti = false,
     isSearchable = true,
     isDefaultValue = false,
+    autoSelectFirst = false,
     staticParams = null,
     className = '',
 }) => {
@@ -133,9 +135,10 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
                 const foundOption = options.find((x: IOptionType) => x.value == field.value);
                 setSelectedValue(foundOption);
             } else {
-                if (isDefaultValue) {
+                if (isDefaultValue || autoSelectFirst) {
                     setSelectedValue(options[0]);
                     form.setFieldValue(field.name, options[0]?.value);
+                    onChange && onChange(options[0]);
                 }
             }
         } else {
