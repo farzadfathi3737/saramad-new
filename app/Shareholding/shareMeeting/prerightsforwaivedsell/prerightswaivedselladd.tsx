@@ -2,7 +2,6 @@ import { getEntityModel } from '@/models/entity';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Demo from '@/app/components/Datatable/MRT';
-import 'tippy.js/dist/tippy.css';
 import axios from 'axios';
 import { IDataModel, IFieldsTable } from '@/interface/dataModel';
 
@@ -11,7 +10,7 @@ import { ActionIcon, Tooltip } from '@mantine/core';
 import { useRouter } from 'next/navigation';
 import { useRouter as Router } from 'next/router';
 
-const Payments = () => {
+const Payments = ({ cashDividendId, tradingCode }: { cashDividendId?: string, tradingCode?: string }) => {
     const { t } = useTranslation();
     const [model, setModel] = useState<IDataModel>();
     const [modelData, setModelData] = useState<IDataModel>();
@@ -26,7 +25,7 @@ const Payments = () => {
     useEffect(() => {
         const setdata = async () => {
             setRowId(query.CashDividendId?.toString());
-            let _model = getEntityModel('sharecashdividendpayments');
+            const _model = getEntityModel('sharecashdividendpayments');
             setModelData(_model);
         };
         setdata();
