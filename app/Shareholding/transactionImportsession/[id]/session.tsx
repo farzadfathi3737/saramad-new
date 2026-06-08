@@ -143,6 +143,7 @@ const Session = ({ id, sessionid }: Props) => {
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(1);
     const [open, setOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState<string>('');
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [currentRowId, setCurrentRowId] = useState('');
 
@@ -377,12 +378,26 @@ const Session = ({ id, sessionid }: Props) => {
         setIsAutoCalculating(false);
     }
 
+    const handlerGetTransactioncommission = async (id: string) => {
+        const _model = await getEntityModel('transactioncommission');
+
+        const res = await apiFetch(`${_model?.read?.url.replace('{transactionId}', id)}`);
+
+        if (res.ok) {
+            const result: ITC = await res?.json();
+
+            setModelTC(result);
+            setIsHandlyCommissionModalOpen(true);
+        }
+
+    }
+
     const handlerShareTransactionCommissionEditClick = async (data: ITC, id: string) => {
         setIsCommissionEditing(true);
 
         const _model = await getEntityModel('transactioncommission');
 
-        const res = await fetch(`${_model?.update?.url.replace('{transactionId}', id)}`, {
+        const res = await apiFetch(`${_model?.update?.url.replace('{transactionId}', id)}`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',
@@ -405,7 +420,7 @@ const Session = ({ id, sessionid }: Props) => {
 
         const _model = await getEntityModel('sharetransactionticketnumber');
 
-        const res = await fetch(`${_model?.default?.url.replace('{id}', id)}`, {
+        const res = await apiFetch(`${_model?.default?.url.replace('{id}', id)}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -510,7 +525,7 @@ const Session = ({ id, sessionid }: Props) => {
                                     manualPagination={true}
                                     model={model}
                                     isShowHideCol={true}
-                                    hideColList={['id', 'companyId', 'isEdited', 'commissionsModified']}
+                                    hideColList={['id', 'companyId', 'isEdited', 'commissionsModified', 'subType']}
                                     labaleNameList={[{ label: 'Keyword', value: 'نام سهام' }]}
                                     addSepratorFildes={[
                                         'price',
@@ -666,7 +681,7 @@ const Session = ({ id, sessionid }: Props) => {
                                                                 className="flex-1 flex items-center justify-center gap-1 px-1.5 h-8 bg-gradient-to-b from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white rounded-md text-[10px] font-medium shadow-sm hover:shadow transition-all duration-200 whitespace-nowrap"
                                                                 onClick={() => {
                                                                     setSelectedRow(row.row.original);
-                                                                    setIsHandlyCommissionModalOpen(true);
+                                                                    handlerGetTransactioncommission(row.row.original?.id ?? '')
                                                                 }}
                                                             >
                                                                 <i className="fa-duotone fa-solid fa-hand-pointer text-xs" />
@@ -1128,7 +1143,6 @@ const Session = ({ id, sessionid }: Props) => {
                                                             initialValues={modelTC!}
                                                             //validationSchema={{}}
                                                             onSubmit={(values) => {
-                                                                console.log('ok', values);
                                                                 handlerShareTransactionCommissionEditClick(values, selectedRow?.id ?? '');
                                                             }}
                                                         >
@@ -1136,50 +1150,55 @@ const Session = ({ id, sessionid }: Props) => {
                                                                 <div className="grid w-full grid-cols-1 gap-2 px-5">
                                                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                                                         <div>
-                                                                            <Field id="externalId" name="externalId" label={t('externalId')} component={FTextField} disabled />
+                                                                            <Field id="brokerCommission" name="brokerCommission" label={t('brokerCommission')} component={FTextField} />
                                                                         </div>
                                                                         <div>
-                                                                            <Field id="externalId2" name="externalId2" label={t('externalId2')} component={FTextField} disabled />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                                                                        <div>
-                                                                            <Field id="externalId" name="externalId" label={t('externalId')} component={FTextField} disabled />
-                                                                        </div>
-                                                                        <div>
-                                                                            <Field id="externalId2" name="externalId2" label={t('externalId2')} component={FTextField} disabled />
+                                                                            <Field id="brokerCommissionDiscount" name="brokerCommissionDiscount" label={t('brokerCommissionDiscount')} component={FTextField} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                                                         <div>
-                                                                            <Field id="externalId" name="externalId" label={t('externalId')} component={FTextField} disabled />
+                                                                            <Field id="depositoryCommission" name="depositoryCommission" label={t('depositoryCommission')} component={FTextField} />
                                                                         </div>
                                                                         <div>
-                                                                            <Field id="externalId2" name="externalId2" label={t('externalId2')} component={FTextField} disabled />
+                                                                            <Field id="bourseAgencyCommission" name="bourseAgencyCommission" label={t('bourseAgencyCommission')} component={FTextField} />
                                                                         </div>
                                                                     </div>
                                                                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
                                                                         <div>
-                                                                            <Field id="externalId" name="externalId" label={t('externalId')} component={FTextField} disabled />
+                                                                            <Field id="bourseCompanyCommission" name="bourseCompanyCommission" label={t('bourseCompanyCommission')} component={FTextField} />
                                                                         </div>
                                                                         <div>
-                                                                            <Field id="externalId2" name="externalId2" label={t('externalId2')} component={FTextField} disabled />
+                                                                            <Field id="bourseITCommission" name="bourseITCommission" label={t('bourseITCommission')} component={FTextField} />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+                                                                        <div>
+                                                                            <Field id="bourseRayanCommission" name="bourseRayanCommission" label={t('bourseRayanCommission')} component={FTextField} />
+                                                                        </div>
+                                                                        <div>
+                                                                            <Field id="tax" name="tax" label={t('tax')} component={FTextField} />
                                                                         </div>
                                                                     </div>
                                                                 </div>
+
+                                                                <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
+                                                                    <button type="button" onClick={() => setIsHandlyCommissionModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                                        انصراف
+                                                                    </button>
+                                                                    <button type="submit" disabled={isCommissionEditing} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                                                                        {isCommissionEditing ? (
+                                                                            <>
+                                                                                <i className="fa-duotone fa-solid fa-spinner fa-spin" />
+                                                                                در حال ذخیره...
+                                                                            </>
+                                                                        ) : (
+                                                                            'ثبت'
+                                                                        )}
+                                                                    </button>
+                                                                </div>
                                                             </Form>
                                                         </Formik>
-                                                    </div>
-                                                    <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
-                                                        <button type="button" onClick={() => setIsHandlyCommissionModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
-                                                            انصراف
-                                                        </button>
-                                                        <button type="submit" disabled={isCommissionEditing} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                                                            {isCommissionEditing ? (
-                                                                <i className="fa-solid fa-spinner fa-spin" />
-                                                            ) : null}
-                                                            {isCommissionEditing ? 'در حال ثبت...' : 'ثبت'}
-                                                        </button>
                                                     </div>
                                                 </Dialog.Panel>
                                             </Transition.Child>
@@ -1354,10 +1373,21 @@ const Session = ({ id, sessionid }: Props) => {
                                             <i className={`fa-duotone fa-solid fa-xmark text-sm text-gray-700 hover:text-gray-900`} />
                                         </div>
                                     </div>
+                                    <div className="px-4 py-3 bg-white flex-shrink-0">
+                                        <div>
+                                            <input
+                                                type="text"
+                                                value={searchTerm}
+                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                                placeholder="جستجو بر اساس تاریخ..."
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                            />
+                                        </div>
+                                    </div>
                                     <div className="flex-1 overflow-y-auto bg-gray-50 p-3" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                                         <div className="flex flex-col gap-3">
                                             {items &&
-                                                items?.map((item: ISession, index) => {
+                                                items?.filter((item: ISession) => item.date.includes(searchTerm)).map((item: ISession, index) => {
                                                     return (
                                                         <div
                                                             key={index}

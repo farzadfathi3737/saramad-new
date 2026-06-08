@@ -15,6 +15,7 @@ import { ColoredToast } from '@/app/components/Notifications/colorNotification';
 import * as Yup from 'yup';
 import FSelectField from '@/app/components/inputs/selectField';
 import { Drawer, DrawerItems } from 'flowbite-react';
+import { apiFetch } from '@/lib/apiFetch';
 
 interface ICompany {
     date: string;
@@ -126,6 +127,7 @@ const Session = () => {
     const [selected, setSelected] = useState<number>(0);
     const [items, setItems] = useState<ISession[]>([]);
     const [open, setOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState<string>('');
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [currentRowId, setCurrentRowId] = useState('');
 
@@ -206,7 +208,7 @@ const Session = () => {
         //setIsLoading(true);
 
         //const res = await fetch(`${modelS?.list?.url}?SessionId=${sessionId}&PageSize=10&PageNumber=${page}`);
-        const res = await fetch(`${modelS?.list?.url}?FiscalYearId=${fiscalYearId}&Type=Trade`);
+        const res = await apiFetch(`${modelS?.list?.url}?FiscalYearId=${fiscalYearId}&Type=Trade`);
 
         if (res.ok) {
             const result: ISessionlist = await res?.json();
@@ -527,7 +529,7 @@ const Session = () => {
                                                     manualPagination={true}
                                                     model={model}
                                                     isShowHideCol={true}
-                                                    hideColList={['id', 'companyId', 'isEdited', 'commissionsModified']}
+                                                    hideColList={['id', 'companyId', 'isEdited', 'commissionsModified', 'subType']}
                                                     labaleNameList={[{ label: 'Keyword', value: 'نام سهام' }]}
                                                     addSepratorFildes={[
                                                         'price',
@@ -1179,7 +1181,6 @@ const Session = () => {
                                                                             initialValues={modelTC!}
                                                                             //validationSchema={{}}
                                                                             onSubmit={(values) => {
-                                                                                console.log('ok', values);
                                                                                 handlerShareTransactionCommissionEditClick(values, selectedRow?.id ?? '');
                                                                             }}
                                                                         >
@@ -1420,10 +1421,21 @@ const Session = () => {
                                                             <i className={`fa-duotone fa-solid fa-xmark text-sm text-gray-700 hover:text-gray-900`} />
                                                         </div>
                                                     </div>
+                                                    <div className="px-4 py-3 bg-white flex-shrink-0">
+                                                        <div>
+                                                            <input
+                                                                type="text"
+                                                                value={searchTerm}
+                                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                                                placeholder="جستجو بر اساس تاریخ..."
+                                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                                            />
+                                                        </div>
+                                                    </div>
                                                     <div className="flex-1 overflow-y-auto bg-gray-50 p-3" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                                                         <div className="flex flex-col gap-3">
                                                             {items &&
-                                                                items?.map((item: ISession, index) => {
+                                                                items?.filter((item: ISession) => item.date.includes(searchTerm)).map((item: ISession, index) => {
                                                                     return (
                                                                         <div
                                                                             key={index}

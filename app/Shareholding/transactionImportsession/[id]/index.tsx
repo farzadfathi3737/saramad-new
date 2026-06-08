@@ -186,7 +186,6 @@ const Add = ({ id }: AddProps) => {
     const handlGetData = () => {
         const setdata = async () => {
             const _model = await getEntityModel('rawtransaction');
-            // console.log(_model);
             setModelData(_model);
         };
         setdata();
@@ -411,7 +410,7 @@ const Add = ({ id }: AddProps) => {
                                             </button>
                                         )}
                                     </div>
-                                    <div className="flex">
+                                    <div className="flex gap-2">
                                         {data.status == 'PendingApproval' && (
                                             <>
                                                 <button type="button" className="btn btn-danger w-32 px-5" onClick={() => setIsRejectModalOpen(true)}>
@@ -668,7 +667,7 @@ const Add = ({ id }: AddProps) => {
                                                                     isShowSearchForm={false}
                                                                     model={modelData}
                                                                     isShowHideCol={true}
-                                                                    hideColList={['id', 'companyId', 'date', 'status', 'fileType', 'progress', 'importedFileId', 'isEdited']}
+                                                                    hideColList={['id', 'companyId', 'date', 'status', 'fileType', 'progress', 'importedFileId', 'isEdited', 'hasException']}
                                                                     addSepratorFildes={['volume']}
                                                                     addFooterSumFildes={['volume']}
                                                                     labaleNameList={[
