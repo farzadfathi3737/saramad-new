@@ -109,8 +109,21 @@ const DForms: React.FC<DFormsProps> = ({
                             if (!filedNotShow.includes(item.name)) {
                                 const _header = labaleNameList.find((x) => x.label == item.name)?.value;
                                 switch (item?.type) {
-                                    case 'string':
                                     case 'integer':
+                                    case 'number':
+                                        return (
+                                            <div className="w-full" key={item.name.toString()}>
+                                                <Field
+                                                    id={item.name}
+                                                    name={item.name}
+                                                    label={t(_header ? _header : item.name.toLowerCase().toString())}
+                                                    component={FTextField}
+                                                    isNumber={true}
+                                                    required={item.required}
+                                                />
+                                            </div>
+                                        );
+                                    case 'string':
                                         switch (item?.format) {
                                             case 'enum':
                                                 return (
@@ -142,25 +155,30 @@ const DForms: React.FC<DFormsProps> = ({
                                                     </div>
                                                 );
                                             case 'date':
+                                            case 'date-time':
                                                 return (
                                                     <div className="w-full" key={item.name.toString()}>
-                                                        <Field id={item.name} name={item.name} label={t(_header ? _header : item.name.toLowerCase().toString())} component={FDateField} />
+                                                        <Field
+                                                            id={item.name}
+                                                            name={item.name}
+                                                            label={t(_header ? _header : item.name.toLowerCase().toString())}
+                                                            component={FDateField}
+                                                            required={item.required}
+                                                        />
                                                     </div>
                                                 );
                                             default:
-                                                if (item.name == 'Keyword') {
-                                                    return (
-                                                        <div className="w-full" key={item.name.toString()}>
-                                                            <Field id={item.name} name={item.name} label={t(_header ? _header : item.name.toLowerCase().toString())} component={FTextField} />
-                                                        </div>
-                                                    );
-                                                } else {
-                                                    return (
-                                                        <div className="w-full" key={item.name.toString()}>
-                                                            <Field id={item.name} name={item.name} label={t(_header ? _header : item.name.toLowerCase().toString())} component={FTextField} />
-                                                        </div>
-                                                    );
-                                                }
+                                                return (
+                                                    <div className="w-full" key={item.name.toString()}>
+                                                        <Field
+                                                            id={item.name}
+                                                            name={item.name}
+                                                            label={t(_header ? _header : item.name.toLowerCase().toString())}
+                                                            component={FTextField}
+                                                            required={item.required}
+                                                        />
+                                                    </div>
+                                                );
                                         }
                                     case 'boolean':
                                         return (

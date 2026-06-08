@@ -8,6 +8,7 @@ interface CustomInputProps extends FieldProps {
     classNameLabel?: string;
     classNameValue?: string;
     isNumber?: boolean;
+    required?: boolean;
 }
 
 const formatWithSeparator = (val: string | number): string => {
@@ -19,7 +20,7 @@ const formatWithSeparator = (val: string | number): string => {
     return num.toLocaleString('en-US');
 };
 
-const FTextField: React.FC<CustomInputProps> = ({ label, field, type = 'text', form, classNameLabel, classNameValue, disabled = false, isNumber = false, ...other }) => {
+const FTextField: React.FC<CustomInputProps> = ({ label, field, type = 'text', form, classNameLabel, classNameValue, disabled = false, isNumber = false, required = false, ...other }) => {
     const [displayValue, setDisplayValue] = useState<string>(
         isNumber ? formatWithSeparator(field.value) : ''
     );
@@ -54,7 +55,7 @@ const FTextField: React.FC<CustomInputProps> = ({ label, field, type = 'text', f
         <div className="mb-5 w-full">
             <fieldset>
                 <label htmlFor={field.name} className={`!text-gray-600 ${classNameLabel}`}>
-                    {label}
+                    {label}{required && <span className="text-red-500 mr-1">*</span>}
                 </label>
                 {!disabled ? (
                     isNumber ? (
