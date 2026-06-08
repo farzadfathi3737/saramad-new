@@ -140,7 +140,8 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             icon: "fa-newspaper",
             childe: [
                 { id: 'issueDocument', name: 'issueDocument', title: 'صدور سند', link: '/Shareholding/accountings/journalarticle', icon: 'fa-file-contract' },
-                { id: 'documentReleaseLock', name: 'documentReleaseLock', title: 'آزادسازی و بستن اسناد', link: '/pages/buyingAndSellingListBurs', icon: 'fa-lock-open' },
+                { id: 'documentReleaseUnLock', name: 'documentReleaseUnLock', title: 'آزادسازی اسناد', link: '/pages/buyingAndSellingListBurs', icon: 'fa-lock-open' },
+                { id: 'documentReleaseLock', name: 'documentReleaseLock', title: 'بستن اسناد', link: '/pages/buyingAndSellingListBurs', icon: 'fa-lock' },
             ],
         },
         {
@@ -174,7 +175,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                 { id: 'cashdividenddeposit', name: 'cashdividenddeposit', title: 'گزارش واریز سود اوراق بهادار', link: '/reports/cashdividenddeposit', icon: 'fa-credit-card' },
                 { id: 'openOptionReports', name: 'openOptionReports', title: 'گزارش اختیارات باز', link: '/reports/', icon: 'fa-book-open' },
                 { id: 'marketnotice', name: 'marketnotice', title: 'آگهی های کدال', link: '/reports/marketnotice', icon: 'fa-bell' },
-                { id: 'comprehensive', name: 'comprehensive', title: 'گزارش جامع گردش سهام', link: '/commingsoon', icon: 'fa-diagram-project' },
+                { id: 'comprehensive', name: 'comprehensive', title: 'گزارش جامع گردش سهام', link: '/reports/commingsoon', icon: 'fa-diagram-project' },
                 { id: 'consolidation', name: 'consolidation', title: 'گزارش تجمیع سبد سهام', link: '/reports/consolidation', icon: 'fa-layer-group' },
             ],
         },

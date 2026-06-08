@@ -71,13 +71,13 @@ const Add = () => {
         });
 
         if (res.ok) {
-            const result = res && (await res?.json());
+            // const result = res && (await res?.json());
             //setInitialRecords(result);
             //setAddModal(false);
             //fetchData();
             setLoading(false);
             //router.back();
-            subPage(model?.name.toLocaleLowerCase() ?? '')
+            subPage('sharetransactionbatchtadilat')
         } else {
             const result = res && (await res?.json());
             ColoredToast('danger', result);
@@ -147,7 +147,7 @@ const Add = () => {
                                                                     id="tradingCodeId"
                                                                     name="tradingCodeId"
                                                                     label="سبد معاملاتی"
-                                                                    listRefName="tradingcode"
+                                                                    listRefName="companytradingcode"
                                                                     staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
                                                                     component={FSelectModelField}
                                                                 />
@@ -157,7 +157,7 @@ const Add = () => {
                                                                     id="brokerId"
                                                                     name="brokerId"
                                                                     label="کارگزاری"
-                                                                    listRefName="companybroker"
+                                                                    listRefName="stockbroker"
                                                                     staticParams={[{ name: 'CompanyId', value: appConfig.company.id }]}
                                                                     component={FSelectModelField}
                                                                 />
@@ -263,7 +263,7 @@ const Add = () => {
 
                                 <div className="mt-8 flex items-center justify-end px-5" >
                                     <button type="button"
-                                        onClick={() => subPage(model?.name.toLocaleLowerCase() ?? '')}
+                                        onClick={() => subPage('sharetransactionbatchtadilat')}
                                         className="btn btn-outline-[#2D9AA0] font-iranyekan">
                                         {t('cancel')}
                                     </button>

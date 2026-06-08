@@ -68,6 +68,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     addSepratorFildes = [],
     addLinkFildes = [],
     addFooterSumFildes = [],
+    addFooterAvrageFildes = [],
     action = null,
     detailPanel = undefined,
     headerAction = null,
@@ -495,6 +496,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                 const _format = addSepratorFildes.find((x) => x == item.accessorKey);
                 const _isLink = addLinkFildes.find((x) => x == item.accessorKey);
                 const _Footersum = addFooterSumFildes.find((x) => x == item.accessorKey);
+                const _FooterAvg = addFooterAvrageFildes.find((x) => x == item.accessorKey);
                 const _isEditable = enableInlineEditing && editableColumns.includes(item.accessorKey as string);
 
                 item.header = t(_header ? _header : item.header);
@@ -550,6 +552,44 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                                 <div className="w-full">
                                     {totalFilter != total && <div className="">{totalFilter.toLocaleString('fa-IR')}</div>}
                                     <div className="text-lg">{total.toLocaleString('fa-IR')}</div>
+                                </div>
+                            );
+                        },
+                    };
+                }
+
+                if (_FooterAvg) {
+                    columns[i] = {
+                        ...columns[i],
+                        Footer: (props) => {
+                            const filteredRows = props.table.getFilteredRowModel().rows;
+                            const allRows = props.table.options.data;
+
+                            const calcAvg = (rows: typeof filteredRows, key: string) => {
+                                const validValues = rows
+                                    .map(row => Number(row.getValue(key)))
+                                    .filter(v => !isNaN(v));
+                                return validValues.length ? validValues.reduce((s, v) => s + v, 0) / validValues.length : 0;
+                            };
+
+                            const calcAvgRaw = (rows: typeof allRows, key: string) => {
+                                const validValues = rows
+                                    .map(row => Number(row[key]))
+                                    .filter(v => !isNaN(v));
+                                return validValues.length ? validValues.reduce((s, v) => s + v, 0) / validValues.length : 0;
+                            };
+
+                            const avgFilter = calcAvg(filteredRows, _FooterAvg!);
+                            const avg = calcAvgRaw(allRows, _FooterAvg!);
+
+                            return (
+                                <div className="w-full">
+                                    {avgFilter !== avg && (
+                                        <div>{avgFilter.toLocaleString('fa-IR', { maximumFractionDigits: 2 })}</div>
+                                    )}
+                                    <div className="text-lg">
+                                        {avg.toLocaleString('fa-IR', { maximumFractionDigits: 2 })}
+                                    </div>
                                 </div>
                             );
                         },
