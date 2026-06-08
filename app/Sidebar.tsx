@@ -511,7 +511,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                         const data: ITabData = {
                                             id: item.id,
                                             key: item.id,
-                                            name: item.name,
+                                            name: item.id,
                                             title: item.title,
                                             orther: 0
                                         };
@@ -568,7 +568,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                                     const data: ITabData = {
                                                                         id: subItem.id,
                                                                         key: subItem.id,
-                                                                        name: subItem.name,
+                                                                        name: subItem.id,
                                                                         title: subItem.title,
                                                                         orther: 0
                                                                     };
@@ -620,7 +620,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                                                     const data: ITabData = {
                                                                                         id: sub2Item.id,
                                                                                         key: sub2Item.id,
-                                                                                        name: sub2Item.name,
+                                                                                        name: sub2Item.id,
                                                                                         title: sub2Item.title,
                                                                                         orther: 0
                                                                                     };
@@ -663,7 +663,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                                     const data: ITabData = {
                                                                         id: subItem.id,
                                                                         key: subItem.id,
-                                                                        name: subItem.name,
+                                                                        name: subItem.id,
                                                                         title: subItem.title,
                                                                         orther: 0
                                                                     };
@@ -715,7 +715,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                                                     const data: ITabData = {
                                                                                         id: sub2Item.id,
                                                                                         key: sub2Item.id,
-                                                                                        name: sub2Item.name,
+                                                                                        name: sub2Item.id,
                                                                                         title: sub2Item.title,
                                                                                         orther: 0
                                                                                     };

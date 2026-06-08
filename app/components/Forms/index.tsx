@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { IDataModel, IOptionType, IParameter, IstaticParam } from '../../../interface/dataModel';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Field, Form, ErrorMessage, useFormikContext } from 'formik';
 import FTextField from '../inputs/textField';
 //import * as Yup from 'yup';
 import FSelectField from '../inputs/selectField';
@@ -28,6 +28,18 @@ interface DFormsProps {
     staticParams?: IstaticParam[] | null;
     labaleNameList?: IOptionType[];
     initialValues?: any | {};
+    loadingDataInitByFilter?: boolean;
+}
+
+function AutoSubmit({ loadingDataInitByFilter = false }) {
+    const { submitForm } = useFormikContext();
+    useEffect(() => {
+        if (loadingDataInitByFilter) {
+            submitForm();
+        }
+    }, []);
+
+    return null;
 }
 
 const DForms: React.FC<DFormsProps> = ({
@@ -42,6 +54,7 @@ const DForms: React.FC<DFormsProps> = ({
     cancelBtnText = null,
     staticParams = null,
     labaleNameList = [],
+    loadingDataInitByFilter
 }) => {
     const { t } = useLanguage();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,7 +66,6 @@ const DForms: React.FC<DFormsProps> = ({
     const toDate = (todayStr > (appConfig.fiscalYear.end ?? '')) ? (appConfig.fiscalYear.end ?? '') : todayStr;
 
     const fromDate = appConfig.fiscalYear.begin ?? '';
-    console.log(appConfig)
 
     let init1 = {};
     parameter?.map((item) => {
@@ -65,6 +77,11 @@ const DForms: React.FC<DFormsProps> = ({
             init1 = { ...init1, [item.name]: fromDate };
         }
     });
+
+    // useEffect(() => {
+    //     if (loadingDataInitByFilter)
+    //         submitForm();
+    // }, [])
 
     // const SignupSchema = Yup.object().shape({
     //     name: Yup.string().min(2, 'Too Short!').max(70, 'Too Long!').required('Required'),
@@ -87,6 +104,7 @@ const DForms: React.FC<DFormsProps> = ({
             >
                 <Form>
                     <div className="grid w-full grid-cols-2 gap-2 sm:grid-cols-3">
+                        <AutoSubmit loadingDataInitByFilter={loadingDataInitByFilter} />
                         {parameter?.map((item) => {
                             if (!filedNotShow.includes(item.name)) {
                                 const _header = labaleNameList.find((x) => x.label == item.name)?.value;

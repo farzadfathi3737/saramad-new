@@ -48,7 +48,7 @@ const StackedCardex = ({ id, name }: { id?: string, name?: string }) => {
                     {model && (
                         <Demo
                             model={model}
-                            //loadingDataInit={shareId !== ''}
+                            loadingDataInitByFilter={shareId !== ''}
                             loadingDataInit={false}
                             isEditable={false}
                             isDeleteable={false}

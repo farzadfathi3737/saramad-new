@@ -134,6 +134,7 @@ export interface IFilterData {
 export interface DatatableProps {
     model: IDataModel;
     loadingDataInit?: boolean;
+    loadingDataInitByFilter?: boolean;
     isPagination?: boolean;
     isRtl?: boolean;
     isShowHideCol?: boolean;

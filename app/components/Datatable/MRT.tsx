@@ -61,6 +61,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     staticParams = null,
     isShowSearchForm = true,
     loadingDataInit = true,
+    loadingDataInitByFilter = false,
     hideColList = ['id'],
     labaleNameList = [],
     changeColumnName = [],
@@ -603,14 +604,15 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                 setColumns(columns);
             }
 
-            if (loadingDataInit) {
+            if (!loadingDataInitByFilter && loadingDataInit) {
                 FetchData();
             }
+
+
         }
     }, [model, staticParams]);
 
     useEffect(() => {
-        console.log('okokoko')
         if (Object.keys(filterdata)?.length > 0) {
             FetchData();
         }
@@ -907,6 +909,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                                             cancelBtnText="حذف فیلتر"
                                             staticParams={staticParams}
                                             labaleNameList={labaleNameList}
+                                            loadingDataInitByFilter={loadingDataInitByFilter}
                                         />
                                     </div>
                                 </div>
@@ -947,6 +950,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                                                     cancelBtnText="حذف فیلتر"
                                                     staticParams={staticParams}
                                                     labaleNameList={labaleNameList}
+                                                    loadingDataInitByFilter={loadingDataInitByFilter}
                                                 />
                                             </div>
                                         </AnimateHeight>
