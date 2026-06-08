@@ -94,9 +94,10 @@ interface CustomSelectProps extends FieldProps {
     onChange?: any;
     className?: string;
     haveClear?: boolean;
+    autoSelectFirst?: boolean;
 }
 
-const FSelectField: React.FC<CustomSelectProps> = ({ field, form, options, label, onChange, className, placeholder = '', isMulti = false, disabled = false, haveClear = true }) => {
+const FSelectField: React.FC<CustomSelectProps> = ({ field, form, options, label, onChange, className, placeholder = '', isMulti = false, disabled = false, haveClear = true, autoSelectFirst = false }) => {
 
     const [selectedValue, setSelectedValue] = useState<any>(
         isMulti
@@ -110,6 +111,15 @@ const FSelectField: React.FC<CustomSelectProps> = ({ field, form, options, label
             : field.value ? options?.find((option) => option.value === field.value) : null;
         setSelectedValue(newValue);
     }, [field.value, options, isMulti]);
+
+    useEffect(() => {
+        if (autoSelectFirst && !isMulti && options.length > 0 && !field.value) {
+            const first = options[0];
+            form.setFieldValue(field.name, first.value);
+            setSelectedValue(first);
+            onChange && onChange(first);
+        }
+    }, [options]);
 
     const handleChange = (selectedOption: any) => {
         const value = isMulti ? selectedOption.map((option: OptionType) => option.value) : selectedOption?.value;
