@@ -198,6 +198,7 @@ const ChangeCompany = () => {
                                                     isSearchable={false}
                                                     isDefaultValue={true} 
                                                     staticParams={staticParams}
+                                                    autoSelectFirst 
                                                     //value={initData?.fiscalYear}
                                                     onChange={(val: IOptionType) => {
                                                         console.log(val);

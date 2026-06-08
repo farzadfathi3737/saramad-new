@@ -133,7 +133,18 @@ const FSelectModelField: React.FC<CustomSelectProps> = ({
         if (options.length > 0) {
             if (value || field.value) {
                 const foundOption = options.find((x: IOptionType) => x.value == field.value);
-                setSelectedValue(foundOption);
+                if (foundOption) {
+                    setSelectedValue(foundOption);
+                } else {
+                    if (isDefaultValue || autoSelectFirst) {
+                        setSelectedValue(options[0]);
+                        form.setFieldValue(field.name, options[0]?.value);
+                        if (onChange) onChange(options[0]);
+                    } else {
+                        setSelectedValue(null);
+                        form.setFieldValue(field.name, '');
+                    }
+                }
             } else {
                 if (isDefaultValue || autoSelectFirst) {
                     setSelectedValue(options[0]);
