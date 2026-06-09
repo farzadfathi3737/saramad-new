@@ -68,7 +68,6 @@ const FTextField: React.FC<CustomInputProps> = ({ label, field, type = 'text', f
                             onBlur={handleNumberBlur}
                             onKeyDown={handleNumberKeyDown}
                             className={`form-input ${classNameValue}`}
-                            dir="ltr"
                             {...(other as any)}
                         />
                     ) : (
