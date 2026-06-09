@@ -1,0 +1,10 @@
+services:
+  app:
+    image: saramad-new:latest
+    container_name: saramad-new
+    restart: unless-stopped
+    ports:
+      - "3100:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_EXTERNAL_API=${NEXT_PUBLIC_EXTERNAL_API}
