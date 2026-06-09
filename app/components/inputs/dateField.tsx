@@ -14,11 +14,6 @@ interface CustomInputProps extends FieldProps {
     maxDate?: string;
 }
 
-const isValidPersianDate = (value: string): boolean => {
-    if (!value) return false;
-    return /^\d{4}\/\d{2}\/\d{2}$/.test(value);
-};
-
 const FDateField: React.FC<CustomInputProps> = ({ label, field, type, form, required = false, minDate, maxDate, ...other }) => {
 
     const clear = () => {
