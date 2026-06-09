@@ -148,7 +148,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
     const handlerDelete = async (id: string) => {
         setIsDeleting(true);
         //console.log(model);
-        const res = await fetch(model?.delete?.url.replace('{id}', id) as string, {
+        const res = await apiFetch(model?.delete?.url.replace('{id}', id) as string, {
             method: 'delete',
             headers: {
                 'Content-Type': 'application/json',
@@ -317,11 +317,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         const fetchUrl = `${model.list?.url}/export/excel`;
 
         try {
-            // const res = await apiFetch(fetchUrl, {
-            //     method: "post"
-            // });
-
-            const res = await fetch(fetchUrl, {
+            const res = await apiFetch(fetchUrl, {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
@@ -401,7 +397,7 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
         const fetchUrl = `${model.list?.url}/export/excel${filteData != '' ? `?${filteData}` : ''}`;
 
         try {
-            const res = await fetch(fetchUrl, {
+            const res = await apiFetch(fetchUrl, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json',

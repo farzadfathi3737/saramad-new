@@ -1,7 +1,5 @@
-import { InitialState } from '@/interface/dataModel';
+import { InitialState, ITabData } from '@/interface/dataModel';
 import { createSlice } from '@reduxjs/toolkit';
-import { number } from 'react-i18next/icu.macro';
-import { ITabData } from '../interface/dataModel';
 
 const initialState: InitialState = {
     company: {

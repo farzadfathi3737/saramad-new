@@ -59,22 +59,16 @@ async function proxyHandler(req: NextRequest, path: string) {
 
     console.log(`🔁 externalRes.status = ${externalRes.status}`)
 
+    let refreshedToken: Token | null = null
+
     if (externalRes.status === 401 && token.refreshToken) {
         console.log('⚠️ Access token expired, trying to refresh...')
 
-        const newToken = await refreshToken(token)
-        console.log('🔄 Refresh result:', newToken)
+        refreshedToken = await refreshToken(token)
+        console.log('🔄 Refresh result:', refreshedToken)
 
-        if (newToken) {
-            const res = NextResponse.next()
-            res.cookies.set('token', JSON.stringify(newToken), {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                path: '/',
-            })
-
-            headers['Authorization'] = `Bearer ${newToken.accessToken}`
+        if (refreshedToken) {
+            headers['Authorization'] = `Bearer ${refreshedToken.accessToken}`
             console.log('🔁 Retrying original request...')
             externalRes = await fetch(targetUrl, { method, headers, body })
         } else {
@@ -87,7 +81,18 @@ async function proxyHandler(req: NextRequest, path: string) {
 
     const text = await externalRes.text()
     console.log('----/> ', text)
-    return new NextResponse(text, { status: externalRes.status })
+    const response = new NextResponse(text, { status: externalRes.status })
+
+    if (refreshedToken) {
+        response.cookies.set('token', JSON.stringify(refreshedToken), {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+        })
+    }
+
+    return response
 }
 
 
