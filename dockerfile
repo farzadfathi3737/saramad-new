@@ -87,7 +87,7 @@ WORKDIR /app
 #COPY package*.json ./
 
 # Install dependencies
-#RUN npm install 
+RUN npm install 
 
 # RUN npm config set registry https://nexus.kartio.ir/repository/npm-proxy/ && \
 # rm -rf package-lock.json && \
