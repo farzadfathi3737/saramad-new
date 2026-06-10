@@ -26,7 +26,6 @@ jobs:
           docker build \
             --build-arg NEXT_PUBLIC_EXTERNAL_API=${{ secrets.NEXT_PUBLIC_EXTERNAL_API }} \
             -t saramad-new:latest \
-            -f dockerfile \
             .
 
       - name: Export image as tar
