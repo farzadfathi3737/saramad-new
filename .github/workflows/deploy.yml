@@ -15,6 +15,9 @@ jobs:
       contains(github.event.head_commit.message, 'action: qa')
 
     steps:
+      - name: Ping server
+        run: ping -c 4 ${{ secrets.SSH_HOST }}
+
       - name: Checkout code
         uses: actions/checkout@v4
 
