@@ -426,9 +426,9 @@ export default function TabsWithRouting() {
                         <div
                             key={tab.id}
                             onClick={() => handleTabClick(tab.id)}
-                            className={`pr-4 pl-2 py-2 rounded-t-lg border border-b transition-all border-gray-300 bg-gray-100 dark:bg-gray-800 ${appConf.activeTab === tab.id
-                                ? "border-gray-300 text-gray-700 bg-white border-b border-b-white"
-                                : "border hover:text-black hover:bg-gray-200"
+                            className={`pr-4 pl-2 py-2 rounded-t-lg border transition-all cursor-pointer select-none ${appConf.activeTab === tab.id
+                                ? "border-[var(--color-border)] bg-[var(--color-panel-bg)] text-gray-700 dark:text-gray-200 border-b-[var(--color-panel-bg)]"
+                                : "border-[var(--color-border)] bg-[var(--color-page-bg)] text-gray-500 dark:text-gray-400 hover:bg-[var(--color-panel-bg)] hover:text-gray-700 dark:hover:text-gray-200"
                                 }`}
                         >
                             {tab.id == 'dashboard' ? <div className="flex h-full ">
@@ -454,7 +454,7 @@ export default function TabsWithRouting() {
             </div>
 
             {/* محتوای تب فعال */}
-            <div className="bg-white rounded-b-md shadow border border-gray-300">
+            <div className="rounded-b-md shadow" style={{ backgroundColor: 'var(--color-panel-bg)', borderColor: 'var(--color-border)', border: '1px solid var(--color-border)' }}>
                 <div className="space-y-3">
                     {_tabs?.map((tab) => (
                         <div

@@ -11,6 +11,31 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ── Design tokens ─────────────────────────────────────────── */
+:root {
+  --color-primary:   #2691bf;
+  --color-accent:    #2bb1aa;
+  --color-page-bg:   #f1f5f9;
+  --color-panel-bg:  #ffffff;
+  --color-header-bg: #ffffff;
+  --color-border:    #e2e8f0;
+  --color-text:      #1e293b;
+  --color-text-mute: #64748b;
+  --color-input-bg:  #ffffff;
+  --color-th-bg:     #e6e6e6;
+}
+
+.dark {
+  --color-page-bg:   #0f172a;
+  --color-panel-bg:  #1e293b;
+  --color-header-bg: #1e293b;
+  --color-border:    #334155;
+  --color-text:      #e2e8f0;
+  --color-text-mute: #94a3b8;
+  --color-input-bg:  #1e293b;
+  --color-th-bg:     #334155;
+}
+
 @theme {
   --color-primary-50: #2bb1aa;
 }
@@ -19,46 +44,17 @@
   font-family: "iranyekan";
 }
 
+body {
+  background-color: var(--color-page-bg);
+  color: var(--color-text);
+}
+
 .bg-Custom {
   background: linear-gradient(
     45deg,
     rgba(38, 145, 191, 1) 0%,
     rgba(15, 51, 122, 1) 100%
   );
-
-  /* background: #2bb1aa;
-  background: -moz-linear-gradient(
-    bottom left,
-    rgba(42, 176, 170, 1) 0%,
-    rgba(21, 69, 108, 1) 100%
-  );
-  background: -webkit-gradient(
-    linear,
-    left bottom,
-    right top,
-    color-stop(0%, rgba(42, 176, 170, 1)),
-    color-stop(100%, rgba(21, 69, 108, 1))
-  );
-  background: -webkit-linear-gradient(
-    bottom left,
-    rgba(42, 176, 170, 1) 0%,
-    rgb(21, 69, 108) 100%
-  );
-  background: -o-linear-gradient(
-    bottom left,
-    rgba(42, 176, 170, 1) 0%,
-    rgba(21, 69, 108, 1) 100%
-  );
-  background: -ms-linear-gradient(
-    bottom left,
-    rgba(42, 176, 170, 1) 0%,
-    rgba(21, 69, 108, 1) 100%
-  );
-  background: linear-gradient(
-    to top right,
-    rgba(42, 176, 170, 1) 0%,
-    rgba(21, 69, 108, 1) 100%
-  ); */
 }
 
 @layer base {
@@ -68,6 +64,7 @@
   }
 }
 
+/* ── Buttons ───────────────────────────────────────────────── */
 .btn-outline {
   @apply bg-[#2691bf] text-white transition-colors duration-200 hover:bg-[#1e7aa0];
 }
@@ -88,16 +85,33 @@
   @apply border-orange-500 bg-orange-500 text-white shadow-orange-700;
 }
 
-/* Form */
+/* ── Form inputs ───────────────────────────────────────────── */
 .form-input,
 .form-textarea,
 .form-select,
 .form-multiselect {
-  @apply h-12 w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm text-black;
+  @apply h-12 w-full rounded-xl border px-4 py-2 text-sm;
+  background-color: var(--color-input-bg);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+/* ── Panel ─────────────────────────────────────────────────── */
+.panel {
+  background-color: var(--color-panel-bg);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 div#load_screen {
-  background: #fff;
+  background: var(--color-panel-bg);
   opacity: 1;
   position: fixed;
   z-index: 999999;

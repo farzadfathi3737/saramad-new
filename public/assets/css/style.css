@@ -9,9 +9,19 @@
   border-radius: 0px;
 }
 
+/* ── Mantine table ─────────────────────────────────────────── */
 .mantine-Table-th {
-  /* background-color: #09a0b129 !important; */
-  background-color: #e6e6e6 !important;
+  background-color: var(--color-th-bg) !important;
+  color: var(--color-text) !important;
+}
+
+.mantine-Table-td {
+  color: var(--color-text);
+  background-color: var(--color-panel-bg);
+}
+
+.mantine-Table-tr:hover .mantine-Table-td {
+  background-color: color-mix(in srgb, var(--color-primary) 8%, var(--color-panel-bg)) !important;
 }
 
 .space-y-cc,
@@ -33,7 +43,7 @@ body {
   padding-bottom: 0px !important;
 }
 
-/* ************ mrt-table ************** */
+/* ── mrt-table ─────────────────────────────────────────────── */
 .mrt-table-cell {
   right: 0;
 }
@@ -58,49 +68,16 @@ body {
     color-mix(in srgb, var(--mantine-color-gray-outline), transparent 50%) inset !important;
 }
 
-.columnColor_FFFACD {
-  background-color: #fffacd !important;
-}
-
-.columnColor_F5DEB3 {
-  background-color: #f5deb3 !important;
-}
-
-.columnColor_E3E3E3 {
-  background-color: #e3e3e3 !important;
-}
-
-.columnColor_E0FFFF {
-  background-color: #e0ffff !important;
-}
-
-.columnColor_FAEBD7 {
-  background-color: #faebd7 !important;
-}
-
-.columnColor_D3D3D3 {
-  background-color: #d3d3d3 !important;
-}
-
-.columnColor_E0FFFF {
-  background-color: #e0ffff !important;
-}
-
-.columnColor_BCF7B7 {
-  background-color: #bcf7b7 !important;
-}
-
-.columnColor_FAF0E6 {
-  background-color: #faf0e6 !important;
-}
-
-.columnColor_FFDAB9 {
-  background-color: #ffdab9 !important;
-}
-
-/* .columnColorGroupHeader1 {
-    background-color: rgba(42, 176, 170, 1) !important;
-} */
+/* ── Column colors ─────────────────────────────────────────── */
+.columnColor_FFFACD { background-color: #fffacd !important; }
+.columnColor_F5DEB3 { background-color: #f5deb3 !important; }
+.columnColor_E3E3E3 { background-color: #e3e3e3 !important; }
+.columnColor_E0FFFF { background-color: #e0ffff !important; }
+.columnColor_FAEBD7 { background-color: #faebd7 !important; }
+.columnColor_D3D3D3 { background-color: #d3d3d3 !important; }
+.columnColor_BCF7B7 { background-color: #bcf7b7 !important; }
+.columnColor_FAF0E6 { background-color: #faf0e6 !important; }
+.columnColor_FFDAB9 { background-color: #ffdab9 !important; }
 
 .columnColorStyle {
   border-left: 1px solid lightgray;
@@ -114,4 +91,87 @@ body {
 .mantine-Table-thead .fixed {
   position: sticky;
   top: 100px;
+}
+
+/* ── Sidebar ───────────────────────────────────────────────── */
+.mantine-cdbiq {
+  direction: rtl;
+  font-family: iranyekan !important;
+}
+
+.selectHeder div {
+  background-color: #ceebee;
+  border-radius: 15px;
+  border: none;
+  color: #0a9cac;
+}
+
+.selectHeder div span {
+  width: 0px;
+}
+
+.selectHeder svg {
+  color: #0a9cac;
+}
+
+.css-1nmdiq5-menu {
+  z-index: 99999 !important;
+}
+
+.sidebar:hover .nav-item > a {
+  @apply w-auto;
+}
+
+.sidebar .nav-item > button,
+.sidebar .nav-item > a {
+  @apply flex w-full items-center justify-between overflow-hidden rounded-lg p-2.5 whitespace-nowrap hover:bg-[#000]/[0.08];
+}
+
+.sidebar .nav-item > button.active,
+.sidebar .nav-item > a.active {
+  @apply bg-[#fff] text-[#089bab];
+}
+
+.sidebar .nav-item > button.active > div > span,
+.sidebar .nav-item > a.active > div > span {
+  @apply dark:!text-gray-800;
+}
+
+.sidebar ul.sub-menu li button,
+.sidebar ul.sub-menu li a {
+  @apply hover:text-primary-50 hover:before:!bg-primary-50 flex w-full items-center px-6 py-2.5 before:h-0.5 before:w-2 before:rounded before:bg-gray-300 hover:bg-white/10 ltr:before:mr-0 rtl:before:ml-0;
+}
+
+.sidebar ul.sub-menu li button.active,
+.sidebar ul.sub-menu li a.active {
+  @apply text-primary-50 before:bg-primary-50;
+}
+
+.sidebar .nav-item a div:first-child svg,
+.sidebar .nav-item button div:first-child svg {
+  @apply h-5 w-5;
+}
+
+/* ── Dashboard panel ───────────────────────────────────────── */
+.dashboard .panel {
+  @apply relative rounded-xl p-5 shadow;
+  background-color: var(--color-panel-bg);
+  --tw-shadow:
+    0 0px 1px 0 var(--tw-shadow-color, #0000001a),
+    0 1px 2px -1px var(--tw-shadow-color, #0000001a);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
 }
