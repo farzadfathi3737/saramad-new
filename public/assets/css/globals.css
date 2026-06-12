@@ -128,3 +128,97 @@ div#load_screen .loader {
   align-items: center;
   height: 100vh;
 }
+
+/* ════════════════════════════════════════════════════════════
+   GLOBAL DARK MODE OVERRIDES
+   These remap common hard-coded light utility classes when the
+   .dark class is active. Opacity variants (bg-white/20) and
+   text-white are intentionally NOT matched, so overlays on
+   colored headers keep their look.
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Surfaces: white / light gray → dark panels ────────────── */
+.dark .bg-white {
+  background-color: var(--color-panel-bg) !important;
+}
+
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+  background-color: var(--color-page-bg) !important;
+}
+
+.dark .bg-gray-200,
+.dark .bg-gray-300 {
+  background-color: #334155 !important;
+}
+
+.dark .hover\:bg-gray-100:hover,
+.dark .hover\:bg-gray-50:hover {
+  background-color: #334155 !important;
+}
+
+.dark .hover\:bg-gray-200:hover {
+  background-color: #475569 !important;
+}
+
+/* ── Text: dark → light ────────────────────────────────────── */
+.dark .text-black,
+.dark .text-gray-900 {
+  color: #e2e8f0 !important;
+}
+
+.dark .text-gray-800,
+.dark .text-gray-700 {
+  color: #cbd5e1 !important;
+}
+
+.dark .text-gray-600,
+.dark .text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+/* ── Borders ───────────────────────────────────────────────── */
+.dark .border-gray-200,
+.dark .border-gray-300 {
+  border-color: #334155 !important;
+}
+
+.dark .border-gray-400 {
+  border-color: #475569 !important;
+}
+
+.dark .border-b-gray-200,
+.dark .border-b-gray-300 {
+  border-bottom-color: #334155 !important;
+}
+
+.dark .border-l-gray-400 {
+  border-left-color: #475569 !important;
+}
+
+/* ── Gradient stops (cards using from-white to-slate-50) ───── */
+.dark .from-white {
+  --tw-gradient-from: #1e293b var(--tw-gradient-from-position) !important;
+}
+
+.dark .to-white {
+  --tw-gradient-to: #1e293b var(--tw-gradient-to-position) !important;
+}
+
+.dark .to-slate-50 {
+  --tw-gradient-to: #1e293b var(--tw-gradient-to-position) !important;
+}
+
+.dark .via-white {
+  --tw-gradient-via: #1e293b var(--tw-gradient-via-position) !important;
+}
+
+/* ── Color-coded info chips (light pastel bg) stay readable ── */
+.dark .bg-blue-100,
+.dark .bg-purple-100,
+.dark .bg-green-100,
+.dark .bg-red-100,
+.dark .bg-amber-100,
+.dark .bg-orange-100 {
+  background-color: rgba(148, 163, 184, 0.15) !important;
+}
