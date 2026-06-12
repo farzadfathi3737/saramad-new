@@ -36,6 +36,7 @@ const FswitchField: React.FC<CustomInputProps> = ({ label, field, value = null, 
                         type="button"
                         onClick={() => !disabled && handlerClick()}
                         disabled={disabled}
+                        dir="ltr"
                         style={{ padding: 0, borderRadius: '9999px' }}
                         className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 ${disabled
                                 ? 'bg-gray-300 cursor-not-allowed opacity-50'
@@ -45,7 +46,8 @@ const FswitchField: React.FC<CustomInputProps> = ({ label, field, value = null, 
                             }`}
                     >
                         <span
-                            className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-transform duration-200 ease-in-out ${active ? 'translate-x-5' : 'translate-x-0.5'}`}
+                            className={`inline-block h-5 w-5 transform rounded-full shadow-md transition-transform duration-200 ease-in-out ${active ? 'translate-x-5' : 'translate-x-0.5'}`}
+                            style={{ backgroundColor: '#ffffff' }}
                         />
                     </button>
                     <span className={`text-sm ${disabled ? 'text-gray-400 dark:text-slate-500' : active ? 'text-gray-700 dark:text-slate-200' : 'text-gray-500 dark:text-slate-400'}`}>
