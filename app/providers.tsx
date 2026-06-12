@@ -1,37 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import store from '@/store';
 import { Provider } from 'react-redux';
 import { MantineProvider, createTheme } from '@mantine/core';
 
 const theme = createTheme({
     components: {
-        // Button: {
-        //     defaultProps: {
-        //         color: 'custom',
-        //     },
-        //     styles: {
-        //         root: {
-        //             '&:hover': {
-        //                 backgroundColor: '#162940',
-        //             },
-        //         },
-        //     },
-        // },
-        // ActionIcon: {
-        //     defaultProps: {
-        //         color: 'custom',
-        //     },
-        //     styles: {
-        //         root: {
-        //             backgroundColor: '#1B334D',
-        //             color: '#ffffff',
-        //             '&:hover': {
-        //                 backgroundColor: '#162940',
-        //             },
-        //         },
-        //     },
-        // },
         Pagination: {
             styles: {
                 control: {
@@ -54,10 +29,34 @@ const theme = createTheme({
     },
 });
 
+function ThemeAwareMantineProvider({ children }: { children: React.ReactNode }) {
+    const [colorScheme, setColorScheme] = useState<'light' | 'dark'>('light');
+
+    useEffect(() => {
+        const html = document.documentElement;
+
+        const update = () => {
+            setColorScheme(html.classList.contains('dark') ? 'dark' : 'light');
+        };
+
+        update();
+
+        const observer = new MutationObserver(update);
+        observer.observe(html, { attributes: true, attributeFilter: ['class'] });
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <MantineProvider theme={theme} forceColorScheme={colorScheme}>
+            {children}
+        </MantineProvider>
+    );
+}
+
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <Provider store={store}>
-            <MantineProvider theme={theme}>{children}</MantineProvider>
+            <ThemeAwareMantineProvider>{children}</ThemeAwareMantineProvider>
         </Provider>
     );
 }
