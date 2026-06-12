@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local install artifact (project uses private registry; not tracked)
+package-lock.json
