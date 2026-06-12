@@ -13,27 +13,35 @@
 
 /* ── Design tokens ─────────────────────────────────────────── */
 :root {
-  --color-primary:   #2691bf;
-  --color-accent:    #2bb1aa;
-  --color-page-bg:   #f1f5f9;
-  --color-panel-bg:  #ffffff;
-  --color-header-bg: #ffffff;
-  --color-border:    #e2e8f0;
-  --color-text:      #1e293b;
-  --color-text-mute: #64748b;
-  --color-input-bg:  #ffffff;
-  --color-th-bg:     #e6e6e6;
+  --color-primary:     #2691bf;
+  --color-accent:      #2bb1aa;
+  --color-page-bg:     #f1f5f9;
+  --color-panel-bg:    #ffffff;
+  --color-header-bg:   #ffffff;
+  --color-surface-2:   #eef2f7;
+  --color-border:      #e2e8f0;
+  --color-border-2:    #cbd5e1;
+  --color-text-strong: #0f172a;
+  --color-text:        #1e293b;
+  --color-text-soft:   #475569;
+  --color-text-mute:   #64748b;
+  --color-input-bg:    #ffffff;
+  --color-th-bg:       #e6e6e6;
 }
 
 .dark {
-  --color-page-bg:   #0f172a;
-  --color-panel-bg:  #1e293b;
-  --color-header-bg: #1e293b;
-  --color-border:    #334155;
-  --color-text:      #e2e8f0;
-  --color-text-mute: #94a3b8;
-  --color-input-bg:  #1e293b;
-  --color-th-bg:     #334155;
+  --color-page-bg:     #0f172a;
+  --color-panel-bg:    #1e293b;
+  --color-header-bg:   #1e293b;
+  --color-surface-2:   #0f172a;
+  --color-border:      #334155;
+  --color-border-2:    #475569;
+  --color-text-strong: #f1f5f9;
+  --color-text:        #e2e8f0;
+  --color-text-soft:   #cbd5e1;
+  --color-text-mute:   #94a3b8;
+  --color-input-bg:    #1e293b;
+  --color-th-bg:       #334155;
 }
 
 @theme {
@@ -130,90 +138,82 @@ div#load_screen .loader {
 }
 
 /* ════════════════════════════════════════════════════════════
-   GLOBAL DARK MODE OVERRIDES
-   These remap common hard-coded light utility classes when the
-   .dark class is active. Opacity variants (bg-white/20) and
-   text-white are intentionally NOT matched, so overlays on
-   colored headers keep their look.
+   GLOBAL THEME NORMALIZATION (token-driven)
+   Both light and dark resolve the same hard-coded utility
+   classes through the same CSS variables, so the two themes are
+   symmetric and internally consistent. Tokens flip on .dark.
+   Opacity variants (bg-white/20) and text-white are NOT matched,
+   so overlays on colored headers keep their look.
    ════════════════════════════════════════════════════════════ */
 
-/* ── Surfaces: white / light gray → dark panels ────────────── */
-.dark .bg-white {
+/* ── Surfaces ──────────────────────────────────────────────── */
+.bg-white {
   background-color: var(--color-panel-bg) !important;
 }
 
-.dark .bg-gray-50,
-.dark .bg-gray-100 {
+.bg-gray-50,
+.bg-gray-100 {
   background-color: var(--color-page-bg) !important;
 }
 
-.dark .bg-gray-200,
-.dark .bg-gray-300 {
-  background-color: #334155 !important;
+.bg-gray-200,
+.bg-gray-300 {
+  background-color: var(--color-surface-2) !important;
 }
 
-.dark .hover\:bg-gray-100:hover,
-.dark .hover\:bg-gray-50:hover {
-  background-color: #334155 !important;
+/* ── Text ──────────────────────────────────────────────────── */
+.text-black,
+.text-gray-900 {
+  color: var(--color-text-strong) !important;
 }
 
-.dark .hover\:bg-gray-200:hover {
-  background-color: #475569 !important;
+.text-gray-800,
+.text-gray-700 {
+  color: var(--color-text) !important;
 }
 
-/* ── Text: dark → light ────────────────────────────────────── */
-.dark .text-black,
-.dark .text-gray-900 {
-  color: #e2e8f0 !important;
+.text-gray-600 {
+  color: var(--color-text-soft) !important;
 }
 
-.dark .text-gray-800,
-.dark .text-gray-700 {
-  color: #cbd5e1 !important;
-}
-
-.dark .text-gray-600,
-.dark .text-gray-500 {
-  color: #94a3b8 !important;
+.text-gray-500 {
+  color: var(--color-text-mute) !important;
 }
 
 /* ── Borders ───────────────────────────────────────────────── */
-.dark .border-gray-200,
-.dark .border-gray-300 {
-  border-color: #334155 !important;
+.border-gray-200,
+.border-gray-300 {
+  border-color: var(--color-border) !important;
 }
 
-.dark .border-gray-400 {
-  border-color: #475569 !important;
+.border-gray-400 {
+  border-color: var(--color-border-2) !important;
 }
 
-.dark .border-b-gray-200,
-.dark .border-b-gray-300 {
-  border-bottom-color: #334155 !important;
+.border-b-gray-200,
+.border-b-gray-300 {
+  border-bottom-color: var(--color-border) !important;
 }
 
-.dark .border-l-gray-400 {
-  border-left-color: #475569 !important;
+.border-l-gray-400 {
+  border-left-color: var(--color-border-2) !important;
 }
 
 /* ── Gradient stops (cards using from-white to-slate-50) ───── */
-.dark .from-white {
-  --tw-gradient-from: #1e293b var(--tw-gradient-from-position) !important;
+.from-white {
+  --tw-gradient-from: var(--color-panel-bg) var(--tw-gradient-from-position) !important;
 }
 
-.dark .to-white {
-  --tw-gradient-to: #1e293b var(--tw-gradient-to-position) !important;
+.to-white,
+.to-slate-50 {
+  --tw-gradient-to: var(--color-panel-bg) var(--tw-gradient-to-position) !important;
 }
 
-.dark .to-slate-50 {
-  --tw-gradient-to: #1e293b var(--tw-gradient-to-position) !important;
+.via-white {
+  --tw-gradient-via: var(--color-panel-bg) var(--tw-gradient-via-position) !important;
 }
 
-.dark .via-white {
-  --tw-gradient-via: #1e293b var(--tw-gradient-via-position) !important;
-}
-
-/* ── Color-coded info chips (light pastel bg) stay readable ── */
+/* ── Color-coded info chips: keep pastel in light, mute in dark ── */
 .dark .bg-blue-100,
 .dark .bg-purple-100,
 .dark .bg-green-100,
@@ -221,4 +221,14 @@ div#load_screen .loader {
 .dark .bg-amber-100,
 .dark .bg-orange-100 {
   background-color: rgba(148, 163, 184, 0.15) !important;
+}
+
+/* ── Hover surfaces (dark only — light hovers already fine) ─── */
+.dark .hover\:bg-gray-100:hover,
+.dark .hover\:bg-gray-50:hover {
+  background-color: #334155 !important;
+}
+
+.dark .hover\:bg-gray-200:hover {
+  background-color: #475569 !important;
 }
