@@ -81,41 +81,36 @@
 }
 
 /* ── react-select dark mode ────────────────────────────────── */
-.dark .css-1nmdiq5-menu,
-.dark [class$="-menu"],
-.dark [class*="-menu "] {
+/* NOTE: avoid attribute selectors with a literal space in the
+   value (e.g. [class*="-menu "]) — the bundled cssnano minifier
+   crashes parsing the escaped space. Use space-less contains. */
+.dark [class*="-menu"] {
   background-color: #1e293b !important;
   border-color: #334155 !important;
   color: #e2e8f0 !important;
 }
 
-.dark [class$="-option"],
-.dark [class*="-option "] {
+.dark [class*="-option"] {
   background-color: #1e293b !important;
   color: #e2e8f0 !important;
 }
 
-.dark [class$="-option"]:hover,
-.dark [class*="-option "]:hover,
-.dark [class$="-option--is-focused"],
+.dark [class*="-option"]:hover,
 .dark [class*="-option--is-focused"] {
   background-color: #334155 !important;
 }
 
-.dark [class$="-control"],
-.dark [class*="-control "] {
+.dark [class*="-control"] {
   background-color: var(--color-input-bg) !important;
   border-color: var(--color-border) !important;
   color: var(--color-text) !important;
 }
 
-.dark [class$="-singleValue"],
-.dark [class*="-singleValue "] {
+.dark [class*="-singleValue"] {
   color: var(--color-text) !important;
 }
 
-.dark [class$="-placeholder"],
-.dark [class*="-placeholder "] {
+.dark [class*="-placeholder"] {
   color: var(--color-text-mute) !important;
 }
 
