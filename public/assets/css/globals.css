@@ -44,6 +44,23 @@
   --color-th-bg:       #334155;
 }
 
+/* Force a subtree to always resolve light tokens (e.g. branded
+   auth screen) regardless of the OS/.dark setting. */
+.force-light {
+  --color-page-bg:     #f1f5f9;
+  --color-panel-bg:    #ffffff;
+  --color-header-bg:   #ffffff;
+  --color-surface-2:   #eef2f7;
+  --color-border:      #e2e8f0;
+  --color-border-2:    #cbd5e1;
+  --color-text-strong: #0f172a;
+  --color-text:        #1e293b;
+  --color-text-soft:   #475569;
+  --color-text-mute:   #64748b;
+  --color-input-bg:    #ffffff;
+  --color-th-bg:       #e6e6e6;
+}
+
 @theme {
   --color-primary-50: #2bb1aa;
 }

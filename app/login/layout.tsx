@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="relative min-h-screen w-full overflow-hidden" style={{ background: 'linear-gradient(to top right, #2ab0aa, #15456c)' }}>
+        <div className="force-light relative min-h-screen w-full overflow-hidden" style={{ background: 'linear-gradient(to top right, #2ab0aa, #15456c)' }}>
             {/* متحرک Background Elements */}
             <div className="absolute inset-0 opacity-20">
                 <div className="absolute top-[-30%] right-[-10%] w-80 h-80 rounded-full blur-3xl animate-blob" style={{ backgroundColor: 'rgba(42, 176, 170, 0.3)' }}></div>
