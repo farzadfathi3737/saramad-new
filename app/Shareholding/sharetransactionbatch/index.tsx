@@ -601,10 +601,10 @@ const Session = () => {
                                                     // )}
                                                     detailPanel={(row: any) => {
                                                         return (
-                                                            <div className="min-h-[130px] bg-white border-t border-gray-200 p-4">
+                                                            <div className="min-h-[130px] bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700 p-4">
                                                                 <div className="flex flex-wrap gap-3 justify-start">
                                                                     {/* اصلاح بها */}
-                                                                    <div className="w-[230px] flex flex-col rounded-lg border border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                                                                    <div className="w-[230px] flex flex-col rounded-lg border border-slate-200 dark:border-slate-700 bg-gradient-to-b from-white to-slate-50 dark:from-slate-800 dark:to-slate-800 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
                                                                         <div className="bg-gradient-to-r from-slate-600 to-slate-700 px-3 py-2 text-center border-b border-slate-200">
                                                                             <h3 className="text-white font-semibold text-[11px] flex items-center justify-center gap-1.5">
                                                                                 <i className="fa-duotone fa-solid fa-coins text-sm" />
@@ -638,7 +638,7 @@ const Session = () => {
                                                                     </div>
 
                                                                     {/* تخفیف کارمزد */}
-                                                                    <div className="w-[230px] flex flex-col rounded-lg border border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                                                                    <div className="w-[230px] flex flex-col rounded-lg border border-slate-200 dark:border-slate-700 bg-gradient-to-b from-white to-slate-50 dark:from-slate-800 dark:to-slate-800 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
                                                                         <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-3 py-2 text-center border-b border-slate-200">
                                                                             <h3 className="text-white font-semibold text-[11px] flex items-center justify-center gap-1.5">
                                                                                 <i className="fa-duotone fa-solid fa-percent text-sm" />
@@ -672,7 +672,7 @@ const Session = () => {
                                                                     </div>
 
                                                                     {/* ویرایش کارمزدها */}
-                                                                    <div className="w-[290px] flex flex-col rounded-lg border border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                                                                    <div className="w-[290px] flex flex-col rounded-lg border border-slate-200 dark:border-slate-700 bg-gradient-to-b from-white to-slate-50 dark:from-slate-800 dark:to-slate-800 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
                                                                         <div className="bg-gradient-to-r from-amber-600 to-amber-700 px-3 py-2 text-center border-b border-slate-200">
                                                                             <h3 className="text-white font-semibold text-[11px] flex items-center justify-center gap-1.5">
                                                                                 <i className="fa-duotone fa-solid fa-pen-to-square text-sm" />
@@ -706,7 +706,7 @@ const Session = () => {
                                                                     </div>
 
                                                                     {/* سایر */}
-                                                                    <div className="w-[280px] flex flex-col rounded-lg border border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                                                                    <div className="w-[280px] flex flex-col rounded-lg border border-slate-200 dark:border-slate-700 bg-gradient-to-b from-white to-slate-50 dark:from-slate-800 dark:to-slate-800 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
                                                                         <div className="bg-gradient-to-r from-teal-600 to-teal-700 px-3 py-2 text-center border-b border-slate-200">
                                                                             <h3 className="text-white font-semibold text-[11px] flex items-center justify-center gap-1.5">
                                                                                 <i className="fa-duotone fa-solid fa-ellipsis text-sm" />
@@ -771,7 +771,7 @@ const Session = () => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                <Dialog.Panel className="rounded-xl bg-white dark:bg-slate-800 shadow-2xl overflow-hidden">
                                                                     <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 px-6 py-4">
                                                                         <div className="flex items-center justify-between">
                                                                             <div className="flex items-center gap-3">
@@ -860,7 +860,7 @@ const Session = () => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                <Dialog.Panel className="rounded-xl bg-white dark:bg-slate-800 shadow-2xl overflow-hidden">
                                                                     <div className="bg-gradient-to-r from-rose-500 to-rose-600 px-6 py-4">
                                                                         <div className="flex items-center justify-between">
                                                                             <div className="flex items-center gap-3">
@@ -949,7 +949,7 @@ const Session = () => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                <Dialog.Panel className="rounded-xl bg-white dark:bg-slate-800 shadow-2xl overflow-hidden">
                                                                     <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
                                                                         <div className="flex items-center justify-between">
                                                                             <div className="flex items-center gap-3">
@@ -1018,7 +1018,7 @@ const Session = () => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                <Dialog.Panel className="rounded-xl bg-white dark:bg-slate-800 shadow-2xl overflow-hidden">
                                                                     <div className="bg-gradient-to-r from-red-500 to-red-600 px-6 py-4">
                                                                         <div className="flex items-center justify-between">
                                                                             <div className="flex items-center gap-3">
@@ -1090,7 +1090,7 @@ const Session = () => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                <Dialog.Panel className="rounded-xl bg-white dark:bg-slate-800 shadow-2xl overflow-hidden">
                                                                     <div className="bg-gradient-to-r from-purple-500 to-purple-600 px-6 py-4">
                                                                         <div className="flex items-center justify-between">
                                                                             <div className="flex items-center gap-3">
@@ -1159,7 +1159,7 @@ const Session = () => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                <Dialog.Panel className="rounded-xl bg-white dark:bg-slate-800 shadow-2xl overflow-hidden">
                                                                     <div className="bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-4">
                                                                         <div className="flex items-center justify-between">
                                                                             <div className="flex items-center gap-3">
@@ -1269,7 +1269,7 @@ const Session = () => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                <Dialog.Panel className="rounded-xl bg-white dark:bg-slate-800 shadow-2xl overflow-hidden">
                                                                     <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4">
                                                                         <div className="flex items-center justify-between">
                                                                             <div className="flex items-center gap-3">
@@ -1348,7 +1348,7 @@ const Session = () => {
                                                                 leaveFrom="opacity-100 scale-100"
                                                                 leaveTo="opacity-0 scale-95"
                                                             >
-                                                                <Dialog.Panel className="rounded-xl bg-white shadow-2xl overflow-hidden">
+                                                                <Dialog.Panel className="rounded-xl bg-white dark:bg-slate-800 shadow-2xl overflow-hidden">
                                                                     <div className="bg-gradient-to-r from-sky-500 to-sky-600 px-6 py-4">
                                                                         <div className="flex items-center justify-between">
                                                                             <div className="flex items-center gap-3">

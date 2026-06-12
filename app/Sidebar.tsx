@@ -555,7 +555,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
 
                                     {isOpen ?
                                         <AnimateHeight duration={300} height={currentMenu === item.name ? 'auto' : 0}>
-                                            <ul className={`rounded-lg bg-[#ffffff] dark:bg-gray-700 text-gray-500 p-1 ${isOpen ? '' : "absolute right-full top-0"}`}>
+                                            <ul className={`rounded-lg bg-[#ffffff] dark:bg-slate-800 dark:border dark:border-slate-700 text-gray-500 p-1 ${isOpen ? '' : "absolute right-full top-0"}`}>
                                                 {item.childe.map((subItem) =>
                                                     !subItem.childe ? (
                                                         <li key={subItem.title} className="nav-item">
@@ -563,7 +563,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                                 type="button"
                                                                 className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
                                                                     ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
-                                                                    : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+                                                                    : 'text-gray-600 dark:text-slate-300 hover:bg-[#2691bf]/30 hover:text-gray-700 dark:hover:text-white'
                                                                     }`}
                                                                 onClick={() => {
                                                                     const data: ITabData = {
@@ -650,7 +650,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                             onMouseEnter={() => !isOpen && setCurrentMenu(item.name)}
                                             onMouseLeave={() => !isOpen && setCurrentMenu('')}
                                         >
-                                            <ul className={`rounded-lg min-w-2xs shadow-2xl mr-2 border border-gray-300 bg-[#ffffff] text-gray-500 p-1 ${isOpen ? '' : "absolute right-full top-0"}`}>
+                                            <ul className={`rounded-lg min-w-2xs shadow-2xl mr-2 border border-gray-300 dark:border-slate-700 bg-[#ffffff] dark:bg-slate-800 text-gray-500 dark:text-slate-300 p-1 ${isOpen ? '' : "absolute right-full top-0"}`}>
                                                 {item.childe.map((subItem) =>
                                                     !subItem.childe ? (
                                                         <li key={subItem.title} className="nav-item">
@@ -658,7 +658,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                                 type="button"
                                                                 className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
                                                                     ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
-                                                                    : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+                                                                    : 'text-gray-600 dark:text-slate-300 hover:bg-[#2691bf]/30 hover:text-gray-700 dark:hover:text-white'
                                                                     }`}
                                                                 onClick={() => {
                                                                     const data: ITabData = {
