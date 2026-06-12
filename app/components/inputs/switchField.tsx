@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { ErrorMessage, FieldConfig, FieldProps, getIn } from 'formik';
-import { useTranslation } from 'react-i18next';
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import { far } from '@fortawesome/free-regular-svg-icons';
+import { FieldProps } from 'formik';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CustomInputProps extends FieldProps {
     label: string;
-    value: boolean | null;
+    value?: boolean | null;
     type?: string;
     icon?: any | Iterable<any>;
     placeholder?: string;
-    disabled: boolean;
+    disabled?: boolean;
 }
 
 const FswitchField: React.FC<CustomInputProps> = ({ label, field, value = null, type, icon, placeholder, disabled = false, form, ...other }) => {
-    const { t } = useTranslation();
+    const { t } = useLanguage();
     const [active, setActive] = useState(field.value);
 
     useEffect(() => {
@@ -30,7 +28,7 @@ const FswitchField: React.FC<CustomInputProps> = ({ label, field, value = null, 
     return (
         <div className="w-full">
             <fieldset>
-                <label htmlFor={field.name} className="!text-gray-600 mb-2 block text-sm">
+                <label htmlFor={field.name} className="!text-gray-600 dark:!text-slate-300 mb-2 block text-sm">
                     {label}
                 </label>
                 <div className="flex items-center gap-3">
@@ -50,7 +48,7 @@ const FswitchField: React.FC<CustomInputProps> = ({ label, field, value = null, 
                                 }`}
                         />
                     </button>
-                    <span className={`text-sm ${disabled ? 'text-gray-400' : active ? 'text-gray-700' : 'text-gray-500'}`}>
+                    <span className={`text-sm ${disabled ? 'text-gray-400 dark:text-slate-500' : active ? 'text-gray-700 dark:text-slate-200' : 'text-gray-500 dark:text-slate-400'}`}>
                         {active ? t('active') : t('dactive')}
                     </span>
                 </div>

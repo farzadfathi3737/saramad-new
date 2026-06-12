@@ -54,7 +54,7 @@ const FTextField: React.FC<CustomInputProps> = ({ label, field, type = 'text', f
     return (
         <div className="mb-5 w-full">
             <fieldset>
-                <label htmlFor={field.name} className={`!text-gray-600 ${classNameLabel}`}>
+                <label htmlFor={field.name} className={`!text-gray-600 dark:!text-slate-300 ${classNameLabel}`}>
                     {label}{required && <span className="text-red-500 mr-1">*</span>}
                 </label>
                 {!disabled ? (

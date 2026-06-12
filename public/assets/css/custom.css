@@ -114,6 +114,12 @@
   color: var(--color-text-mute) !important;
 }
 
+.dark [class*="-Input"] input,
+.dark [class*="-input"] input {
+  color: var(--color-text) !important;
+  caret-color: var(--color-text) !important;
+}
+
 .space-y-cc,
 .space-y-c button {
   background-color: #09a0b129 !important;
