@@ -794,8 +794,8 @@ const Session = ({ id, sessionid }: Props) => {
                                                             <div className="p-6">
                                                                 <Field id="amount" name="amount" label="مقدار اصلاحی" component={FTextField} isNumber={true} />
                                                             </div>
-                                                            <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
-                                                                <button type="button" onClick={() => setIsPrimeCostAddModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                            <div className="bg-gray-50 dark:bg-slate-900 px-6 py-4 flex items-center justify-end gap-3 border-t dark:border-slate-700">
+                                                                <button type="button" onClick={() => setIsPrimeCostAddModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 font-medium hover:bg-gray-100 dark:hover:bg-slate-700 transition-all">
                                                                     انصراف
                                                                 </button>
                                                                 <button type="submit" disabled={isPrimeCostAdding} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium hover:from-emerald-600 hover:to-emerald-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -878,8 +878,8 @@ const Session = ({ id, sessionid }: Props) => {
                                                             <div className="p-6">
                                                                 <Field id="amount" name="amount" label="مقدار اصلاحی" component={FTextField} isNumber={true} />
                                                             </div>
-                                                            <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
-                                                                <button type="button" onClick={() => setIsPrimeCostSubModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                            <div className="bg-gray-50 dark:bg-slate-900 px-6 py-4 flex items-center justify-end gap-3 border-t dark:border-slate-700">
+                                                                <button type="button" onClick={() => setIsPrimeCostSubModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 font-medium hover:bg-gray-100 dark:hover:bg-slate-700 transition-all">
                                                                     انصراف
                                                                 </button>
                                                                 <button type="submit" disabled={isPrimeCostSubtracting} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-rose-500 to-rose-600 text-white font-medium hover:from-rose-600 hover:to-rose-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -945,10 +945,10 @@ const Session = ({ id, sessionid }: Props) => {
                                                         <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                                             <i className="fa-duotone fa-solid fa-question text-blue-600 text-2xl" />
                                                         </div>
-                                                        <p className="text-gray-700 text-lg font-medium">آیا از انجام این عملیات مطمئن هستید؟</p>
+                                                        <p className="text-gray-700 dark:text-slate-300 text-lg font-medium">آیا از انجام این عملیات مطمئن هستید؟</p>
                                                     </div>
-                                                    <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
-                                                        <button type="button" onClick={() => setIsReapplyAddModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                    <div className="bg-gray-50 dark:bg-slate-900 px-6 py-4 flex items-center justify-end gap-3 border-t dark:border-slate-700">
+                                                        <button type="button" onClick={() => setIsReapplyAddModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 font-medium hover:bg-gray-100 dark:hover:bg-slate-700 transition-all">
                                                             انصراف
                                                         </button>
                                                         <button type="button" disabled={isDiscountApplying} onClick={() => handlerShareTransactionDiscountReapplyOn(selectedRow?.id ?? '')} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -1010,10 +1010,10 @@ const Session = ({ id, sessionid }: Props) => {
                                                         <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                                             <i className="fa-duotone fa-solid fa-exclamation-triangle text-red-600 text-2xl" />
                                                         </div>
-                                                        <p className="text-gray-700 text-lg font-medium">آیا از انجام این عملیات مطمئن هستید؟</p>
+                                                        <p className="text-gray-700 dark:text-slate-300 text-lg font-medium">آیا از انجام این عملیات مطمئن هستید؟</p>
                                                     </div>
-                                                    <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
-                                                        <button type="button" onClick={() => setIsReapplyDelModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                    <div className="bg-gray-50 dark:bg-slate-900 px-6 py-4 flex items-center justify-end gap-3 border-t dark:border-slate-700">
+                                                        <button type="button" onClick={() => setIsReapplyDelModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 font-medium hover:bg-gray-100 dark:hover:bg-slate-700 transition-all">
                                                             انصراف
                                                         </button>
                                                         <button type="button" disabled={isDiscountRemoving} onClick={() => handlerShareTransactionDiscountRemoveOn(selectedRow?.id ?? '')} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-white font-medium hover:from-red-600 hover:to-red-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -1077,10 +1077,10 @@ const Session = ({ id, sessionid }: Props) => {
                                                         <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                                             <i className="fa-duotone fa-solid fa-wand-magic-sparkles text-purple-600 text-2xl" />
                                                         </div>
-                                                        <p className="text-gray-700 text-lg font-medium">آیا از انجام محاسبه اتوماتیک مطمئن هستید؟</p>
+                                                        <p className="text-gray-700 dark:text-slate-300 text-lg font-medium">آیا از انجام محاسبه اتوماتیک مطمئن هستید؟</p>
                                                     </div>
-                                                    <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
-                                                        <button type="button" onClick={() => setIsAutoCommissionModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                    <div className="bg-gray-50 dark:bg-slate-900 px-6 py-4 flex items-center justify-end gap-3 border-t dark:border-slate-700">
+                                                        <button type="button" onClick={() => setIsAutoCommissionModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 font-medium hover:bg-gray-100 dark:hover:bg-slate-700 transition-all">
                                                             انصراف
                                                         </button>
                                                         <button type="button" disabled={isAutoCalculating} onClick={() => handlerShareTransactionCommissionReapplyOn(selectedRow?.id ?? '')} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white font-medium hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -1182,8 +1182,8 @@ const Session = ({ id, sessionid }: Props) => {
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
-                                                                    <button type="button" onClick={() => setIsHandlyCommissionModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                                <div className="bg-gray-50 dark:bg-slate-900 px-6 py-4 flex items-center justify-end gap-3 border-t dark:border-slate-700">
+                                                                    <button type="button" onClick={() => setIsHandlyCommissionModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 font-medium hover:bg-gray-100 dark:hover:bg-slate-700 transition-all">
                                                                         انصراف
                                                                     </button>
                                                                     <button type="submit" disabled={isCommissionEditing} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
@@ -1261,8 +1261,8 @@ const Session = ({ id, sessionid }: Props) => {
                                                             <div className="p-6">
                                                                 <Field id="ticketNumber" name="ticketNumber" label="شماره اعلامیه" component={FTextField} />
                                                             </div>
-                                                            <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
-                                                                <button type="button" onClick={() => setIsTicketNumberModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                            <div className="bg-gray-50 dark:bg-slate-900 px-6 py-4 flex items-center justify-end gap-3 border-t dark:border-slate-700">
+                                                                <button type="button" onClick={() => setIsTicketNumberModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 font-medium hover:bg-gray-100 dark:hover:bg-slate-700 transition-all">
                                                                     انصراف
                                                                 </button>
                                                                 <button type="submit" disabled={isTicketNumberEditing} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white font-medium hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
@@ -1344,8 +1344,8 @@ const Session = ({ id, sessionid }: Props) => {
                                                                     component={FSelectField} />
 
                                                             </div>
-                                                            <div className="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3 border-t">
-                                                                <button type="button" onClick={() => setIsSubTypeModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition-all">
+                                                            <div className="bg-gray-50 dark:bg-slate-900 px-6 py-4 flex items-center justify-end gap-3 border-t dark:border-slate-700">
+                                                                <button type="button" onClick={() => setIsSubTypeModalOpen(false)} className="px-5 py-2.5 rounded-lg border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 font-medium hover:bg-gray-100 dark:hover:bg-slate-700 transition-all">
                                                                     انصراف
                                                                 </button>
                                                                 <button type="submit" disabled={isSubTypeEditing} className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-sky-500 to-sky-600 text-white font-medium hover:from-sky-600 hover:to-sky-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">

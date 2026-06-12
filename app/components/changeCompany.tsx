@@ -140,8 +140,8 @@ const ChangeCompany = () => {
 
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black/70 z-40">
-                    <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-lg">
-                        <h2 className="mb-4 text-xl font-semibold">تغییر شرکت و سال مالی</h2>
+                    <div className="w-full max-w-sm rounded-lg bg-white dark:bg-slate-800 p-6 shadow-lg">
+                        <h2 className="mb-4 text-xl font-semibold text-gray-800 dark:text-slate-100">تغییر شرکت و سال مالی</h2>
 
                         <Formik
                             initialValues={{

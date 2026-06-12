@@ -1012,8 +1012,8 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="panel relative z-50 my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:!text-gray-600 bg-white">
-                                    <div className="flex items-center justify-between border-b-2 border-gray-300 bg-[#fbfbfb] px-5 py-3 dark:bg-[#121c2c]">
+                                <Dialog.Panel className="panel relative z-50 my-8 w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-slate-200 bg-white dark:bg-slate-800">
+                                    <div className="flex items-center justify-between border-b-2 border-gray-300 dark:border-slate-700 bg-[#fbfbfb] dark:bg-slate-900 px-5 py-3">
                                         <div className="flex text-lg font-bold ">
                                             <div className="w-40 pl-2 text-red-500 flex items-center">
                                                 <i className={`fa-duotone fa-solid fa-trash ml-2`} />
@@ -1024,9 +1024,9 @@ const MRT_DataTable: React.FC<CostomMRT> = ({
                                             <i className={`fa-duotone fa-solid fa-close text-xl`} />
                                         </button>
                                     </div>
-                                    <div className="p-5 text-center text-2xl">آیا از حذف این ردیف مطمئن هستید؟</div>
-                                    {modalMessage && <div className="p-1 text-center text-xl text-gray-900">{`( ${modalMessage} )`}</div>}
-                                    <div className="p-5">
+                                    <div className="p-5 text-center text-2xl text-gray-700 dark:text-slate-300">آیا از حذف این ردیف مطمئن هستید؟</div>
+                                    {modalMessage && <div className="p-1 text-center text-xl text-gray-900 dark:text-slate-400">{`( ${modalMessage} )`}</div>}
+                                    <div className="p-5 dark:bg-slate-800">
                                         <div className="mt-8 flex items-center justify-end">
                                             <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="btn outline outline-red-500 text-red-500 hover:bg-red-500 hover:text-white">
                                                 انصراف
