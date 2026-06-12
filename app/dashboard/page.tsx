@@ -57,12 +57,21 @@ export default function Dashboard() {
     const [initialRecords, setInitialRecords] = useState<IchahkesData[]>([]);
     const [isMounted, setIsMounted] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    const isDark = false;
+    const [isDark, setIsDark] = useState(false);
     const isRtl = true;
 
     useEffect(() => {
         setIsMounted(true);
     });
+
+    useEffect(() => {
+        const html = document.documentElement;
+        const update = () => setIsDark(html.classList.contains('dark'));
+        update();
+        const observer = new MutationObserver(update);
+        observer.observe(html, { attributes: true, attributeFilter: ['class'] });
+        return () => observer.disconnect();
+    }, []);
 
     const fetchData = async () => {
         setLoading(true);
@@ -525,7 +534,7 @@ export default function Dashboard() {
 
     return (
         <>
-            <div className='p-5 bg-gray-100'>
+            <div className='p-5' style={{ backgroundColor: 'var(--color-page-bg)' }}>
                 <ul className="flex space-x-2 rtl:space-x-reverse">
                     <li>
                         <Link href="/" className="text-primary-50 hover:underline">
@@ -762,7 +771,7 @@ export default function Dashboard() {
                             </div>
 
                             <div className="relative">
-                                <div className="rounded-lg bg-white dark:bg-black" style={{ direction: "ltr" }}>
+                                <div className="rounded-lg bg-white dark:bg-slate-900" style={{ direction: "ltr" }}>
                                     {isMounted ? (
                                         <ReactApexChart series={revenueChart.series} options={revenueChart.options} type="area" height={760} width={'100%'} />
                                     ) : (
@@ -779,7 +788,7 @@ export default function Dashboard() {
                                 <h5 className="text-lg font-semibold dark:text-white-light">درصد مالکیت به تفکیک صنعت</h5>
                             </div>
                             <div>
-                                <div className="rounded-lg bg-white dark:bg-black">
+                                <div className="rounded-lg bg-white dark:bg-slate-900">
                                     {isMounted ? (
                                         <ReactApexChart series={salesByCategory.series} options={salesByCategory.options} type="donut" height={750} width={'100%'} />
                                     ) : (
@@ -800,9 +809,9 @@ export default function Dashboard() {
                                 </h5>
                             </div>
 
-                            <div className="h-[95%] rounded-lg bg-white dark:bg-black">
+                            <div className="h-[95%] rounded-lg bg-white dark:bg-slate-900">
                                 {isMounted ? (
-                                    <ReactApexChart series={columnChart.series} options={columnChart.options} className="rounded-lg bg-white dark:bg-black" type="bar" height={'95%'} width={'100%'} />
+                                    <ReactApexChart series={columnChart.series} options={columnChart.options} className="rounded-lg bg-white dark:bg-slate-900" type="bar" height={'95%'} width={'100%'} />
                                 ) : (
                                     <div className="grid min-h-[325px] place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
                                         <span className="inline-flex h-5 w-5 animate-spin rounded-full  border-2 border-black !border-l-transparent dark:border-white"></span>
@@ -818,12 +827,12 @@ export default function Dashboard() {
                                 </h5>
                             </div>
 
-                            <div className="h-[95%] rounded-lg bg-white dark:bg-black">
+                            <div className="h-[95%] rounded-lg bg-white dark:bg-slate-900">
                                 {isMounted ? (
                                     <ReactApexChart
                                         series={columnChart2.series}
                                         options={columnChart2.options}
-                                        className="rounded-lg bg-white dark:bg-black"
+                                        className="rounded-lg bg-white dark:bg-slate-900"
                                         type="bar"
                                         height={'95%'}
                                         width={'100%'}

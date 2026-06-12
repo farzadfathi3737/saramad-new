@@ -458,7 +458,7 @@ const Session = () => {
                                             ></div>
                                             <div
                                                 id="drawer-js-example"
-                                                className={`absolute z-40 h-full ${open ? 'w-80' : 'hidden w-0'} overflow-y-auto rounded-xl border-2 border-solid border-gray-200 bg-white p-2 backdrop-blur-sm`}
+                                                className={`absolute z-40 h-full ${open ? 'w-80' : 'hidden w-0'} overflow-y-auto rounded-xl border-2 border-solid border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-2 backdrop-blur-sm`}
                                                 tabIndex={-1}
                                                 aria-labelledby="drawer-js-label"
                                             >
@@ -1415,24 +1415,24 @@ const Session = () => {
 
                                             <Drawer open={open} onClose={() => setOpen(false)} position="right" className='flex flex-col overflow-y-hidden py-0'>
                                                 <DrawerItems className='flex flex-col h-full overflow-hidden'>
-                                                    <div className="flex justify-between p-4 border-b flex-shrink-0">
+                                                    <div className="flex justify-between p-4 border-b dark:border-slate-700 flex-shrink-0 text-gray-800 dark:text-slate-200">
                                                         <div>لیست دسته بندی ها</div>
                                                         <div onClick={() => setOpen(false)} className="cursor-pointer">
-                                                            <i className={`fa-duotone fa-solid fa-xmark text-sm text-gray-700 hover:text-gray-900`} />
+                                                            <i className={`fa-duotone fa-solid fa-xmark text-sm text-gray-700 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white`} />
                                                         </div>
                                                     </div>
-                                                    <div className="px-4 py-3 bg-white flex-shrink-0">
+                                                    <div className="px-4 py-3 bg-white dark:bg-slate-800 flex-shrink-0">
                                                         <div>
                                                             <input
                                                                 type="text"
                                                                 value={searchTerm}
                                                                 onChange={(e) => setSearchTerm(e.target.value)}
                                                                 placeholder="جستجو بر اساس تاریخ..."
-                                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                                                                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-gray-800 dark:text-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                                                             />
                                                         </div>
                                                     </div>
-                                                    <div className="flex-1 overflow-y-auto bg-gray-50 p-3" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                                                    <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-slate-900 p-3" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                                                         <div className="flex flex-col gap-3">
                                                             {items &&
                                                                 items?.filter((item: ISession) => item.date.includes(searchTerm)).map((item: ISession, index) => {
@@ -1441,7 +1441,7 @@ const Session = () => {
                                                                             key={index}
                                                                             className={`rounded-lg shadow-md transition-all duration-200 ${index == selected
                                                                                 ? 'bg-gradient-to-r from-[#2691bf] to-[#2691bf] text-white shadow-lg scale-[1.02]'
-                                                                                : 'bg-white hover:shadow-lg hover:scale-[1.01]'
+                                                                                : 'bg-white dark:bg-slate-800 hover:shadow-lg hover:scale-[1.01]'
                                                                                 }`}
                                                                         >
                                                                             <div className="p-4">
@@ -1455,7 +1455,7 @@ const Session = () => {
                                                                                 >
                                                                                     <div className="flex items-center justify-between">
                                                                                         <div className="flex flex-col gap-2">
-                                                                                            <div className={`flex items-center gap-2 ${index == selected ? '' : 'text-gray-800'}`}>
+                                                                                            <div className={`flex items-center gap-2 ${index == selected ? '' : 'text-gray-800 dark:text-slate-200'}`}>
                                                                                                 <i className="fa-duotone fa-solid fa-calendar text-base" />
                                                                                                 <span className="font-bold text-lg tracking-wide">{item.date}</span>
                                                                                             </div>
@@ -1516,7 +1516,7 @@ const Session = () => {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="rounded-lg bg-white p-6 shadow-lg">
+                                <Dialog.Panel className="rounded-lg bg-white dark:bg-slate-800 p-6 shadow-lg">
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="flex text-lg font-bold">
                                             <div className="flex w-40 pl-2 text-danger">
@@ -1524,11 +1524,11 @@ const Session = () => {
                                                 حذف
                                             </div>
                                         </div>
-                                        <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="text-gray-500 hover:text-gray-700">
+                                        <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200">
                                             <i className="fa-duotone fa-solid fa-xmark text-xl" />
                                         </button>
                                     </div>
-                                    <div className="p-5 text-center text-2xl">آیا از حذف این ردیف مطمئن هستید؟</div>
+                                    <div className="p-5 text-center text-2xl text-gray-700 dark:text-slate-300">آیا از حذف این ردیف مطمئن هستید؟</div>
                                     <div className="p-5">
                                         <div className="mt-8 flex items-center justify-end">
                                             <button type="button" onClick={() => setIsDeleteModalOpen(false)} className="btn btn-outline-danger">
