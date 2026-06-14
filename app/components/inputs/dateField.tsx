@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import { FieldProps } from 'formik';
 import DatePicker from 'react-multi-date-picker';
 import persian from 'react-date-object/calendars/persian';
@@ -15,6 +16,14 @@ interface CustomInputProps extends FieldProps {
 }
 
 const FDateField: React.FC<CustomInputProps> = ({ label, field, type, form, required = false, minDate, maxDate, ...other }) => {
+    const [isDark, setIsDark] = useState(false);
+    useEffect(() => {
+        const update = () => setIsDark(document.documentElement.classList.contains('dark'));
+        update();
+        const obs = new MutationObserver(update);
+        obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        return () => obs.disconnect();
+    }, []);
 
     const clear = () => {
         form.setFieldValue(field.name, undefined);
@@ -32,7 +41,7 @@ const FDateField: React.FC<CustomInputProps> = ({ label, field, type, form, requ
     return (
         <div className="flex flex-col relative mb-5 w-full">
 
-            <label htmlFor={field.name} className="text-gray-600">
+            <label htmlFor={field.name} className="text-gray-600 dark:text-slate-300">
                 {label}{required && <span className="text-red-500 mr-1">*</span>}
             </label>
             <DatePicker
@@ -46,6 +55,7 @@ const FDateField: React.FC<CustomInputProps> = ({ label, field, type, form, requ
                 locale={persian_fa}
                 minDate={minDate}
                 maxDate={maxDate}
+                className={isDark ? 'rmdp-dark bg-dark' : ''}
             />
             {field.value && (
                 <div className="absolute bottom-0 left-0 p-3 !text-gray-600" onClick={clear}>

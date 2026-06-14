@@ -120,6 +120,82 @@
   caret-color: var(--color-text) !important;
 }
 
+/* ── react-multi-date-picker dark mode ─────────────────────── */
+.dark .rmdp-wrapper,
+.dark .rmdp-calendar,
+.dark .rmdp-container .rmdp-wrapper {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5) !important;
+}
+
+.dark .rmdp-header-values,
+.dark .rmdp-header-values span {
+  color: #e2e8f0 !important;
+}
+
+.dark .rmdp-arrow {
+  border-color: #94a3b8 !important;
+}
+
+.dark .rmdp-arrow-container:hover {
+  background-color: #334155 !important;
+}
+
+.dark .rmdp-week-day {
+  color: #2bb1aa !important;
+}
+
+.dark .rmdp-day span {
+  color: #e2e8f0 !important;
+}
+
+.dark .rmdp-day:not(.rmdp-disabled):not(.rmdp-day-hidden) span:hover {
+  background-color: #2691bf !important;
+  color: #fff !important;
+}
+
+.dark .rmdp-day.rmdp-selected span:not(.highlight) {
+  background-color: #2691bf !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 2px #2bb1aa !important;
+}
+
+.dark .rmdp-day.rmdp-today span {
+  background-color: #334155 !important;
+  color: #2bb1aa !important;
+}
+
+.dark .rmdp-day.rmdp-disabled span {
+  color: #475569 !important;
+}
+
+.dark .rmdp-month-picker,
+.dark .rmdp-year-picker {
+  background-color: #1e293b !important;
+}
+
+.dark .rmdp-month-picker .rmdp-day span,
+.dark .rmdp-year-picker .rmdp-day span {
+  color: #e2e8f0 !important;
+}
+
+/* ── MRT table header text contrast ────────────────────────── */
+.dark [class*="MRT_TableHeadCell"],
+.dark th[class*="mantine"] {
+  color: #e2e8f0 !important;
+}
+
+.dark [class*="MRT_TableHeadCell"] button,
+.dark [class*="MRT_TableHeadCell"] span {
+  color: #e2e8f0 !important;
+}
+
+/* form field labels global dark contrast fix */
+.dark label:not([class*="text-red"]):not([class*="text-green"]):not([class*="text-white"]) {
+  color: #cbd5e1 !important;
+}
+
 .space-y-cc,
 .space-y-c button {
   background-color: #09a0b129 !important;

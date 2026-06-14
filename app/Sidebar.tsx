@@ -373,7 +373,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
     //                                                     <i className={`fa-duotone fa-solid ${item.icon} text-xl transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a]' : 'text-[#fff]'}`} />
     //                                                     <span
     //                                                         className={`text-sm transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a] font-bold' : 'text-white'}
-    //                                                         } dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}
+    //                                                         } dark:text-slate-200 dark:group-hover:text-white ltr:pl-3 rtl:pr-3`}
     //                                                     >
     //                                                         {t(item.title)}
     //                                                     </span>
@@ -389,8 +389,8 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
     //                                                                 <button
     //                                                                     type="button"
     //                                                                     className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
-    //                                                                         ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
-    //                                                                         : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+    //                                                                         ? 'bg-[#2691bf] text-white hover:text-white'
+    //                                                                         : 'text-gray-600 dark:text-slate-200 hover:bg-[#2691bf]/30 hover:text-gray-800 dark:hover:text-white'
     //                                                                         }`}
     //                                                                     onClick={() => {
     //                                                                         const data: ITabData = {
@@ -420,7 +420,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
     //                                                                     onClick={() => toggleSubMenu(subItem.name, item.name)}
     //                                                                 >
     //                                                                     <div className="flex items-center">
-    //                                                                         <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}>
+    //                                                                         <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-slate-200 dark:group-hover:text-white ltr:pl-3 rtl:pr-3`}>
     //                                                                             {t(subItem.title)}
     //                                                                         </span>
     //                                                                     </div>                                                                        <div
@@ -435,7 +435,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
     //                                                                             <li key={sub2Item.name}>
     //                                                                                 {/* <Link className="group" key={sub2Item.name} href={sub2Item.link}>
     //                                                                                     <div className="flex items-center">
-    //                                                                                         <span className="text-[#777d74] text-xs  dark:text-[#506690] ltr:pl-3 rtl:pr-3">
+    //                                                                                         <span className="text-[#777d74] text-xs  dark:text-slate-200 ltr:pl-3 rtl:pr-3">
     //                                                                                             {t(sub2Item.title)}
     //                                                                                         </span>
     //                                                                                     </div>
@@ -443,8 +443,8 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
     //                                                                                 <button
     //                                                                                     type="button"
     //                                                                                     className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
-    //                                                                                         ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
-    //                                                                                         : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+    //                                                                                         ? 'bg-[#2691bf] text-white hover:text-white'
+    //                                                                                         : 'text-gray-600 dark:text-slate-200 hover:bg-[#2691bf]/30 hover:text-gray-800 dark:hover:text-white'
     //                                                                                         }`}
     //                                                                                     onClick={() => {
     //                                                                                         const data: ITabData = {
@@ -542,7 +542,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                 }`} />
                                             {isOpen && (
                                                 <span className={`text-sm transition-colors duration-300 ${currentMenu === item.name || lasttMenu === item.name ? 'text-[#0f337a] font-bold' : 'text-white'
-                                                    } dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}>
+                                                    } dark:text-slate-200 dark:group-hover:text-white ltr:pl-3 rtl:pr-3`}>
                                                     {t(item.title)}
                                                 </span>
                                             )}
@@ -562,8 +562,8 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                             <button
                                                                 type="button"
                                                                 className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
-                                                                    ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
-                                                                    : 'text-gray-600 dark:text-slate-300 hover:bg-[#2691bf]/30 hover:text-gray-700 dark:hover:text-white'
+                                                                    ? 'bg-[#2691bf] text-white hover:text-white'
+                                                                    : 'text-gray-700 dark:text-slate-100 hover:bg-[#2691bf]/30 hover:text-gray-900 dark:hover:text-white'
                                                                     }`}
                                                                 onClick={() => {
                                                                     const data: ITabData = {
@@ -591,7 +591,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
 
                                                             >
                                                                 <div className="flex items-center">
-                                                                    <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}>
+                                                                    <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-slate-200 dark:group-hover:text-white ltr:pl-3 rtl:pr-3`}>
                                                                         {t(subItem.title)}
                                                                     </span>
                                                                 </div>                                                                        <div
@@ -606,7 +606,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                                         <li key={sub2Item.name}>
                                                                             {/* <Link className="group" key={sub2Item.name} href={sub2Item.link}>
                                                                                         <div className="flex items-center">
-                                                                                            <span className="text-[#777d74] text-xs  dark:text-[#506690] ltr:pl-3 rtl:pr-3">
+                                                                                            <span className="text-[#777d74] text-xs  dark:text-slate-200 ltr:pl-3 rtl:pr-3">
                                                                                                 {t(sub2Item.title)}
                                                                                             </span>
                                                                                         </div>
@@ -614,8 +614,8 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                                             <button
                                                                                 type="button"
                                                                                 className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
-                                                                                    ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
-                                                                                    : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+                                                                                    ? 'bg-[#2691bf] text-white hover:text-white'
+                                                                                    : 'text-gray-600 dark:text-slate-200 hover:bg-[#2691bf]/30 hover:text-gray-800 dark:hover:text-white'
                                                                                     }`}
                                                                                 onClick={() => {
                                                                                     const data: ITabData = {
@@ -657,8 +657,8 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                             <button
                                                                 type="button"
                                                                 className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
-                                                                    ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
-                                                                    : 'text-gray-600 dark:text-slate-300 hover:bg-[#2691bf]/30 hover:text-gray-700 dark:hover:text-white'
+                                                                    ? 'bg-[#2691bf] text-white hover:text-white'
+                                                                    : 'text-gray-700 dark:text-slate-100 hover:bg-[#2691bf]/30 hover:text-gray-900 dark:hover:text-white'
                                                                     }`}
                                                                 onClick={() => {
                                                                     const data: ITabData = {
@@ -686,7 +686,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
 
                                                             >
                                                                 <div className="flex items-center">
-                                                                    <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-[#506690] dark:group-hover:!text-gray-600 ltr:pl-3 rtl:pr-3`}>
+                                                                    <span className={`text-[#0f337a] transition-colors text-xs duration-300 dark:text-slate-200 dark:group-hover:text-white ltr:pl-3 rtl:pr-3`}>
                                                                         {t(subItem.title)}
                                                                     </span>
                                                                 </div>                                                                        <div
@@ -701,7 +701,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                                         <li key={sub2Item.name}>
                                                                             {/* <Link className="group" key={sub2Item.name} href={sub2Item.link}>
                                                                                         <div className="flex items-center">
-                                                                                            <span className="text-[#777d74] text-xs  dark:text-[#506690] ltr:pl-3 rtl:pr-3">
+                                                                                            <span className="text-[#777d74] text-xs  dark:text-slate-200 ltr:pl-3 rtl:pr-3">
                                                                                                 {t(sub2Item.title)}
                                                                                             </span>
                                                                                         </div>
@@ -709,8 +709,8 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                                                                             <button
                                                                                 type="button"
                                                                                 className={`nav-link group w-full font-iranyekan flex px-2 py-2 rounded-lg transition-all ${appConf.activeTab === subItem.id
-                                                                                    ? 'bg-[#2691bf] text-white hover:text-[#0f337a]'
-                                                                                    : 'text-gray-600 hover:bg-[#2691bf]/30 hover:text-gray-700'
+                                                                                    ? 'bg-[#2691bf] text-white hover:text-white'
+                                                                                    : 'text-gray-600 dark:text-slate-200 hover:bg-[#2691bf]/30 hover:text-gray-800 dark:hover:text-white'
                                                                                     }`}
                                                                                 onClick={() => {
                                                                                     const data: ITabData = {
